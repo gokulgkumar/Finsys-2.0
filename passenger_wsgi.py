@@ -1,0 +1,1 @@
+from Finsys.wsgi import application

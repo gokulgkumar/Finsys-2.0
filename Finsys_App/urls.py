@@ -87,7 +87,8 @@ urlpatterns = [
 
     path('StockAdjustment',views.StockAdjustment,name='StockAdjustment'),
     path('AddStockAdjustment',views.AddStockAdjustment,name='AddStockAdjustment'),
-    path('getitemdata',views.getitemdata,name='getitemdata'),
+    path('getitemdata1',views.getitemdata1,name='getitemdata1'),
+    path('getitemdata2',views.getitemdata2,name='getitemdata2'),
 
 
 

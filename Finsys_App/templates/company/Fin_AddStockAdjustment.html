@@ -13,7 +13,7 @@
         font-size: 20px;
     }
 
-    .form-control.selecttt {
+    .form-control.selectss3 {
         width: 350px;
     }
 
@@ -74,6 +74,7 @@
       <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
     <div class="page-content" style="margin-top:-2rem ;">
+      
         <div class="card radius-15">
             <div class="card-body">
                 <div class="card-title">
@@ -82,6 +83,9 @@
 
                 <div class="row mt-3">
                   <div class="col-md-3">
+
+                    <form action="" class="was-validated">
+
                     <label for="validationCustom01"
 
                     style="color: white;">Mode of Adjustment</label>
@@ -101,7 +105,7 @@
                    
                       <label class="col-form-label">Reference Number</label>
                  
-                      <input class="form-control" type="text" id="bname" name="refno">
+                      <input class="form-control" type="text" id="bname" name="refno" required>
                   </div>
               </div>
 
@@ -177,7 +181,7 @@
           <td>1</td>
           <td style="width: 20%;">
             
-              <select name="item1" class="form-control select2 selectt" id="selectss1">
+              <select name="item1" class="form-control select2 selectt" id="selectss1" required>
                 <option value="" selected disabled>Select Product</option>
                 {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -207,7 +211,7 @@ $(document).on('change', '#selectss1', function () {
     var selectedValue = $(this).val();
     $.ajax({
         type: "GET",
-        url: "{% url 'getitemdata' %}",
+        url: "{% url 'getitemdata1' %}",
         data: {
             id: selectedValue,
             
@@ -247,7 +251,7 @@ $(document).on('change', '#selectss1', function () {
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name="item${rowCount + 1}" class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
+          <select name="item${rowCount + 1}" class="form-control select2 selectt2" id="selectss2${rowCount + 1}" required>
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -274,7 +278,7 @@ $(document).on('change', '#selectss1', function () {
         var selectedValue = $(this).val();
         $.ajax({
             type: "GET",
-            url: "{% url 'getitemdata' %}",
+            url: "{% url 'getitemdata1' %}",
             data: {
                 id: selectedValue,
             },
@@ -323,7 +327,7 @@ $(document).on('change', '#selectss1', function () {
             <td>1</td>
             <td style="width: 20%;">
               
-                <select name="item1" id="valueItem"  class="form-control select2 selecttt " style="background-color: #243e54;" >
+                <select name="item1" id="selectss3"  class="form-control select2  " style="background-color: #243e54;" required>
                 <option value=" " selected disabled >Select Product</option>
                 {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -331,9 +335,9 @@ $(document).on('change', '#selectss1', function () {
                 </select>
              
             </td>
-            <td><input type="text"  id="qty2" name="qty2"  class="form-control" style="text-align:right;"></td>
-            <td><input type="text" id="qty_hand" name="qty_hand1" class="form-control" style="text-align:right;" required></td>
-            <td><input type="number"  id="nqty" name="new_qty1" class="form-control qty"></td>
+            <td><input type="text"  id="valavail1" name="qty2"  class="form-control" style="text-align:right;"></td>
+            <td><input type="text" id="val_stck1" name="qty_hand1" class="form-control" style="text-align:right;" required></td>
+            <td><input type="number"  id="adj_val1" name="new_qty1" class="form-control qty"></td>
             <td style="border: none; " class="text-center">
               <a role="button" class="btn btn-outline-secondary ml-1" onclick = "deleteRow2(this)">-</a>
             </td>
@@ -347,6 +351,45 @@ $(document).on('change', '#selectss1', function () {
   <div>
     
   </div>
+
+  <script>
+    $(document).ready(function() {
+     $('.select2').select2();
+  $(document).on('change', '#selectss3', function () {
+                                     
+      console.log('Select changed');
+      var selectedValue = $(this).val();
+      $.ajax({
+          type: "GET",
+          url: "{% url 'getitemdata2' %}",
+          data: {
+              id: selectedValue,
+              
+          },
+          success: function (response) {
+            var val = response.value;
+            document.getElementById('valavail1').value=val;
+                                        
+                                },
+                                  
+                          });
+                    });
+  
+                });
+  </script>
+
+<script type="text/javascript">
+  $(document).on('input', '#val_stck1', function() {
+    var valuestock = parseFloat(document.getElementById('val_stck1').value);
+    var valavail = parseFloat(document.getElementById('valavail1').value);
+    var difference = valuestock - valavail
+    document.getElementById('adj_val1').value=difference
+  });
+</script>
+
+
+
+
   
 <script>
   function addRow2() {
@@ -361,7 +404,7 @@ $(document).on('change', '#selectss1', function () {
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name="item${rowCount + 1}" class="form-control select2 selectt3" id="valueItem${rowCount + 1}">
+          <select name="item${rowCount + 1}" class="form-control select2 " id="selectss4${rowCount + 1}" required>
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -369,9 +412,9 @@ $(document).on('change', '#selectss1', function () {
           </select>
         </div>
       </td>
-      <td><input type="text" name="qty${rowCount + 1}" class="form-control" style="text-align:right;"></td>
-      <td><input type="text" name="qty_hand${rowCount + 1}" class="form-control" style="text-align:right;" required></td>
-      <td><input type="number" name="new_qty${rowCount + 1}" class="form-control qty"></td>
+      <td><input type="text" id="valavail2${rowCount + 1}" name="qty${rowCount + 1}" class="form-control " style="text-align:right;"></td>
+      <td><input type="text" id="val_stck2${rowCount + 1}" name="qty_hand${rowCount + 1}" class="form-control valinp" style="text-align:right;" required></td>
+      <td><input type="number" name="new_qty${rowCount + 1}" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
       <td style="border: none; " class="text-center">
         <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
       </td>
@@ -380,10 +423,37 @@ $(document).on('change', '#selectss1', function () {
     tableBody.appendChild(newRow);
 
    
-    $("#valueItem" + (rowCount + 1)).select2({
+    $("#selectss4" + (rowCount + 1)).select2({
       
     });
-  }
+
+    $(document).on('change', `#selectss4${rowCount + 1}`, function () {
+        console.log('Select changed');
+        var selectedValue = $(this).val();
+        console.log('selectedValue ',selectedValue);
+        $.ajax({
+            type: "GET",
+            url: "{% url 'getitemdata2' %}",
+            data: {
+                id: selectedValue,
+            },
+            success: function (response) {
+              var valu = response.value;
+            document.getElementById(`valavail2${rowCount + 1}`).value=valu;
+            },
+        });
+    });
+
+    $(document).on('input', '.valinp', function() {
+      console.log('input')
+        var valuestock = parseFloat(document.getElementById(`val_stck2${rowCount + 1}`).value);
+        var valavail = parseFloat(document.getElementById(`valavail2${rowCount + 1}`).value);
+        var difference = valuestock - valavail;
+        document.getElementById(`adj_val2${rowCount + 1}`).value = difference;
+    });
+}
+
+  
 
   function deleteRow(button) {
   var row = button.parentNode.parentNode;
@@ -435,7 +505,7 @@ $(document).on('change', '#selectss1', function () {
     </div>
 
 
-
+  </form>
 
     <!-- ---------------------------------------------------- REASON MODAL ------------------------------------------------------------------- -->
 

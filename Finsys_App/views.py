@@ -1665,7 +1665,7 @@ def Fin_StockAdjustmentView(request):
         
 
 
-def getitemdata(request):
+def getitemdata1(request):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
@@ -1681,6 +1681,50 @@ def getitemdata(request):
                 })
         else:
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data})
+            item_name=request.GET.get('id')
+            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
+            stock=0
+            for i in items:
+                stock=i.current_stock
+            return JsonResponse({
+                 'stock':stock
+                })
+        
+def getitemdata2(request):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            item_name=request.GET.get('id')
+            print(item_name,'item_name')
+            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
+            stock=0
+            purchase_price=0
+            value=0
+            
+            for i in items:
+                stock=i.current_stock
+                purchase_price=i.purchase_price
+                value=stock*purchase_price
+            print(value,'value')
+            return JsonResponse({
+                 'value':value
+                })
+        else:
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
+            item_name=request.GET.get('id')
+            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
+            stock=0
+            purchase_price=0
+            value=0
+            for i in items:
+                stock=i.current_stock
+                purchase_price=i.purchase_price
+                value=stock*purchase_price
+            return JsonResponse({
+                 'value':value
+                })
+
+           
 

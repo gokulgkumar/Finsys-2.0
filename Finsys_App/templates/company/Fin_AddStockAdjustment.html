@@ -84,9 +84,9 @@
                 <div class="row mt-3">
                   <div class="col-md-3">
 
-                    <form action="" class="was-validated">
-
-                    <label for="validationCustom01"
+                    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data" id="form">
+                      {% csrf_token %}
+                    <label for=""
 
                     style="color: white;">Mode of Adjustment</label>
 
@@ -114,29 +114,144 @@
                         <label for="">Date *</label>
                         <input type="date" class="form-control" id="date" name="date" placeholder="">
                     </div>
+
+                    <script>
+                      $('#date').val(new Date().toJSON().slice(0,10));
+                    </script>
                     
                     <div class="col-md-3">
-                        <label class="col-form-label">Account *</label>
+                        <label class="col-form-label " for="validationCustom02">Account *</label>
                         <select name="account" class="form-control text-white" required>
                            <option selected disabled value="">Choose...</option>
-                           {% for a in accounts %}
-                         <option value="{{ a.account_name }}">{{ a.account_name }}</option>
-                         {% endfor %}
-                    
+                          
+
+                           <optgroup label="Expense" class="text-dark">
+                         <option value="Advertising and Marketing" class="text-white">Advertising and Marketing</option>
+                         <option value="Automobile Expense" class="text-white">Automobile Expense</option>
+                         <option value=">Bad Debt" class="text-white">Bad Debt</option>
+                         <option value="Bank Fees and Charges" class="text-white">Bank Fees and Charges</option>
+                         <option value="Consultant Expense" class="text-white">Consultant Expense</option>
+                         <option value="Credit Card Charges" class="text-white">Credit Card Charges</option>
+                         <option value="Depreciation Expense" class="text-white">Depreciation Expense</option>
+                         <option value="Exchange Gain or Loss" class="text-white">Exchange Gain or Loss</option>
+                         <option value="IT and Internet Expenses" class="text-white">IT and Internet Expenses</option>
+                         <option value="Janitorial Expense" class="text-white">Janitorial Expense</option>
+                         <option value="Lodging" class="text-white">Lodging</option>
+                         <option value="Meals and Entertainment" class="text-white">Meals and Entertainment</option>
+                         <option value="Other Expenses" class="text-white"> Other Expenses</option>
+                         <option value="Postage" class="text-white">Postage</option>
+                         <option value="Salaries and Employee Wages" class="text-white">Salaries and Employee Wages</option>
+                         <option value="Telephone Expense" class="text-white">Telephone Expense</option>
+                         <option value="Travel Expense" class="text-white">Travel Expense</option>
+                         <option value="Uncategorized" class="text-white">Uncategorized</option>
+                         <option value="Contract Assets" class="text-white">Contract Assets</option>
+                         <option value="Depreciation And Amortisation" class="text-white">Depreciation And Amortisation</option>
+                         <option value="Merchandise" class="text-white">Merchandise</option>
+                         <option value="Raw Materials And Consumables" class="text-white">Raw Materials And Consumables</option>
+                         <option value="Transportation Expense" class="text-white">Transportation Expense</option>
+                         </optgroup>
+
+                         <optgroup label="Fixed Asset" class="text-dark">
+                          <option value="Furniture and Equipment" class="text-white">Furniture and Equipment</option>
+                          </optgroup>
+
+                          <optgroup label="Other Current Asset" class="text-dark">
+                            <option value="Employee Advance" class="text-white">Employee Advance</option>
+                            <option value="Advance Tax" class="text-white">Advance Tax</option>
+                            <option value="Prepaid Expenses" class="text-white">Prepaid Expenses</option>
+                            <option value="GST TCS Receivable" class="text-white">GST TCS Receivable</option>
+                            <option value="GST TDS Receivable" class="text-white">GST TDS Receivable</option>
+                            <option value="Input Tax Credits" class="text-white">Input Tax Credits </option>
+                            <option value="Input CGST" class="text-white">Input CGST</option>
+                            <option value="Reverse Charge Tax Input but not due" class="text-white">Reverse Charge Tax Input but not due</option>
+                            <option value="Sales to Customers (Cash)" class="text-white">Sales to Customers (Cash)</option>
+                            <option value="TDS Receivable" class="text-white">TDS Receivable</option>
+                            <option value="Input SGST" class="text-white">Input SGST</option>
+                            <option value="Input SGST" class="text-white">Input SGST</option>
+                            <option value="Input SGST" class="text-white">Input SGST</option>
+                            <option value="Input SGST" class="text-white">Input SGST</option>
+                            </optgroup>
+
+                            <optgroup label="Cost Of Goods Sold" class="text-dark">
+                              <option value="Labor" class="text-white">Labor</option>
+                              <option value="Materials" class="text-white">Materials</option>
+                              <option value="Subcontractor" class="text-white">Subcontractor</option>
+                              <option value="Cost of Goods Sold" class="text-white">Cost of Goods Sold</option>
+                              <option value="Job Costing" class="text-white">Job Costing</option>
+                            </optgroup>
+
+                            <optgroup label="Long Term Liability" class="text-dark">
+                              <option value="Mortgages" class="text-white">Mortgages</option>
+                              <option value="Construction Loans" class="text-white">Construction Loans</option>
+                            </optgroup>
+
+                            <optgroup label="Equity" class="text-dark">
+                              <option value="Drawings" class="text-white">Drawings</option>
+                              <option value="Opening Balance Offset" class="text-white">Opening Balance Offset</option>
+                              <option value="Owner's Equity" class="text-white">Owner's Equity</option>
+                              <option value="Retained Earnings" class="text-white">Retained Earnings</option>
+                              <option value="Capital Stock" class="text-white">Capital Stock</option>
+                              <option value="Distributions" class="text-white">Distributions</option>
+                              <option value="Dividends Paid" class="text-white">Dividends Paid</option>
+                              <option value="Investments" class="text-white">Investments</option>
+                            </optgroup>
+
+                            <optgroup label="Other Current Liability" class="text-dark">
+                              <option value="Employee Reimbursements" class="text-white">Employee Reimbursements</option>
+                              <option value="Opening Balance Adjustments" class="text-white">Opening Balance Adjustments</option>
+                              <option value="Unearned Revenue" class="text-white">Unearned Revenue</option>
+                              <option value="GST Payable" class="text-white">GST Payable</option>
+                              <option value="Output CGST" class="text-white">Output CGST</option>
+                              <option value="Output IGST" class="text-white">Output IGST</option>
+                              <option value="Output SGST" class="text-white">Output SGST</option>
+                              <option value="TDS Payable" class="text-white">TDS Payable</option>
+                            </optgroup>
+
+                            {% for a in accounts %}
+                            {% if a.account_type == 'Bank' %}
+                            <optgroup label="Bank" class="text-dark">
+                              <option value="{{ a.account_name }}" class="text-white">{{ a.account_name }}</option>
+                            </optgroup>
+                            {% endif %}
+                            {% endfor %}
+
+                            <optgroup label="Cash" class="text-dark">
+                              {% for a in accounts %}
+                                {% if a.account_type == 'Cash' %}
+                                  <option value="{{ a.account_name }}" class="text-white">{{ a.account_name }}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </optgroup>
+                       
+            
+                            <optgroup label="Credit Card" class="text-dark">
+                            {% for a in accounts %}
+                            {% if a.account_type == 'Credit Card' %}
+                              <option value="{{ a.account_name }}" class="text-white">{{ a.account_name }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            </optgroup>
+
+                           
+                            <optgroup label="Payment Clearing Account" class="text-dark">
+                              {% for a in accounts %}
+                              {% if a.account_type == 'Payment Clearing Account' %}
+                              <option value="{{ a.account_name }}" class="text-white">{{ a.account_name }}</option>
+                              {% endif %}
+                              {% endfor %}  
+                            </optgroup>
+                            
+
                     </select>
             </div>
 
             <div class="col-md-3 ">
-              <label class="col-form-label">Reason * </label>
+              <label class="col-form-label" for="validationCustom03">Reason * </label>
               <div class="d-flex">
               <select name="reason" class="form-control" required>
               <option selected disabled value="">Choose...</option>
-              
-              <option value=""></option>
-           
               <option value="Stock on fire">Stock on fire</option>
-              <option value="Stolen goods">Stolen goods</option>
-              <option value="Damaged goods">Damaged goods</option>
+              <option value="Damaged goods">High demand of goods</option>
               <option value="Stock Written off">Stock Written off</option>
               <option value="Inventory Revaluation">Inventory Revaluation</option>
              </select>
@@ -181,7 +296,7 @@
           <td>1</td>
           <td style="width: 20%;">
             
-              <select name="item1" class="form-control select2 selectt" id="selectss1" required>
+              <select name='item[]' class="form-control select2 selectt" id="selectss1" >
                 <option value="" selected disabled>Select Product</option>
                 {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -189,9 +304,9 @@
               </select>
             
           </td>
-          <td><input type="text" name="qty1" class="form-control" style="text-align:right;" id="qtyavail1"></td>
-          <td><input type="text" name="qty_hand1" class="form-control" style="text-align:right;" id="qty_hand1" required></td>
-          <td><input type="number" name="new_qty1" class="form-control qty" id="new_qty1"></td>
+          <td><input type="number" name="qtyav[]" class="form-control" style="text-align:right;" id="qtyavail1"></td>
+          <td><input type="number" name='newqty[]' class="form-control" style="text-align:right;" id="qty_hand1" ></td>
+          <td><input type="number" name='qtyadj[]' class="form-control qty" id="new_qty1"></td>
           <td style="border: none; " class="text-center">
             <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow1(this)">-</a>
           </td>
@@ -204,7 +319,7 @@
 
 <script>
   $(document).ready(function() {
-   $('.select2').select2();
+   $('#selectss1').select2();
 $(document).on('change', '#selectss1', function () {
                                    
     console.log('Select changed');
@@ -239,7 +354,16 @@ $(document).on('change', '#selectss1', function () {
 
 
 <script>
+
+    
+
+
+
+
  function addRow1() {
+
+
+
     var tableBody = document.getElementById("items-table-body1");
     var rowCount = tableBody.getElementsByTagName("tr").length;
 
@@ -247,11 +371,12 @@ $(document).on('change', '#selectss1', function () {
     newRow.setAttribute("class", "row" + rowCount);
     newRow.setAttribute("id", "row" + (rowCount + 1));
 
+
     newRow.innerHTML = `
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name="item${rowCount + 1}" class="form-control select2 selectt2" id="selectss2${rowCount + 1}" required>
+          <select name='item[]' class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -259,9 +384,9 @@ $(document).on('change', '#selectss1', function () {
           </select>
         </div>
       </td>
-      <td><input type="text" name="qtyavail2${rowCount + 1}" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
-      <td><input type="text" name="qty_hand2${rowCount + 1}" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
-      <td><input type="number" name="new_qty2${rowCount + 1}" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
+      <td><input type="number" name="qtyav[]" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
+      <td><input type="number" name="newqty[]" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
+      <td><input type="number" name="qtyadj[]" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
       <td style="border: none; " class="text-center">
         <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
       </td>
@@ -289,13 +414,14 @@ $(document).on('change', '#selectss1', function () {
         });
     });
 
-    $(document).on('input', '.qty_hand2', function() {
+    $(document).on('input', `#qty_hand2${rowCount + 1}`, function() {
         var qtyhnd = parseFloat(document.getElementById(`qty_hand2${rowCount + 1}`).value);
         var qtyavail = parseFloat(document.getElementById(`qtyavail2${rowCount + 1}`).value);
         var difference = qtyhnd - qtyavail;
         document.getElementById(`new_qty2${rowCount + 1}`).value = difference;
     });
 }
+
 
 </script>
 
@@ -327,7 +453,7 @@ $(document).on('change', '#selectss1', function () {
             <td>1</td>
             <td style="width: 20%;">
               
-                <select name="item1" id="selectss3"  class="form-control select2  " style="background-color: #243e54;" required>
+                <select name='item2[]' id="selectss3"  class="form-control select2  " style="background-color: #243e54;" >
                 <option value=" " selected disabled >Select Product</option>
                 {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -335,9 +461,9 @@ $(document).on('change', '#selectss1', function () {
                 </select>
              
             </td>
-            <td><input type="text"  id="valavail1" name="qty2"  class="form-control" style="text-align:right;"></td>
-            <td><input type="text" id="val_stck1" name="qty_hand1" class="form-control" style="text-align:right;" required></td>
-            <td><input type="number"  id="adj_val1" name="new_qty1" class="form-control qty"></td>
+            <td><input type="number"  id="valavail1" name='cuval[]' class="form-control" style="text-align:right;"></td>
+            <td><input type="number" id="val_stck1" name='chval[]' class="form-control" style="text-align:right;" ></td>
+            <td><input type="number"  id="adj_val1" name='adjval[]' class="form-control qty"></td>
             <td style="border: none; " class="text-center">
               <a role="button" class="btn btn-outline-secondary ml-1" onclick = "deleteRow2(this)">-</a>
             </td>
@@ -404,7 +530,7 @@ $(document).on('change', '#selectss1', function () {
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name="item${rowCount + 1}" class="form-control select2 " id="selectss4${rowCount + 1}" required>
+          <select name='item2[]' class="form-control select2 " id="selectss4${rowCount + 1}" required>
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -412,9 +538,9 @@ $(document).on('change', '#selectss1', function () {
           </select>
         </div>
       </td>
-      <td><input type="text" id="valavail2${rowCount + 1}" name="qty${rowCount + 1}" class="form-control " style="text-align:right;"></td>
-      <td><input type="text" id="val_stck2${rowCount + 1}" name="qty_hand${rowCount + 1}" class="form-control valinp" style="text-align:right;" required></td>
-      <td><input type="number" name="new_qty${rowCount + 1}" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
+      <td><input type="number" id="valavail2${rowCount + 1}" name="cuval[]" class="form-control " style="text-align:right;"></td>
+      <td><input type="number" id="val_stck2${rowCount + 1}" name="chval[]" class="form-control valinp" style="text-align:right;" ></td>
+      <td><input type="number" name="adjval[]" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
       <td style="border: none; " class="text-center">
         <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
       </td>
@@ -514,7 +640,7 @@ $(document).on('change', '#selectss1', function () {
   <div class="modal-dialog">
  
       <div class="modal-content" style="background-color: #213b52;">
-          <form action="" method="post" class="needs-validation"  validate>
+          <form action="" method="post" class="needs-validation"   >
               {% csrf_token %}
           <div class="modal-header">
               <h3 class="m-3">Add Reason</h3>

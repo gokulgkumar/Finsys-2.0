@@ -94,6 +94,8 @@ urlpatterns = [
 
 
     path('Fin_StockAdjustmentView',views.Fin_StockAdjustmentView,name='Fin_StockAdjustmentView'),
+    path('create_stockadjustment',views.create_stockadjustment,name='create_stockadjustment'),
+    path('StockAdjustmentOverview/<int:id>',views.StockAdjustmentOverview,name='StockAdjustmentOverview'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]

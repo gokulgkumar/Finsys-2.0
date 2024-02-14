@@ -668,3 +668,47 @@ class Holiday_History(models.Model):
     date = models.DateField(null=True,blank=True)
     action = models.CharField(max_length=255,null=True,blank=True)
 
+
+
+class Stock_Adjustment(models.Model):
+    company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
+    mode_of_adjustment = models.CharField(max_length=255,null=True,blank=True)
+    reference_no = models.CharField(max_length=255,null=True,blank=True)
+    adjusting_date = models.DateField(null=True,blank=True)
+    account = models.CharField(max_length=255,null=True,blank=True)
+    reason = models.CharField(max_length=255,null=True,blank=True)
+    description = models.CharField(max_length=255,null=True,blank=True)
+    attach_file = models.FileField(upload_to='file/stock_adj/',blank=True)
+    status=models.CharField(max_length=255,null=True,blank=True)
+    
+
+class Stock_Adjustment_Items(models.Model):
+    company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
+    item= models.ForeignKey(Fin_Items,on_delete=models.CASCADE,null=True,blank=True)
+    stock_adjustment=models.ForeignKey(Stock_Adjustment,on_delete=models.CASCADE,null=True,blank=True)
+    quantity_avail = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    quantity_inhand = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    quantity_adj = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    current_val = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    changed_val = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    adjusted_val = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    type=models.CharField(max_length=255,null=True,blank=True,default='None')
+
+class Stock_Adjustment_History(models.Model):
+    company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
+    item= models.ForeignKey(Fin_Items,on_delete=models.CASCADE,null=True,blank=True)
+    date = models.DateField(null=True,blank=True)
+    action = models.CharField(max_length=255,null=True,blank=True)
+
+    
+
+
+    
+    
+
+
+
+

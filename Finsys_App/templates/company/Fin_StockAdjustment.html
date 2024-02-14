@@ -10,6 +10,21 @@
         width: 400px;
     }
 
+    .tooltip-container .tooltip-text {
+    display: none;  /* Hide the text initially */
+    position: absolute;
+    background-color:#2f516f;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 15px;
+    padding: 5px;
+    z-index: 1;
+}
+
+
+.tooltip-container:hover .tooltip-text {
+    display: inline-block;  /* Display the text on hover */
+}
 
 </style>
 
@@ -76,7 +91,7 @@
                 <div class="table-responsive">
                 <table class="table " id="myTable">
                     <thead>
-                      <tr>
+                      <tr class="text-center">
                         <th scope="col">SL.No</th>
                         <th scope="col">Date</th>
                         <th scope="col">Reason</th>
@@ -86,34 +101,22 @@
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr onclick="window.location='';">
-                        <th scope="row">1</th>
-                        <td>2024-11-05</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>5</td>
-                        <td>@mdo</td>
-                        <td>Save</td>
+                    <tbody class="text-center">
+                        {% for i in stock_adj %}
+                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.stock_adjustment.id %}';" >
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ i.stock_adjustment.adjusting_date }}</td>
+                        <td>{{ i.stock_adjustment.reason }}</td>
+                        <td class="tooltip-container">
+                            <span class="tooltip-trigger"><i class="fa fa-edit"></i></span>
+                          <span class="tooltip-text">{{ i.stock_adjustment.description }}</a> </span>
+                        </td>
+                        <td>{{ i.stock_adjustment.reference_no }}</td>
+                        <td>{{ i.type }}</td>
+                        <td>{{ i.stock_adjustment.status }}</td>
                       </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>2024-01-01</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>8</td>
-                        <td>@mdo</td>
-                        <td>Draft</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>2024-02-21</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>6</td>
-                        <td>@mdo</td>
-                        <td>Draft</td>
-                      </tr>
+                      
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>

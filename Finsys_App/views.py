@@ -1737,6 +1737,10 @@ def create_stockadjustment(request):
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
         if request.method == 'POST':
+
+            print(request.POST)
+
+
             if data.User_Type == "Company":
                 com = Fin_Company_Details.objects.get(Login_Id = s_id)
                 mode_of_adj= request.POST['mode']
@@ -1842,12 +1846,6 @@ def create_stockadjustment(request):
                 return redirect('StockAdjustment')
                 
 
-
-
-
-
-
-
                 
             else:
                 com = Fin_Staff_Details.objects.get(Login_Id = s_id)
@@ -1877,14 +1875,80 @@ def StockAdjustmentOverview(request,id):
             terms = Fin_Payment_Terms.objects.all()
             noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
             n = len(noti)
-            stock=Stock_Adjustment_Items.objects.filter(id=id)
+            stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
+
             print(stock,'stock')
+            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
             
-            return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock':stock})
+            return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock':stock,'comment':comment})
         else:
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
             return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data})  
         
-           
 
+def del_stockadj(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+            terms = Fin_Payment_Terms.objects.all()
+            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+            n = len(noti)
+            stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
+            stock.delete()
+            print(stock,'stock')
+            
+            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock':stock})
+        else:
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
+            stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
+            stock.delete()
+            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'stock':stock})  
+
+        
+
+   
+
+def stockadj_comment(request,id):
+     if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            if request.method == 'POST':
+                stock = Stock_Adjustment.objects.get(id=id)
+                stock_item=Stock_Adjustment_Items.objects.get(stock_adjustment=id)
+                comment = request.POST['comment']
+                add_comment=Stock_Adjustment_Comment.objects.create(
+                    company=com,
+                    login_details=data,
+                    stock_adjustment=stock,
+                    stock_adjustmentitem=stock_item,
+                    comment=comment
+                )
+                add_comment.save()
+                
+                return redirect('StockAdjustmentOverview',id)
+            return render('StockAdjustmentOverview',id)
+        else:
+             if request.method == 'POST':
+                stock = Stock_Adjustment.objects.get(id=id)
+                print(stock,'stock')
+                stock_item=Stock_Adjustment_Items.objects.get(stock_adjustment=id)
+                print(stock_item,'stock_item')
+                comment = request.POST['comment']
+                add_comment=Stock_Adjustment_Comment.objects.create(
+                    company=com,
+                    login_details=data,
+                    stock_adjustment=stock,
+                    stock_adjustmentitem=stock_item,
+                    comment=comment
+                )
+                add_comment.save()
+                return redirect('StockAdjustmentOverview',id)
+             return render('StockAdjustmentOverview',id)
+          

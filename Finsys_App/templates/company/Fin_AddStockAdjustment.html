@@ -399,7 +399,7 @@ $(document).on('change', '#selectss1', function () {
     });
 
     $(document).on('change', `#selectss2${rowCount + 1}`, function () {
-        console.log('Select changed');
+        console.log('Select changed',`${rowCount + 1}`);
         var selectedValue = $(this).val();
         $.ajax({
             type: "GET",
@@ -421,6 +421,8 @@ $(document).on('change', '#selectss1', function () {
         document.getElementById(`new_qty2${rowCount + 1}`).value = difference;
     });
 }
+
+
 
 
 </script>

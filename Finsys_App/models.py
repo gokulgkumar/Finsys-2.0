@@ -682,6 +682,7 @@ class Stock_Adjustment(models.Model):
     attach_file = models.FileField(upload_to='file/stock_adj/',blank=True)
     status=models.CharField(max_length=255,null=True,blank=True)
     
+    
 
 class Stock_Adjustment_Items(models.Model):
     company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
@@ -705,6 +706,12 @@ class Stock_Adjustment_History(models.Model):
 
     
 
+class Stock_Adjustment_Comment(models.Model):
+    company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
+    stock_adjustment=models.ForeignKey(Stock_Adjustment,on_delete=models.CASCADE,null=True,blank=True)
+    stock_adjustmentitem=models.ForeignKey(Stock_Adjustment_Items,on_delete=models.CASCADE,null=True,blank=True)
+    comment = models.CharField(max_length=500,default='')
 
     
     

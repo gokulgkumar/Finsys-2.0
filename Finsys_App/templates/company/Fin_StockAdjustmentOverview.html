@@ -10,7 +10,7 @@
         width: 100%;
     }
 
-
+    
     .top .right1{
         width: 100%;
         display: flex;
@@ -51,6 +51,15 @@
   border: 1px solid rgba(0,0,0,.4);
 }
 
+@media only screen and (max-width: 600px) {
+    /* Styles for screens with a maximum width of 600px */
+    .rectangle{
+        width: 50%;
+        height: auto;
+    }
+}
+
+
 
 
 </style>
@@ -59,55 +68,94 @@
 {% for a in stock %}
     <div class="page-content">
         <div class="card radius-15 overview">
-            <div class="card-body">
+            
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
+                        <!-- <div class="d-flex justify-content-end mb-1 mx-2">
+                            <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;"></i></a>
+                          </div> -->
+
                         <div class="card" style="background-color: #2a4964;">
+
+                           
+
                             <div class="row no-gutters">
                                 <div class="col-md-12 mt-4 mb-4">
+                                    <div class="row">
+                                        <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 3vh; margin-bottom: 2vh; background-color: #213b52; border-radius: 1vh;">
+                                            <h6><a class="btn text-center p-2" style="margin-left: -5px;" onclick="overviewfun()">Overview</a></h6>
+                                        </div>
+                                        <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 1vh; margin-bottom: 1vh; border-radius: 1vh; text-align: center;">
+                                            <h6><a class="btn text-center" onclick="statementfun()">Statement</a></h6>
+                                        </div>
+
+
+                                        {% if a.stock_adjustment.status == "Draft" %}
+                                        <div class="col-md-1"></div>
+                                        {% else %}
+                                        <div class="col-md-1"></div>
+                                        {% endif %}
+                                        {% if a.stock_adjustment.status == "Draft" %}
+                                        <div class="col-md-2 " style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                            <a type="submit" class="btn btn-outline-light  w-50 text-grey pull-right" href="{% url 'convert_stockadj' a.stock_adjustment.id%}" 
+                                            onclick="return confirm('Are you sure you want to Approve this item?')">
+                                                <i class="fa fa-exchange" aria-hidden="true" style="font-size: 0.9rem;">&nbsp;Convert</i>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    <div class="col-md-1 " style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                        <a type="submit" class="btn btn-outline-light  w-100 text-grey pull-right" style="margin-right: -90px;" href="">
+                                            <i class="fa fa-edit" style="font-size:medium;"> &nbsp;Edit</i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                        <a type="submit" class="btn btn-outline-light  w-50 text-grey pull-right" href="{% url 'del_stockadj' a.stock_adjustment.id%}" 
+                                        onclick="return confirm('Are you sure you want to delete this item?')">
+                                            <i class="fa fa-trash-o" style="font-size: medium;">&nbsp;Delete</i>
+                                        </a>
+                                    </div>
+                                   
+                                    <div class="col-md-2 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;margin-right: 25px;">
+                                        <button type="submit" class="btn btn-outline-light w-75 text-grey ">
+                                            <i class="fa fa-history" aria-hidden="true" style="font-size: .9rem;padding: 0%;">&nbsp;Attach File</i>
+                                        </button>
+                                    </div>
+                                   
+                                    <div class="col-md-1 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;margin-right: 25px;">
+                                        <button type="submit" class="btn btn-outline-light w-100 text-grey pull-right">
+                                            <i class="fa fa-history" aria-hidden="true" style="font-size: 0.9rem;padding: 0%;">&nbsp;History</i>
+                                        </button>
+                                    </div>
+
+
+                                    </div>
                                     <center>
                                         <h5 class="card-title"><h3 style="text-transform:Uppercase;">STOCK ADJUSTMENT VIEW</h3></h5>
                                     </center>
-                                    <hr style="width: 97%; margin-left: 3vh; margin-right: 2vh;">
-                                </div> 
-                                <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 2svh; margin-bottom: 2vh; background-color: #213b52; border-radius: 1vh;">
+
+                                  
+
+
+                                    
+                                </div>
+
+
+<!--                                 
+                                <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 2vh; margin-bottom: 2vh; background-color: #213b52; border-radius: 1vh;">
                                     <h6><a class="btn" onclick="overviewfun()">Overview</a></h6>
                                 </div>
                                 <div class="col-md-1 text-center" style="margin-top: -2vh; margin-bottom: 1vh; border-radius: 1vh;text-align: center;" >
                                     <h6><a class="btn text-center" onclick="statementfun()">Statement</a></h6>
-                                </div>
-                                {% if a.stock_adjustment.status == "Draft" %}
-                                    <div class="col-md-6"></div>
-                                {% else %}
-                                    <div class="col-md-7"></div>
-                                {% endif %}
-                                <div class="col-md-1 mr-3 ml-5" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="">
-                                        <i class="fa fa-edit" style="font-size:medium;"> &nbsp;Edit</i>
-                                    </a>
-                                </div>
-                                <div class="col-md-1" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="" 
-                                    onclick="return confirm('Are you sure you want to delete this item?')">
-                                        <i class="fa fa-trash-o" style="font-size: medium;">&nbsp;Delete</i>
-                                    </a>
-                                </div>
-                                {% if a.status == "Draft" %}
-                                <div class="col-md-1 ml-3" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="" 
-                                    onclick="return confirm('Are you sure you want to Approve this item?')">
-                                        <i class="fa fa-exchange" aria-hidden="true" style="font-size: medium;"> Convert</i>
-                                    </a>
-                                </div>
-                                {% endif %}
+                                </div> -->
+                          
                             </div>
                         </div>
                     </div>
                 </div>
                 <form action="#" method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
-                        <div class="card" style="background-color: #2d4458;"><br>
-                          <div class="card" style="background-color:#162532; width: 75%; margin: auto;"><br>
+                        <!-- <div class="card" style="background-color: #2d4458;"><br> -->
+                          <!-- <div class="card" style="background-color:#162532; width: 75%; margin: auto;"><br> -->
                             <h2 style="text-align:center;color:white">STOCK ADJUSTMENT DETAILS</h2></span><br>
                              <br><br>
                             <div class="d-flex mb-4 "  style="margin-left: -95px;">
@@ -283,91 +331,121 @@
                                     </table>
                                 </div>
                             </div><br>
-                          </div><br>
+                          <!-- </div><br> -->
                             <div class="row mr-3">
                                 <div class="col-md-4" style="margin: auto;">
                                     <a href="" class="btn btn-outline-info rounded-pill w-100 text-light">
                                     BACK</a>
                                 </div>
                             </div><br>
-                        </div>
+                        <!-- </div> -->
                 </form>
-            </div>
+           
         </div>
 
 
 <!--################################################################   statement    ##################################################-->
 
         <div class="card radius-15 statement" style="display: none;">
-            <div class="card-body">
+            
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
                         <div class="card" style="background-color: #2a4964;">
                             <div class="row no-gutters">
                                 <div class="col-md-12 mt-4 mb-4">
-                                    <center>
-                                        <h5 class="card-title"><h3 style="text-transform:Uppercase;">STOCK ADJUSTMENT VIEW</h3></h5>
-                                    </center>
-                                    <hr style="width: 97%; margin-left: 3vh; margin-right: 2vh;">
-                                </div> 
-                                <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 2vh; margin-bottom: 2vh; border-radius: 1vh;">
-                                    <h6><a class="btn" onclick="overviewfun()">Overview</a></h6>
-                                </div>
-                                <div class="col-md-1 text-center" id ="state" style="margin-top: -2vh; margin-bottom: 2vh; border-radius: 1vh; background-color: #213b52;" >
-                                    <h6><a class="btn" onclick="statementfun()">Statement</a></h6>
-                                </div>
-                                {% if a.status == "Draft" %}
+                                    <div class="row">
+                                        <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 2vh; margin-bottom: 2vh; border-radius: 1vh;">
+                                            <h6><a class="btn" onclick="overviewfun()">Overview</a></h6>
+                                        </div>
+                                        <div class="col-md-1 text-center" id ="state" style="margin-top: -2vh; margin-bottom: 2vh; border-radius: 1vh; background-color: #213b52;" >
+                                            <h6><a class="btn text-center p-2" style="margin-left: -5px;" onclick="statementfun()">Statement</a></h6>
+                                        </div>
+
+
+
+                                {% if a.stock_adjustment.status == "Draft" %}
                                     <div class="col-md-3"></div>
                                 {% else %}
-                                    <div class="col-md-4"></div>
+                                    <div class="col-md-3"></div>
+                                    
                                 {% endif %}
-                                <div class="col-md-1 mr-2 ml-4" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="">
+                                
+                                <div class="col-md-1  mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%; ">
+                                    <a type="submit" class="btn btn-outline-light  w-100 text-grey pull-right" href="">
                                         <i class="fa fa-edit" style="font-size:medium;"> &nbsp;Edit</i>
                                     </a>
                                 </div>
-                                <div class="col-md-1 mr-2" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="{% url 'del_stockadj' a.stock_adjustment.id%}"
+                                <div class="col-md-1 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                    <a type="submit" class="btn btn-outline-light w-100 text-grey pull-right" href="{% url 'del_stockadj' a.stock_adjustment.id%}"
                                     onclick="return confirm('Are you sure you want to delete this item?')">
                                         <i class="fa fa-trash-o" style="font-size: medium;">&nbsp;Delete</i>
                                     </a>
                                 </div>
-                                <div class="col-md-1 mr-2" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <button type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" onclick="printSpecificArea()">
+                                <div class="col-md-1 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                    <button type="submit" class="btn btn-outline-light w-100 text-grey pull-right" onclick="printSpecificArea()">
                                         <i class="fa fa-print"style="font-size: medium;">&nbsp;Print</i>
                                     </button>
                                 </div>
-                                <div class="col-md-1 mr-2" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <button type="submit"  class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" onclick="exportToPDF()">
+                                <div class="col-md-1 mx-1 " style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                    <button type="submit"  class="btn btn-outline-light w-100 text-grey pull-right" onclick="exportToPDF()">
                                         <i class="fa fa-file-pdf-o"style="font-size: medium;">&nbsp;PDF</i>
                                     </button>
                                 </div>
-                                <div class="col-md-1" style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <button type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" data-target="#newcomment" data-toggle="modal">
-                                        <i class="fa fa-comment" aria-hidden="true" style="font-size: medium;">&nbsp;Comment</i>
+                                <div class="col-md-1 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;">
+                                    <button type="submit" class="btn btn-outline-light w-100 text-center text-grey pull-right" data-target="#newcomment" data-toggle="modal">
+                                        <i class="fa fa-comment text-center" aria-hidden="true" style="font-size: 0.9rem;;margin-left: -5px;padding: 0%;">&nbsp;Comment</i>
+                                    </button>
+                                </div>
+                                <div class="col-md-1 mx-1" style="margin-top: -2vh; margin-bottom: 2vh;padding: 0%;margin-right: 25px;">
+                                    <button type="submit" class="btn btn-outline-light w-100 text-grey pull-right">
+                                        <i class="fa fa-history" aria-hidden="true" style="font-size: 0.9rem;padding: 0%;">&nbsp;History</i>
                                     </button>
                                 </div>
 
-                                {% if a.adjustment_.stock_adjustment == "Draft" %}
-                                <div class="col-md-1 ml-2 " style="margin-top: -2vh; margin-bottom: 2vh;">
-                                    <a type="submit" class="btn btn-outline-info rounded-pill w-100 text-grey pull-left" href="" 
+                                <!-- {% if a.stock_adjustment.status == "Draft" %}
+                                <div class="col-md-1 ml-2 " style="margin-top: -2vh; margin-bottom: 2vh; ">
+                                    <a type="submit" class="btn btn-outline-info  w-100 text-grey pull-left" href="" 
                                     onclick="return confirm('Are you sure you want to Approve this item?')">
                                         <i class="fa fa-exchange" aria-hidden="true" style="font-size: medium;"> Convert</i>
                                     </a>
                                 </div>
-                                {% endif %}
+                                {% endif %} -->
+
+                            
+                                    </div>
+
+                                    
+
+
+
+
+                                    <center>
+                                        <h5 class="card-title"><h3 style="text-transform:Uppercase;">STOCK ADJUSTMENT VIEW</h3></h5>
+                                    </center>
+
+                                    
+
+                                
+                                </div>
+                                <!-- <div class="col-md-1 text-center" style="margin-top: -2vh; margin-left: 2vh; margin-bottom: 2vh; border-radius: 1vh;">
+                                    <h6><a class="btn" onclick="overviewfun()">Overview</a></h6>
+                                </div>
+                                <div class="col-md-1 text-center" id ="state" style="margin-top: -2vh; margin-bottom: 2vh; border-radius: 1vh; background-color: #213b52;" >
+                                    <h6><a class="btn" onclick="statementfun()">Statement</a></h6>
+                                </div> -->
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-                        
+               
                 <div class="card radius-15 p-5 print-content" id="print-content" style="margin-bottom: 50px;">
                     <div class="card-body">
                         <div class="row" >
                             <div class="col-md-12">        
                                 <div id="GFG" ><br>
                                     <center>
-                                        <div class="rectangle" style="color:black;  background-color: white;width: 800px;height:900px;border: 3px white;">
+                                        <div class="rectangle" style="color:black;  background-color: white;width: 800px;height:900px;border: 3px white;" id="ggh">
                                             <div class="pcs-template-body" id="ggg" style="text-align:left;">
                                                 <!-- {% if a.status == 'Draft' %}
                                                     <div class="ribbon-inner ribbon-open">DRAFT</div><br><br>
@@ -376,7 +454,7 @@
                                                 {% endif %} -->
                                              
                                                   
-                                                <div class="col-sm-12" style="background-image: linear-gradient(#1b83e8, black); color: white;margin-top: -50px;">
+                                                <div class="col-sm-12" style="background-image: linear-gradient(#1b83e8, black); color: white;">
                                                     <p style="font-size: 4vh; text-align: center;">STOCK ADJUSTMENT</p>
                                                     <p style=" text-align: center;"> {{a.company.Company_name}} <br>
                                                         {{ a.company.City }}, <br>
@@ -387,48 +465,13 @@
                                                     </p>
                                                 </div>
                                       
-                                     
-                                            
-                                                <!-- <section class="store-user">
-                                                    <div class="col-12">
-                                                        <div class="row bb pb-2 mt-3">
-                                                          
-                                                            <div class="col-4"></div>
-                                                            <div class="col-4 pr-0">
-                                                                <label class="text-white w-100 p-1 text-center"><b></b></label>
-                                                                <h5 class="text-secondary" style="font-weight: bold;">{{cmp1.cname }}</h5>
-                                                                <p class="address" style="font-weight: bold;color: #000;">{{cmp1.caddress}} </p>
-                                                                <p> </p>
-                                                                <p> </p>
-                                                                <p> </p>
-                                                                <p></p>
-                                                            </div>
-                                                            <div class="col-4 pl-0 text-right" style="margin-top: -90px;">
-                                                                <label class="text-white p-2 " style="background-color: #268ddd;"><b>COMPANY ADDRESS</b></label>
-                                                                <p class="address " style="font-weight: bold;color: #000;margin-left: 10px;">
-                                                                    {{ a.company.Company_name }},
-                                                                    <br>
-                                                                    {{ a.company.City }},
-                                                                    <br>
-                                                                    {{ a.company.State }},
-                                                                    <br>
-                                                                    {{ a.company.Email }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </section> -->
                                                 <br><br>
 
 
                                                 <div style="display:table;width:100%;">
                                                     <div  class=" pcs-journal-header-section">
                                                         <div></div>
-                                                        <!-- <span >
-                                                            <h2 style="text-align:center;color:black">STOCK ADJUSTMENT</h2></span>
-                                                            <p style="border-bottom: 1px solid grey; margin-left: auto; margin-right: auto; margin-top: 2vh; width: 75%;"></p>
-                                                            <br>
-                                                        </span> -->
+                                          
                                                     </div>
                                                 </div>
 
@@ -628,7 +671,7 @@
                                     </center>
                                 </div>
                                 <div class="row mr-3">
-                                    <div class="col-md-4" style="margin: auto;">
+                                    <div class="col-md-4" style="margin: auto;" id="btn-id">
                                         <a href="" class="btn btn-outline-info rounded-pill w-100 text-light">
                                         BACK</a>
                                     </div>
@@ -637,7 +680,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </div>
     </div>
 
@@ -675,7 +718,7 @@
                                 <tr class="text-center">
                                     <th scope="row">{{ forloop.counter }}</td> <!-- Added a counter for Sl No. -->
                                     <td>{{ i.comment }}</td>
-                                    <td>Delete button goes here</td> <!-- Add the delete button code -->
+                                    <td><a href="{% url 'del_stockcmnt' i.id%}"><i class="fa fa-trash-o text-danger"></i></a></td> <!-- Add the delete button code -->
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -696,6 +739,8 @@
 <script>
     function exportToPDF(){
         var content = document.getElementById("ggg");
+        var btn = document.getElementById("btn-id");
+        btn.style.display = "none";
         html2pdf()
         .from(content)
         .save('Stock-Adjustment.pdf')
@@ -713,21 +758,25 @@
         $(".statement").show()
     }
 </script>
-
 <script>
     function printSpecificArea() {
-        var printContents = document.getElementById("GFG").innerHTML;
+        var printContents = document.getElementById("print-content").innerHTML;
         var originalContents = document.body.innerHTML;
         
         document.body.innerHTML = printContents;
 
-        // Add some CSS styling to move the content to the left
+        // Add some CSS styling for printing
         var style = document.createElement('style');
         style.innerHTML = `
             @media print {
-                #GFG {
+                body {
+                    margin: 0!important;
+                    padding: 0!important;
+                }
+                #print-content {
                     margin-left: 0;
-                    padding-left: 10px; /* You can adjust the padding as needed */
+                    padding-left: 10px;
+                    margin-top: 30px;
                 }
             }
         `;
@@ -738,5 +787,6 @@
         document.body.innerHTML = originalContents;
     }
 </script>
+
 
 {% endblock %}

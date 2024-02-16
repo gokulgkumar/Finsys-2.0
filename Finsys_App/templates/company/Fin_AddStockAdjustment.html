@@ -17,35 +17,57 @@
         width: 350px;
     }
 
-
+  
     .form-control.select2,
-    .select2-container--default .select2-selection--single {
-        background-color: #41586bff !important;
-        color: black !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: white !important;
-    }
-    .select2-container--default .select2-search--dropdown .select2-search__field {
-        background-color: black !important;
-        color: rgb(8, 8, 8) !important;
-    }
+  .select2-container--default .select2-selection--single {
+      background-color: #41586bff !important;
+      color: black !important;
+  }
 
-    #quantityDiv {
-            display: none;
-        }
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+      color: white !important;
+  }
 
-      .select2-selection__rendered {
-    line-height: 31px !important;
-}
-.select2-container .select2-selection--single {
-    height: 38px !important;
-    font-size: 16px;
-    
-}
-.select2-selection__arrow {
-    height: 44px !important;
-}
+  .select2-container--default .select2-search--dropdown .select2-search__field {
+      background-color: black !important;
+      color: white !important;
+  }
+
+  .select2-container--default .select2-results__option {
+      background-color: black !important;
+      color: white !important;
+  }
+
+  .select2-container--default .select2-results__option:hover {
+      background-color: #274a81 !important;
+      color: white !important;
+  }
+
+  .select2-container--default .select2-results__option[aria-disabled=true] {
+      background-color: black !important;
+  }
+
+  .select2-container--default .select2-results__option--highlighted[aria-selected] {
+      background-color: black !important;
+      color: white;
+  }
+
+  #quantityDiv {
+      display: none;
+  }
+
+  .select2-selection__rendered {
+      line-height: 31px !important;
+  }
+
+  .select2-container .select2-selection--single {
+      height: 38px !important;
+      font-size: 16px;
+  }
+
+  .select2-selection__arrow {
+      height: 44px !important;
+  }
      
         
 </style>
@@ -247,6 +269,7 @@
 
             <div class="col-md-3 ">
               <label class="col-form-label" for="validationCustom03">Reason * </label>
+              
               <div class="d-flex">
               <select name="reason" class="form-control" required>
               <option selected disabled value="">Choose...</option>
@@ -254,6 +277,9 @@
               <option value="Damaged goods">High demand of goods</option>
               <option value="Stock Written off">Stock Written off</option>
               <option value="Inventory Revaluation">Inventory Revaluation</option>
+              {% for j in reason %}
+                <option value="{{ j.reason }}">{{ j.reason }}</option>
+              {% endfor %}
              </select>
 
        <a href="#">
@@ -296,17 +322,17 @@
           <td>1</td>
           <td style="width: 20%;">
             
-              <select name='item[]' class="form-control select2 selectt" id="selectss1" >
-                <option value="" selected disabled>Select Product</option>
+              <select name='item1' class="form-control select2 selectt" id="selectss1" style="color: black;">
+                <option value="" selected disabled >Select Product</option>
                 {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
+                <option value="{{ i.name }}" class="text-dark" style="color: black !important;">{{ i.name }}</option>
                 {% endfor  %}
               </select>
             
           </td>
-          <td><input type="number" name="qtyav[]" class="form-control" style="text-align:right;" id="qtyavail1"></td>
-          <td><input type="number" name='newqty[]' class="form-control" style="text-align:right;" id="qty_hand1" ></td>
-          <td><input type="number" name='qtyadj[]' class="form-control qty" id="new_qty1"></td>
+          <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail1"></td>
+          <td><input type="number" name='newqty1' class="form-control" style="text-align:right;" id="qty_hand1" ></td>
+          <td><input type="number" name='qtyadj1' class="form-control qty" id="new_qty1"></td>
           <td style="border: none; " class="text-center">
             <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow1(this)">-</a>
           </td>
@@ -376,7 +402,7 @@ $(document).on('change', '#selectss1', function () {
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name='item[]' class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
+          <select name='item1' class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -384,9 +410,9 @@ $(document).on('change', '#selectss1', function () {
           </select>
         </div>
       </td>
-      <td><input type="number" name="qtyav[]" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
-      <td><input type="number" name="newqty[]" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
-      <td><input type="number" name="qtyadj[]" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
+      <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
+      <td><input type="number" name="newqty1" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
+      <td><input type="number" name="qtyadj1" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
       <td style="border: none; " class="text-center">
         <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
       </td>
@@ -455,7 +481,7 @@ $(document).on('change', '#selectss1', function () {
             <td>1</td>
             <td style="width: 20%;">
               
-                <select name='item2[]' id="selectss3"  class="form-control select2  " style="background-color: #243e54;" >
+                <select name='item2' id="selectss3"  class="form-control select2  " style="background-color: #243e54;" >
                 <option value=" " selected disabled >Select Product</option>
                 {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -463,9 +489,9 @@ $(document).on('change', '#selectss1', function () {
                 </select>
              
             </td>
-            <td><input type="number"  id="valavail1" name='cuval[]' class="form-control" style="text-align:right;"></td>
-            <td><input type="number" id="val_stck1" name='chval[]' class="form-control" style="text-align:right;" ></td>
-            <td><input type="number"  id="adj_val1" name='adjval[]' class="form-control qty"></td>
+            <td><input type="number"  id="valavail1" name='cuval2' class="form-control" style="text-align:right;"></td>
+            <td><input type="number" id="val_stck1" name='chval2' class="form-control" style="text-align:right;" ></td>
+            <td><input type="number"  id="adj_val1" name='adjval2' class="form-control qty"></td>
             <td style="border: none; " class="text-center">
               <a role="button" class="btn btn-outline-secondary ml-1" onclick = "deleteRow2(this)">-</a>
             </td>
@@ -532,7 +558,7 @@ $(document).on('change', '#selectss1', function () {
       <td>${rowCount + 1}</td>
       <td>
         <div>
-          <select name='item2[]' class="form-control select2 " id="selectss4${rowCount + 1}" required>
+          <select name='item2' class="form-control select2 " id="selectss4${rowCount + 1}" required>
             <option value=" " selected disabled>Select Product</option>
             {% for i in items %}
                 <option value="{{ i.name }}">{{ i.name }}</option>
@@ -540,9 +566,9 @@ $(document).on('change', '#selectss1', function () {
           </select>
         </div>
       </td>
-      <td><input type="number" id="valavail2${rowCount + 1}" name="cuval[]" class="form-control " style="text-align:right;"></td>
-      <td><input type="number" id="val_stck2${rowCount + 1}" name="chval[]" class="form-control valinp" style="text-align:right;" ></td>
-      <td><input type="number" name="adjval[]" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
+      <td><input type="number" id="valavail2${rowCount + 1}" name="cuval2" class="form-control " style="text-align:right;"></td>
+      <td><input type="number" id="val_stck2${rowCount + 1}" name="chval2" class="form-control valinp" style="text-align:right;" ></td>
+      <td><input type="number" name="adjval2" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
       <td style="border: none; " class="text-center">
         <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
       </td>
@@ -642,7 +668,7 @@ $(document).on('change', '#selectss1', function () {
   <div class="modal-dialog">
  
       <div class="modal-content" style="background-color: #213b52;">
-          <form action="" method="post" class="needs-validation"   >
+          <form action="{% url 'add_reason' %}" method="post" class="needs-validation"   >
               {% csrf_token %}
           <div class="modal-header">
               <h3 class="m-3">Add Reason</h3>
@@ -656,7 +682,7 @@ $(document).on('change', '#selectss1', function () {
               <div>
                   <div class="form-check">
                       <label class="form-check-label">Reason *</label> 
-                      <input type="text" class="form-control" name="reason1">
+                      <input type="text" class="form-control" name="reason">
                      
                   </div>
 

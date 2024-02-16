@@ -89,6 +89,7 @@ urlpatterns = [
     path('AddStockAdjustment',views.AddStockAdjustment,name='AddStockAdjustment'),
     path('getitemdata1',views.getitemdata1,name='getitemdata1'),
     path('getitemdata2',views.getitemdata2,name='getitemdata2'),
+    path('add_reason',views.add_reason,name='add_reason'),
 
 
 
@@ -98,6 +99,8 @@ urlpatterns = [
     path('StockAdjustmentOverview/<int:id>',views.StockAdjustmentOverview,name='StockAdjustmentOverview'),
     path('del_stockadj/<int:id>',views.del_stockadj,name='del_stockadj'),
     path('stockadj_comment/<int:id>',views.stockadj_comment,name='stockadj_comment'),
+    path('del_stockcmnt/<int:id>',views.del_stockcmnt,name='del_stockcmnt'),
+    path('convert_stockadj/<int:id>',views.convert_stockadj,name='convert_stockadj'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]

@@ -5,12 +5,13 @@
 
 <style>
 
-.form-control.searchs {
-        width: 400px!important;
+.itm {
+
+        width: 300px!important;
     }
-    .form-control.selectt {
-        width: 350px;
-        font-size: 20px;
+    .inneritm{
+        width: 300px!important;
+       
     }
 
     .form-control.selectss3 {
@@ -303,22 +304,9 @@
         </div>
 
         <br>
-<!----------------------------------------------------------- Quantity Adjustment ------------------------------------------------------------->
-<div class="row" id="quantityDiv">
-  <div class="col-md-12 table-responsive-md mt-3">
-    <table class="table table-bordered table-hover mt-3" id="item_table1">
-      <thead>
-        <tr>
-          <th class="text-center">Sl No.</th>
-          <th class="text-center">Item details</th>
-          <th class="text-center">Quantity Available</th>
-          <th class="text-center">New Quantity on hand</th>
-          <th class="text-center">Quantity Adjusted</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="items-table-body1">
-        <tr class="row0" id="row1">
+
+
+              <!--  <tr class="row0" id="row1">
           <td>1</td>
           <td style="width: 20%;">
             
@@ -336,14 +324,246 @@
           <td style="border: none; " class="text-center">
             <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow1(this)">-</a>
           </td>
+        </tr>-->
+
+           <!-- <a role="button" class="btn btn-outline-secondary ml-1" onclick="addRow1()">+</a> -->
+
+
+
+
+
+
+
+
+<!----------------------------------------------------------- Quantity Adjustment ------------------------------------------------------------->
+<div class="row" id="quantityDiv">
+  <div class="col-md-12 table-responsive-md mt-3">
+    <table class="table table-bordered table-hover mt-3" id="item_table">
+      <thead>
+        <tr>
+          <th class="text-center">Sl No.</th>
+          <th class="text-center">Item details</th>
+          <th class="text-center">Quantity Available</th>
+          <th class="text-center">New Quantity on hand</th>
+          <th class="text-center">Quantity Adjusted</th>
+          <th></th>
         </tr>
+      </thead>
+      <tbody id="item_table">
+ 
+        <tr id='row1'>
+          <td class="bg-transparent text-white rownum" id="" value=""></td>
+          <td>
+              <div class='form-group mt-3'><select class='  item_select  text-white itm select2 mt-1' name='item[]' id='selectss1' onchange="selectonchange()" >
+
+                      <option id="selectitem" hidden >Select Items </option>
+                      {% for i in items %}
+                      <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
+                      {% endfor %}
+
+                  </select>
+              </div>
+          </td>
+          <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='' name="qtyav[]" id="quant">
+          </td>
+          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value=''>
+          </td>
+          
+          <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value=''>
+          </td>
+          <td class='text-center'>
+              <button type='button' id='del_btn1' class='btn btn-outline-secondary  delete-row'>-</button> 
+          </td>
+      </tr>
       </tbody>
-    </table>
-    <a role="button" class="btn btn-outline-secondary ml-1" onclick="addRow1()">+</a>
+    </table> 
+    <button type="button" class="btn btn-outline-secondary tab1" id="add-row" title="add row">+</button>
+
   </div>
 </div>
 
+
+
 <script>
+  // FIRST ROW
+  let rowNum = 1;
+  const rownumber = document.querySelector('.rownum');
+  rownumber.innerHTML = rowNum;
+  
+  document.addEventListener('DOMContentLoaded', function() {
+      const itemSelect = document.querySelector('.item_select');
+      const qtyInput = document.querySelector('.qty');
+      const onhandqtyInp = document.getElementById('onhandqty');
+      const diffInput = document.getElementById('diff');
+
+      console.log(itemSelect,'itemSelect')
+  
+      itemSelect.addEventListener('change', function() {
+          const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+          const stock = selectedOption.getAttribute('data-stock');
+          qtyInput.value = stock;
+          updateDifference();
+      });
+  
+      onhandqtyInp.addEventListener('input', function() {
+        updateDifference();
+      });
+  
+      function updateDifference() {
+          const rateValue = parseFloat(onhandqtyInp.value) || 0;
+          const qtyValue = parseFloat(qtyInput.value) || 0;
+          const difference = rateValue - qtyValue;
+          diffInput.value = difference.toFixed(2);
+      }
+  });
+
+  
+// quantity
+function selectonchange() {
+  const itemSelect = document.querySelector('.item_select');
+  const qtyInput = document.querySelector('.qty');
+  const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+  const selectedValue = selectedOption.value;
+
+  console.log('selectedValue', selectedValue);
+
+  $.ajax({
+    type: "GET",
+    url: "{% url 'getitemdata1' %}",
+    data: {
+      id: selectedValue,
+
+  
+    },
+    success: function (response) {
+      var stck = response.stock;
+      document.getElementById('quant').value = stck;
+    },
+    error: function (error) {
+      console.error('Ajax request failed:', error);
+    }
+  });
+}
+
+
+
+
+
+
+
+
+  
+  // NEW ROW
+  document.addEventListener('DOMContentLoaded', function() {
+
+      const addRowButton = document.getElementById('add-row');
+      const tableBody = document.querySelector('#item_table tbody');
+  
+      addRowButton.addEventListener('click', function() {
+          const newRow = document.createElement('tr');
+          rowNum++;
+  
+          newRow.innerHTML = `
+              <td class="bg-transparent text-light">${rowNum}</td>
+              <td>
+                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm' name='item[]' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
+                          <option class='text-white'hidden selected>Select Items</option>
+                          {% for i in items %}
+                          <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+              </td>
+              <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qty2${rowNum}'  name="qtyav[]"></td>
+              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right rate'  name="newqty[]" value=''></td>
+              <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control  border-1  text-light text-right discount' name="qtyadj[]" value=''></td>
+              <td class='text-center'>
+                  <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
+              </td>
+          `;
+  
+          tableBody.appendChild(newRow);
+
+
+          $(`#item${rowNum}`).select2();
+
+  
+  
+       
+  
+          
+          const itemSelectNewRow = document.querySelector(`#item${rowNum}`);
+          const qtyInputNewRow = document.querySelector(`.qty2${rowNum}`);
+          const rateInputNewRow = document.querySelector(`#rates${rowNum}`);
+          const diffInputNewRow = document.querySelector(`#diff${rowNum}`);
+  
+          itemSelectNewRow.addEventListener('change', function() {
+              const selectedOption = itemSelectNewRow.options[itemSelectNewRow.selectedIndex];
+
+              const selectedValue = selectedOption.value;
+              qtyInputNewRow.value=selectedValue
+
+              updateDiscount(diffInputNewRow, rateInputNewRow, qtyInputNewRow);
+          });
+  
+          rateInputNewRow.addEventListener('input', function() {
+              updateDiscount(diffInputNewRow, rateInputNewRow, qtyInputNewRow);
+          });
+  
+          const deleteButton = newRow.querySelector('.delete-row');
+          deleteButton.addEventListener('click', function() {
+              newRow.remove();
+              rowNum--;
+          });
+      });
+  });
+  
+
+function selectonchange2(no){
+  const itemSelect = document.querySelector(`.item_select${no}`);
+    const qtyInput = document.querySelector(`.qty2${no}`); 
+    const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+    const selectedValue = selectedOption.value;
+
+     $.ajax({
+    type: "GET",
+    url: "{% url 'getitemdata1' %}",
+    data: {
+      id: selectedValue,
+
+  
+    },
+    success: function (response) {
+      var stck = response.stock;
+      document.getElementById(`qty2${rowNum}`).value = stck;
+    },
+    error: function (error) {
+      console.error('err', error);
+    }
+  });
+
+
+}
+  
+  function updateDiscount(diffInput, rateInput, qtyInput) {
+      const rateValue = parseFloat(rateInput.value) || 0;
+      const qtyValue = parseFloat(qtyInput.value) || 0;
+      const difference = rateValue - qtyValue;
+      diffInput.value = difference.toFixed(2);
+  }
+  
+
+
+  </script> 
+     
+  
+
+
+
+
+
+
+<!-- <script>
   $(document).ready(function() {
    $('#selectss1').select2();
 $(document).on('change', '#selectss1', function () {
@@ -367,7 +587,7 @@ $(document).on('change', '#selectss1', function () {
                   });
 
               });
-</script>
+</script> -->
 
 <script type="text/javascript">
   $(document).on('input', '#qty_hand1', function() {
@@ -379,7 +599,7 @@ $(document).on('change', '#selectss1', function () {
 </script>
 
 
-<script>
+<!-- <script>
 
     
 
@@ -451,7 +671,7 @@ $(document).on('change', '#selectss1', function () {
 
 
 
-</script>
+</script> -->
 
 
 

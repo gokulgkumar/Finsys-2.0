@@ -1789,6 +1789,9 @@ def create_stockadjustment(request):
 
                     for item, qty_avail, qty_onhand, qtyadjusted in zip(items, qty_available, qty_on_hand, qty_adjusted):
                        item1 = Fin_Items.objects.get(name=item,Company=com)
+                       item1.current_stock += int(qty_onhand)
+                       print(item1.current_stock,'item1.current_stock')
+                       item1.save()
                        stock_adjustment_items = Stock_Adjustment_Items.objects.create(
                            item=item1,
                            quantity_avail=qty_avail,

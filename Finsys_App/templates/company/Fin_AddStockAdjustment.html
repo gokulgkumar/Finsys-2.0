@@ -21,6 +21,14 @@
     .item_select2{
       width: 300px!important;
     }
+    .item_selectss2{
+      width: 300px!important;
+    }
+
+    .inneritm2{
+      width: 300px!important;
+
+    }
 
   
     .form-control.select2,
@@ -100,6 +108,7 @@
     <div class="d-flex justify-content-end mb-1">
       <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
+    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data">
     <div class="page-content" style="margin-top:-2rem ;">
       
         <div class="card radius-15">
@@ -108,14 +117,12 @@
 
                 </div>
 
+
+                
                 <div class="row mt-3">
                   <div class="col-md-3">
-
-                    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data" id="form">
                       {% csrf_token %}
-                    <label for=""
-
-                    style="color: white;">Mode of Adjustment</label>
+                    <label for="" style="color: white;">Mode of Adjustment</label>
 
                     <select name="mode" id="adjust" class="form-control" onchange="toggleDiv()" required>
                        <option selected disabled value=""selected hidden>Choose...</option>
@@ -276,14 +283,10 @@
               <label class="col-form-label" for="validationCustom03">Reason * </label>
               
               <div class="d-flex">
-              <select name="reason" class="form-control" required>
+              <select name="reason" class="form-control" id="rsns" required>
               <option selected disabled value="">Choose...</option>
-              <option value="Stock on fire">Stock on fire</option>
-              <option value="Damaged goods">High demand of goods</option>
-              <option value="Stock Written off">Stock Written off</option>
-              <option value="Inventory Revaluation">Inventory Revaluation</option>
-              {% for j in reason %}
-                <option value="{{ j.reason }}">{{ j.reason }}</option>
+              {% for i in reason %}
+              <option value="{{ i.reason }}">{{ i.reason }}</option>
               {% endfor %}
              </select>
 
@@ -359,9 +362,9 @@
           <td class="bg-transparent text-white rownum" id="" value=""></td>
           <td>
               <div class='form-group mt-3'>
-                <select class='  item_select  text-white itm select2 mt-1' name='item[]' id='selectss1' onchange="selectonchange()" >
+                <select class='  item_select  text-white itm select2 mt-1' name='item1' id='selectss1' onchange="selectonchange()" >
 
-                      <option id="selectitem" disabled hidden >Select Items </option>
+                      <option id="selectitem" disabled hidden selected >Select Items </option>
                       {% for i in items %}
                       <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
                       {% endfor %}
@@ -464,7 +467,7 @@ function selectonchange() {
           newRow.innerHTML = `
               <td class="bg-transparent text-light">${rowNum}</td>
               <td>
-                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm' name='item[]' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
+                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
                           <option class='text-white'hidden disabled selected>Select Items</option>
                           {% for i in items %}
                           <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
@@ -686,7 +689,8 @@ $(document).on('change', '#selectss1', function () {
             <table class="table  text-black table-bordered tab2" id="item_table2" style="width: 100%;">
             <thead>
                 <tr class="text-center">
-                    <th class="" style="font-weight: bold;;" colspan="2" >Item Details <a href="" data-toggle="modal" data-target="#newitem"></a></th>
+                  <th class="" style="font-weight: bold;;">Sl No.</th>
+                    <th class="" style="font-weight: bold;;"  >Item Details <a href="" data-toggle="modal" data-target="#newitem"></a></th>
                     <th class="" style="font-weight: bold;;">Current Value</th>
                     <th class="" style="font-weight: bold;;">Changed Value</th>
                     <th class="" style="font-weight: bold;;">Adjusted Value</th>
@@ -697,9 +701,9 @@ $(document).on('change', '#selectss1', function () {
                 <tr id='row2' class="">
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
-                        <div class='form-group'>
+                        <div class='form-group mt-3'>
                           <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left' name='item2[]' id='item_selectss2' onchange="valuechange()">
-                                <option class='text-light text-left' disabled hidden>Select Items</option>
+                                <option class='text-light text-left' disabled hidden selected>Select Items</option>
                                 {% for i in items %}
                               
                                 <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" data-rate="{{i.rate}}">{{i.name}}</option>
@@ -839,9 +843,9 @@ function selectonchange() {
         newRow2.innerHTML = `
             <td class="bg-transparent text-white">${rowNum2}</td>
             <td>
-                <div class='form-group'>
+                <div class='form-group mt-3'>
                   <select class='bg-transparent border-0 item_select2${rowNum2} inneritm2 text-light text-left select2' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
-                        <option class='text-light' disabled hidden>Select Items</option>
+                        <option class='text-light' disabled hidden selected>Select Items</option>
                         {% for i in items %}
                        
                         <option  value="{{i.name}}" data-stock="{{i.stock}}" data-rate="{{i.rate}}" >{{i.name}}</option>
@@ -993,24 +997,6 @@ $.ajax({
        
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1207,7 +1193,7 @@ $.ajax({
 
 
   </form>
-
+</form>
     <!-- ---------------------------------------------------- REASON MODAL ------------------------------------------------------------------- -->
 
     
@@ -1215,11 +1201,11 @@ $.ajax({
   <div class="modal-dialog">
  
       <div class="modal-content" style="background-color: #213b52;">
-          <form action="{% url 'add_reason' %}" method="post" class="needs-validation"   >
+          <form action="" method="post" class="needs-validation"   >
               {% csrf_token %}
           <div class="modal-header">
               <h3 class="m-3">Add Reason</h3>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalReason">
                   <span aria-hidden="true">&times;</span>
               </button>
           </div>
@@ -1229,7 +1215,7 @@ $.ajax({
               <div>
                   <div class="form-check">
                       <label class="form-check-label">Reason *</label> 
-                      <input type="text" class="form-control" name="reason">
+                      <input type="text" class="form-control" name="reason" id="reasoninp">
                      
                   </div>
 
@@ -1238,13 +1224,68 @@ $.ajax({
          
           </div>
           <div class="modal-footer">
-              <button type="submit" class="btn btn-outline-info" >Save</button>
-              <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-info" id="reasaveButton" >Save</button>
+              <button type="button" class="btn btn-outline-info" data-dismiss="modal" id="cancelBtn">Close</button>
           </div>
       </form>
       </div>
   </div>
 </div>            
+
+
+
+<script>
+
+
+
+// reason modal
+$(document).on("click","#reasaveButton",function(){
+            $.ajax({
+              
+              type : 'POST',
+              url:"{% url 'add_reason' %}",
+              data:{
+                  reason : $("#reasoninp").val(), 
+                      
+                },
+                headers: {
+                            "X-CSRFToken": "{{ csrf_token }}"
+                      },
+                success: function(response) {
+                  
+                  reloadReason();
+                },
+            });        
+          });
+                    
+function reloadReason() {
+  $.ajax({
+    url: "{% url 'newreasonslist' %}",
+  
+    success: function(data) {
+      console.log('hi')
+                var dropdown = $('#rsns');
+                
+                // dropdown.empty();
+                $.each(data, function(key, value) {
+                  dropdown.append($('<option></option>').attr('value', key).text(value).val(value));
+                  $("#newreason").modal("hide");
+                });
+                
+              },
+    error: function(xhr, status, error) {
+    console.error(xhr.responseText);
+    }
+  });
+}
+
+
+
+
+</script>
+
+
+
 
 
 

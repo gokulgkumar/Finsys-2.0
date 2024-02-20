@@ -103,17 +103,17 @@
                     </thead>
                     <tbody class="text-center">
                         {% for i in stock_adj %}
-                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.stock_adjustment.id %}';" >
+                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.id %}';" >
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ i.stock_adjustment.adjusting_date }}</td>
-                        <td>{{ i.stock_adjustment.reason }}</td>
+                        <td>{{ i.adjusting_date }}</td>
+                        <td>{{ i.reason }}</td>
                         <td class="tooltip-container">
                             <span class="tooltip-trigger"><i class="fa fa-edit"></i></span>
-                          <span class="tooltip-text">{{ i.stock_adjustment.description }}</a> </span>
+                          <span class="tooltip-text">{{ i.description }}</a> </span>
                         </td>
-                        <td>{{ i.stock_adjustment.reference_no }}</td>
-                        <td>{{ i.type }}</td>
-                        <td>{{ i.stock_adjustment.status }}</td>
+                        <td>{{ i.reference_no }}</td>
+                        <td>{{ type.type }}</td>
+                        <td>{{ i.status }}</td>
                       </tr>
                       
                       {% endfor %}

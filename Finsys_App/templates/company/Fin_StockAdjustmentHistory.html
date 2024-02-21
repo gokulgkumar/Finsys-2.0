@@ -34,10 +34,10 @@
             <div class="card-body">
                 <div class="card-title">
                     <center>
-                        <h2 class="mb-0" style="">ALL STOCK ADJUSTMENT</h2>
+                        <h2 class="mb-0" style="">STOCK ADJUSTMENT HISTORY</h2>
                  
                     </center>
-                    <hr>
+                   
                 </div>
             </div>
         </div>
@@ -50,70 +50,30 @@
         <div class="card radius-15">
             <div class="card-body">
               <div class="row">
-                <div class="col-md-3">
-                    <input type="text" id="search" placeholder="Search..." class="form-control" autocomplete="off" 
-                                style="margin-top: 8px; background-color: #2f516f;color: white;">
-                </div>
-                <div class="col-md-2" style="width: 40%; margin-top: 8px;">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
-                                data-toggle="dropdown"><i class="fa fa-sort">  </i> Sort by
-                        </button>
-                        <div class="dropdown-menu" style="background-color: black;">
-                            <a class="dropdown-item" href="" style="height: 40px; font-size: 15px; color: white;" >All</a>
-                            <a class="dropdown-item" style="height: 40px; font-size: 15px; color: white;" onclick="sortTable(2)">Date</a>
-                            <a class="dropdown-item" style="height: 40px; font-size: 15px; color: white;" onclick="sortTable(5)">Reference Number</a>
-                            
-                        </div>
-                    </div> 
-                </div>
-                <div class="col-md-2 "></div>
-                <div class="col-md-2 d-flex justify-content-end" style="width: 40%; margin-top: 8px;">
-                  <button type="button" class="btn btn-outline-info  text-grey" onclick="ExportToExcel()"> <i class="fa fa-table"></i>  Export To Excel</button>
-                </div>
-                <div class="col-md-1 d-flex justify-content-center" style="width: 40%; margin-top: 8px;">
-                  <div class="dropdown">
-                      <button type="button" class="btn btn-outline-info dropdown-toggle text-grey " data-toggle="dropdown"> <i class="fa fa-filter"></i> Filter by</button>
-                      <div class="dropdown-menu" style="background-color: black;">
-                          <a class="dropdown-item" href="#" onclick="filterTable('All')" style="height: 40px; font-size: 15px; color: white;">All</a>
-                          <a class="dropdown-item" href="#" onclick="filterTable('Save')" style="height: 40px; font-size: 15px; color: white;">Save</a>
-                          <a class="dropdown-item" href="#" onclick="filterTable('Draft')" style="height: 40px; font-size: 15px; color: white;">Draft</a>
-                      </div>
-                  </div>
-              </div>
-               
-                <div class="btn-group col-md-2 ">
-                  <a href="{% url 'AddStockAdjustment' %}"  class="btn btn-outline-info text-grey " style="width: 20%; margin-top: 8px;" role="button"> <i class="fa fa-plus"></i> Add Adjustment</a>
-              </div>
 
+                <h2></h2>
+              
             </div>
             <br>
-                <div class="table-responsive">
+                <div class="table-responsive table-bordered">
                 <table class="table " id="myTable">
                     <thead>
                       <tr class="text-center">
                         <th scope="col">SL.No</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Reason</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Reference Number</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                        <th scope="col">Done By</th>
+
                       </tr>
                     </thead>
                     <tbody class="text-center">
-                        {% for i in stock_adj %}
-                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.id %}';" >
+                        {% for i in history %}
+                        <tr  >
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ i.adjusting_date }}</td>
-                        <td>{{ i.reason }}</td>
-                        <td class="tooltip-container">
-                            <span class="tooltip-trigger"><i class="fa fa-edit"></i></span>
-                          <span class="tooltip-text">{{ i.description }}</a> </span>
-                        </td>
-                        <td>{{ i.reference_no }}</td>
-                        <td>{{ i.mode_of_adjustment }}</td>
-                        <td>{{ i.status }}</td>
+                        <td>{{ i.date }}</td>
+                        <td class="text-success">{{ i.action }}</td>
+                        <td>{{ i.login_details.First_name }}</td>
+                        
                       </tr>
                       
                       {% endfor %}

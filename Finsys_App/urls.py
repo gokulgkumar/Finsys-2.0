@@ -91,6 +91,7 @@ urlpatterns = [
     path('getitemdata2',views.getitemdata2,name='getitemdata2'),
     path('add_reason',views.add_reason,name='add_reason'),
     path('newreasonslist',views.newreasonslist,name='newreasonslist'),
+    path('Stk_adjHistory/<int:id>',views.Stk_adjHistory,name='Stk_adjHistory'),
 
 
 

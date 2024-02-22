@@ -1987,11 +1987,11 @@ def StockAdjustmentOverview(request,id):
             noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
             n = len(noti)
             stocks=Stock_Adjustment.objects.get(id=id)
-
             # print(stock,'stock')
+            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
             comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
             
-            return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'comment':comment})
+            return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'comment':comment,'st_items':st_items})
         else:
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
@@ -2008,18 +2008,11 @@ def del_stockadj(request,id):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
             stock=Stock_Adjustment.objects.get(id=id)
-            stock.delete()
-            print(stock,'stock')
-            
+            stock.delete()         
             return redirect('StockAdjustment')
         else:
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
             stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
             stock.delete()
             return redirect('StockAdjustment')  
@@ -2149,16 +2142,18 @@ def Stk_adjHistory(request,id):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
             stockadj = Stock_Adjustment.objects.get(id=id,company=com)
             stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj)
-            return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history})
+            return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
         
         else:
              com = Fin_Staff_Details.objects.get(Login_Id = s_id)
+             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
              if request.method == 'POST':
                 stockadj = Stock_Adjustment.objects.get(id=id,company=com)
                 stockadj_history=Stock_Adjustment_History.objects.filter(stockadj=stockadj)
-                return render(request,'company/Fin_StockAdjustmentHistory.html')
+                return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
     return redirect('StockAdjustmentOverview',id)
 
 

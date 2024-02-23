@@ -103,6 +103,10 @@ urlpatterns = [
     path('stockadj_comment/<int:id>',views.stockadj_comment,name='stockadj_comment'),
     path('del_stockcmnt/<int:id>',views.del_stockcmnt,name='del_stockcmnt'),
     path('convert_stockadj/<int:id>',views.convert_stockadj,name='convert_stockadj'),
+
+
+    
+    path('Fin_StockAdjustmentMail',views.Fin_StockAdjustmentMail,name='Fin_StockAdjustmentMail'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]

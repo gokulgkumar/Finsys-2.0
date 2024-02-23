@@ -99,37 +99,32 @@
 
                                 <div class="col-md-8 " style="margin-left: 23vh;margin-top: 2vh; margin-bottom: 2vh;">
 
-                                    <a type="submit" class="btn btn-outline-secondary pull-right  mx-1 text-grey " href="{% url 'Stk_adjHistory' stocks.id%}" >
-                                        <i class="fa fa-history" style="font-size: medium; ">&nbsp;History</i>
+                                    <a type="submit" class="btn btn-outline-secondary pull-right fa fa-history  mx-1 text-grey " href="{% url 'Stk_adjHistory' stocks.id%}" style="font-size: 14px; ">
+                                    &nbsp;History
                                     </a>
-                           
                                
-                                   
-                              
-                                
-                                    <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right" href="" style="text-align: center;">
-                                        <i class="fa fa-trash-o" style="font-size: medium; ">&nbsp;Attach File</i>
+                                    <a type="submit" class="btn btn-outline-secondary text-center fa fa-trash-o mx-1 text-grey pull-right" href="" style="text-align: center;font-size: 14px;">
+                                    &nbsp;Attach File
                                     </a>
 
-                                    <a type="submit" class="btn btn-outline-secondary  text-center text-grey pull-right" data-target="#newcomment" data-toggle="modal">
-                                        <i class="fa fa-comment text-center" aria-hidden="true" style="font-size: medium;">&nbsp;Comment</i>
+                                    <a type="submit" class="btn btn-outline-secondary fa fa-comment text-center mx-1 text-grey pull-right" aria-hidden="true" data-target="#newcomment" data-toggle="modal" style="font-size: 14px;">
+                                    &nbsp;Comment
                                     </a>
                                     
-                                    
-                            
-                                    <a type="submit" class="btn btn-outline-secondary text-center   mx-1 text-grey pull-right" href="{% url 'del_stockadj' stocks.id%}" 
-                                    onclick="return confirm('Are you sure you want to delete this item?')">
-                                        <i class="fa fa-trash" style="font-size: medium;">&nbsp;Delete</i>
+                                    <a type="submit" class="btn btn-outline-secondary text-center   mx-1 text-grey pull-right fa fa-trash" href="{% url 'del_stockadj' stocks.id%}" 
+                                    onclick="return confirm('Are you sure you want to delete this item?')"  style="font-size: 14px;">
+                                    &nbsp;Delete
                                     </a>
-                                    <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right" href="">
-                                        <i class="fa fa-edit" style="font-size:medium;">&nbsp;Edit</i>
+
+                                    <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right fa fa-edit" href="{% url 'Fin_StockAdjustmentMail' %}" style="font-size:14px;">
+                                    &nbsp;Edit
                                     </a>
                                     
                                     {% if stocks.status == "Draft" %}
                                
-                                    <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right" href="{% url 'convert_stockadj' stocks.id%}" 
-                                    onclick="return confirm('Are you sure you want to Approve this item?')">
-                                        <i class="fa fa-exchange" aria-hidden="true" style="font-size: medium;"> Convert</i>
+                                    <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-exchange" href="{% url 'convert_stockadj' stocks.id%}" 
+                                    onclick="return confirm('Are you sure you want to Approve this item?')" style="font-size: 14px;" aria-hidden="true">
+                                    Convert
                                     </a>
                             
                                     {% endif %}
@@ -143,27 +138,25 @@
 
                                     <div class="col-md-8 " style="margin-left: 9vh;margin-top: 2vh; margin-bottom: 2vh;">
 
-                                        <a type="submit" class="btn btn-outline-secondary pull-right  mx-1 text-grey " href="{% url 'Stk_adjHistory' stocks.id%}" >
-                                            <i class="fa fa-history" style="font-size: medium; ">&nbsp;History</i>
+                                        <a type="submit" class="btn btn-outline-secondary pull-right  mx-1 text-grey fa fa-history" href="{% url 'Stk_adjHistory' stocks.id%}"  style="font-size: 14px; ">
+                                        &nbsp;History
                                         </a>
                                
                                                                        
-                                        <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right" href="" style="text-align: center;">
-                                            <i class="fa fa-trash-o" style="font-size: medium; ">&nbsp;Attach File</i>
+                                        <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-trash-o" href="" style="text-align: center;font-size: 14px;">
+                                        &nbsp;Attach File
                                         </a>
     
-                                        <a type="submit" class="btn btn-outline-secondary  text-center text-grey pull-right" data-target="#newcomment" data-toggle="modal">
-                                            <i class="fa fa-comment text-center" aria-hidden="true" style="font-size: medium;">&nbsp;Comment</i>
-                                        </a>
-                                        
-                                        
+                                        <a type="submit" class="btn btn-outline-secondary  text-center text-grey mx-1 pull-right fa fa-comments " data-target="#newcomment" data-toggle="modal" style="font-size: 14px;" aria-hidden="true">
+                                        &nbsp;Comment
+                                        </a>         
                                 
-                                        <a type="submit" class="btn btn-outline-secondary text-center   mx-1 text-grey pull-right" href="{% url 'del_stockadj' stocks.id%}" 
-                                        onclick="return confirm('Are you sure you want to delete this item?')">
-                                            <i class="fa fa-trash" style="font-size: medium;">&nbsp;Delete</i>
+                                        <a type="submit" class="btn btn-outline-secondary text-center fa fa-trash  mx-1 text-grey pull-right" href="{% url 'del_stockadj' stocks.id%}" 
+                                        onclick="return confirm('Are you sure you want to delete this item?')" style="font-size: 14px;">
+                                        &nbsp;Delete
                                         </a>
-                                        <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right" href="">
-                                            <i class="fa fa-edit" style="font-size:medium;">&nbsp;Edit</i>
+                                        <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right fa fa-edit" href="{% url 'Fin_StockAdjustmentMail' %}" style="font-size:14px;">
+                                        &nbsp;Edit
                                         </a>
     
                                     </div>
@@ -202,9 +195,6 @@
                                     <label style="font-size: large;" class="text-success">Created By:</label>
                                 </div>
 
-                                <!-- <div class="col-md-1 d-flex justify-content-center" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">:</label>
-                                </div> -->
 
                                 <div class="col-md-6 d-flex justify-content-start" style="margin: auto;">
                                     <label style="color: white; font-size: large;">{{stocks.login_details.First_name}}</label>
@@ -310,29 +300,6 @@
                                 </div>
                             </div><br>
 
-                            <!-- <div class="row mx-auto">
-                                <div class="col-md-5 d-flex justify-content-end" style="margin: auto;">
-                                    <label style="color: white; font-size: large;" class="">Created By</label>
-                                </div>
-
-                                <div class="col-md-1 d-flex justify-content-center" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">:</label>
-                                </div>
-
-                                <div class="col-md-5 d-flex justify-content-start" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">{{stocks.login_details.First_name}}</label>
-                                </div>
-                            </div><br> -->
-
-                            <!-- <div class="row mx-auto">
-                                <div class="col-md-5 d-flex justify-content-end" style="margin: auto;">
-                                    <label style="color: white; font-size: large;" class="">Comment</label>
-                                </div>
-
-                                <div class="col-md-1 d-flex justify-content-center" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">:</label>
-                                </div> -->
-
 
                                 {% if comment %}
                             <div class="col-md-5 d-flex justify-content-start" style="margin: auto;">
@@ -343,78 +310,6 @@
                                 {% endif %}
 
 
-
-
-                            <!-- <div class="row mx-auto">
-                            <div class="col-md-7 d-flex" style="margin: auto;">
-                                <label style="color: white; font-size: large;">Reason </label>
-                                <p style="margin-left:75px;" >:</p>
-                                <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                readonly>{{stocks.reason}}</p><br>
-                            </div>
-                        </div><br> 
-
-
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Description</label>
-                                    <p style="margin-left:140px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{a.description}}</p><br>
-                                </div>
-                            </div><br>
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Date</label>
-                                    <p style="margin-left:190px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{a.date}}</p><br>
-                                </div>
-                            </div><br>
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Mode of Adjustment</label>
-                                    <p style="margin-left:65px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{a.mode}}</p><br>
-                                </div>
-                            </div><br>
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Status</label>
-                                    <p style="margin-left:175px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{a.status}}</p><br>
-                                </div>
-                            </div><br>
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Account</label>
-                                    <p style="margin-left:160px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{a.account}}</p><br>
-                                </div>
-                            </div><br>
-                            <div class="row ml-5" >
-                                <div class="col-md-7 d-flex" style="margin: auto;">
-                                    <label style="color: white; font-size: large;">Created By</label>
-                                    <p style="margin-left:135px;" >:</p>
-                                    <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                    readonly>{{user.first_name}}</p><br>
-                                </div>
-                            </div><br>
-
-                            {% if a.comment != "" %}
-                                <div class="row ml-5" >
-                                    <div class="col-md-7 d-flex" style="margin: auto;">
-                                        <label style="color: white; font-size: large;">Comment</label>
-                                        <p style="margin-left:150px;" >:</p>
-                                        <p style="color: white;font-size:15px;margin-left:80px;text-transform:Uppercase;" 
-                                        readonly>{{a.comment}}</p><br>
-                                    </div>
-                                </div>
-                            {% endif %}
-                             -->
                             <br><br>
                              <div class="row" style="margin: auto;">
                                 <div class="col-md-1"></div>
@@ -503,7 +398,66 @@
                                 </div>
                                 <div class="col-md-1 text-center" id ="state" style="margin-top: 2vh; margin-bottom: 2vh; border-radius: 1vh; " >
                                     <h6><a class="btn w-100" style="background-color: #213b52;" onclick="statementfun()">Statement</a></h6>
+
                                 </div>
+
+
+
+                                <div class="col-md-8 text-center" style="margin-left: 23vh;margin-top: 2vh; margin-bottom: 2vh;">
+
+                           
+                                    <button class="btn btn-outline-secondary text-grey dropdown-toggle pull-right fa fa-share-alt font-size: 14px;font-family: Font Awesome 6 Free;" data-toggle="dropdown" aria-expanded="false">
+                                        &nbsp;Share
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="background-color: black;" id="listdiv">
+                                        <li style="text-align: center;">
+                                            <div class="whatsapp-this">
+                                                <!-- https://api.whatsapp.com/send?text=https%3A//infoxcore.com/Fin_view_item/36 -->
+                                                <a href="" class="" target="_blank">Whatsapp</a>
+                                            </div>
+                                        </li>
+                                        <li style="text-align: center;cursor: pointer;" data-toggle="modal" data-target="#shareEmail">Email</li>
+                                    </ul>
+                                   
+                              
+                                
+                                    <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-trash-o" href="" style="text-align: center;font-size: 14px;">
+                                    &nbsp;Attach File
+                                    </a>
+
+                                    <button type="submit" class="btn btn-outline-secondary text-grey mx-1 pull-right fa fa-file-pdf-o" style="font-size: 14px;" onclick="exportToPDF()">
+                                    &nbsp;PDF
+                                    </button>
+                                    
+                                    <button type="submit" class="btn btn-outline-secondary mx-1 text-grey pull-right fa fa-print" style="font-size: 14px;" onclick="printSpecificArea()">
+                                    &nbsp;Print
+                                    </button>
+                            
+                                    <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-trash" href="{% url 'del_stockadj' stocks.id%}" 
+                                    onclick="return confirm('Are you sure you want to delete this item?')" style="font-size: 14px;">
+                                    &nbsp;Delete
+                                    </a>
+
+                                    <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right fa fa-edit" style="font-size: 14px;" href="">
+                                    &nbsp;Edit
+                                    </a>
+
+                                   
+                                    
+                                   
+                        
+                                   
+                                </div>
+
+
+
+
+
+
+
+
+
                                 
 
 
@@ -547,7 +501,7 @@
 
 
 
-                                <div class="col-md-2  "  style="margin-left: 3%;">
+                                <!-- <div class="col-md-2  "  style="margin-left: 3%;">
                                   
                                 </div>
 
@@ -581,7 +535,7 @@
                                     <ul class="dropdown-menu" style="background-color: black;" id="listdiv">
                                         <li style="text-align: center;">
                                             <div class="whatsapp-this">
-                                                <!-- https://api.whatsapp.com/send?text=https%3A//infoxcore.com/Fin_view_item/36 -->
+                                                <!-- https://api.whatsapp.com/send?text=https%3A//infoxcore.com/Fin_view_item/36
                                                 <a href="" class="" target="_blank">Whatsapp</a>
                                             </div>
                                         </li>
@@ -597,7 +551,7 @@
                                     <button type="submit" class="btn btn-outline-secondary w-100 text-grey pull-left" data-target="#newcomment" data-toggle="modal">
                                         <i class="fa fa-comment" aria-hidden="true" style="font-size: medium;">&nbsp;Comment</i>
                                     </button>
-                                </div>
+                                </div> -->
 
 
 
@@ -632,7 +586,7 @@
                     </div>
                 </div>
                         
-                <div class="card radius-15 p-5 print-content" id="printarea" style="margin-bottom: 50px;">
+                <div class="card radius-15 p-5 print-content" id="printarea" style="margin-bottom: 30px;">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">        
@@ -642,12 +596,14 @@
                                             <div class="pcs-template-body" style="text-align:left;">
 
                                                 <div class="col-sm-12" style="background-image: linear-gradient(#1b83e8, black); color: white;">
+                                                    <br>
                                                     <p style="font-size: 4vh; text-align: center;">STOCK ADJUSTMENT</p>
-                                                    <p style=" text-align: center;"> {{a.company.Company_name}} <br>
-                                                        {{ a.company.City }}, <br>
-                                                        {{ a.company.State }},
-                                                        {{ a.company.State }},<br>
-                                                        {{ a.company.Email }}
+                                                    <p style=" text-align: center;"> {{stocks.company.Company_name}} <br>
+                                                        {{ stocks.company.City }}, <br>
+                                                        {{ stocks.company.Pincode }},
+                                                        {{ stocks.company.State }},<br>
+                                                        {{ stocks.company.Email }}
+                                                        <br>
                                                         <br>
                                                     </p>
                                                 </div>
@@ -670,7 +626,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.reference_no }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.reference_no }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -684,7 +640,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.reason }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.reason }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -697,7 +653,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.adjusting_date }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.adjusting_date }}</h6>
                                                     </div>
                                                   </div>
                                                   
@@ -709,7 +665,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.type }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.type }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -721,7 +677,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.status }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.status }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -733,7 +689,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.login_details.First_name }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.login_details.First_name }}</h6>
                                                     </div>
                                                   </div>
                                                   
@@ -895,7 +851,7 @@
  
  <!-- --------------------------EMAIL MODAL------------------------------ -->
 
- <div class="modal fade" id="shareBillEmail">
+ <div class="modal fade" id="shareEmail">
     <div class="modal-dialog modal-xl">
       <div class="modal-content" style="background: #243e54;border-radius: 20px;">
         <div class="modal-header" style="background: #243e54;">
@@ -969,6 +925,47 @@
         // var originalContents = document.body.innerHTML;
         // document.body.innerHTML = originalContents;
     }
+</script>
+
+
+
+
+<script>
+
+    $(document).ready(function(){
+        $('#share_with_email').on('click',function(){
+            var emailsInput = document.getElementById('emailIds');
+            var emailsString = emailsInput.value.trim();
+
+            var emails = emailsString.split(',').map(function(email) {
+                return email.trim();
+            });
+
+            var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+            var invalidEmails = []
+            if(emailsString == ""){
+                alert('Enter valid email addresses..')
+            }
+            else{
+                for (var i = 0; i < emails.length; i++) {
+                    var currentEmail = emails[i];
+
+                    if (currentEmail!="" && !emailRegex.test(currentEmail)) {
+                        console.log(currentEmail + ' is invalid!');
+                        invalidEmails.push(currentEmail)
+                    }
+                }
+                
+                if(invalidEmails.length > 0){
+                    alert('Invalid emails..Please check!\n'+invalidEmails)
+                    // alert(invalidEmails)
+                }else{
+                    $('#share_to_email_form').submit();
+                }
+            }
+        })
+    });
 </script>
 
 {% endblock %}

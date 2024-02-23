@@ -2159,3 +2159,29 @@ def Stk_adjHistory(request,id):
 
 
 
+
+def Fin_StockAdjustmentMail(request):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+            terms = Fin_Payment_Terms.objects.all()
+            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+            n = len(noti)
+            # stocks=Stock_Adjustment.objects.get(id=id)
+            # print(stock,'stock')
+            # st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
+            # comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
+            
+            return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
+        else:
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
+            stocks=Stock_Adjustment.objects.get(id=id)
+
+            # print(stock,'stock')
+            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
+            return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment})  
+        

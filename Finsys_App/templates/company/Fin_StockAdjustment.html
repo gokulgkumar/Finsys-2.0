@@ -103,7 +103,7 @@
                     </thead>
                     <tbody class="text-center">
                         {% for i in stock_adj %}
-                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.id %}';" >
+                        <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.id %}';" style="cursor: pointer;">
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ i.adjusting_date }}</td>
                         <td>{{ i.reason }}</td>

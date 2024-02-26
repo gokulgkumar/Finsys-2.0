@@ -1675,7 +1675,10 @@ def Fin_StockAdjustmentView(request):
         else:
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data})  
+            terms = Fin_Payment_Terms.objects.all()
+            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+            n = len(noti)
+            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})  
         
 
 
@@ -1996,10 +1999,11 @@ def StockAdjustmentOverview(request,id):
             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
             stocks=Stock_Adjustment.objects.get(id=id)
-
+            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
+            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
             # print(stock,'stock')
             comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment})  
+            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment,'st_items':st_items})  
         
 
 def del_stockadj(request,id):
@@ -2029,13 +2033,12 @@ def stockadj_comment(request,id):
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             if request.method == 'POST':
                 stock = Stock_Adjustment.objects.get(id=id)
-                stock_item=Stock_Adjustment_Items.objects.get(stock_adjustment=id)
+                print(stock,'stock')
                 comment = request.POST['comment']
                 add_comment=Stock_Adjustment_Comment.objects.create(
                     company=com,
                     login_details=data,
                     stock_adjustment=stock,
-                    stock_adjustmentitem=stock_item,
                     comment=comment
                 )
                 add_comment.save()
@@ -2048,7 +2051,7 @@ def stockadj_comment(request,id):
              if request.method == 'POST':
                 stock = Stock_Adjustment.objects.get(id=id)
                 print(stock,'stock')
-                stock_item=Stock_Adjustment_Items.objects.get(stock_adjustment=id)
+                stock_item=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
                 print(stock_item,'stock_item')
                 comment = request.POST['comment']
                 add_comment=Stock_Adjustment_Comment.objects.create(
@@ -2213,3 +2216,224 @@ def edit_stockadj(request,id):
             items=Fin_Items.objects.filter(Company = com)
             reason=Stock_Reason.objects.filter(company=com)
             return render(request,'company/Fin_EditStockAdjustment.htm',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment,'st_items':st_items,'items':items})
+
+
+
+def updatedStockAdj(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+
+        # ---------------COMPANY-------------------
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            if request.method=='POST':
+                stck_adj=Stock_Adjustment.objects.get(id=id)
+                stck_adj.mode_of_adjustment= request.POST['mode']
+                stck_adj.reference_no=request.POST['refno']
+                stck_adj.adjusting_date=request.POST['date']
+                stck_adj.account=request.POST['account']
+                stck_adj.reason=request.POST['reason']
+                stck_adj.description = request.POST['desc']
+                if 'file' in request.FILES:
+                    stck_adj.attach_file = request.FILES['file']
+                else:
+                    stck_adj.attach_file = None
+                stck_adj.company=com
+                stck_adj.login_details=data
+                stck_adj.save()
+
+                if 'draft' in request.POST:
+                    stck_adj.status = "Draft"
+
+                elif 'save' in request.POST:
+                    stck_adj.status = "Save"
+
+                stck_adj.save()
+
+                stckItem_adj=Stock_Adjustment_Items.objects.filter(stock_adjustment=stck_adj.id)
+                stckItem_adj.delete()
+
+                if stck_adj.mode_of_adjustment == 'Quantity':
+                    item_names = request.POST.getlist('item1')
+                    qty_available = request.POST.getlist('qtyav[]')
+                    new_qty_on_hand = request.POST.getlist('newqty[]')
+                    qty_adjusted = request.POST.getlist('qtyadj[]')
+
+                    if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
+                        for i in range(len(item_names)):
+
+                            item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
+                            item_instance.current_stock += int(new_qty_on_hand[i])
+                            item_instance.save()
+
+                            items1 = Stock_Adjustment_Items.objects.create(
+                                item=item_instance,
+                                quantity_avail=qty_available[i],
+                                quantity_inhand=new_qty_on_hand[i],
+                                quantity_adj=qty_adjusted[i],
+                                stock_adjustment=stck_adj,
+                                company=com,
+                                type='Quantity',
+                                login_details=data,
+                                
+                            )
+                            items1.save()
+                            
+                            stock_adj_history = Stock_Adjustment_History.objects.create(
+                            company=com,
+                            login_details=data,
+                            item=item_instance,
+                            date=stck_adj.adjusting_date,
+                            action='Edited',
+                            stock_adjustment=stck_adj
+                        )
+                            stock_adj_history.save()
+
+
+                elif stck_adj.mode_of_adjustment == 'Value':
+                    items= request.POST.getlist('item2[]')
+                    current_value = request.POST.getlist('cuval[]')
+                    changed_value = request.POST.getlist('chval[]')
+                    value_adjusted = request.POST.getlist('adjval[]')
+
+                    if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
+                        for j in range(len(items)):
+
+                            item_inst = Fin_Items.objects.get(name=items[j])
+
+                            item_list= Stock_Adjustment_Items.objects.create(
+                                item=item_inst,
+                                current_val = current_value[j],
+                                changed_val = changed_value[j],
+                                adjusted_val = value_adjusted[j],
+                                company=com,
+                                login_details=data,
+                                stock_adjustment=stck_adj,
+                                type='Value'
+                            )
+                            item_list.save()
+
+                            stock_adj_history = Stock_Adjustment_History.objects.create(
+                                company=com,
+                                login_details=data,
+                                item=item_inst,
+                                date=stck_adj.adjusting_date,
+                                action='Edited',
+                                stock_adjustment=stck_adj
+                        )
+                        stock_adj_history.save()
+                return redirect('StockAdjustmentOverview',id)
+            return redirect('StockAdjustmentOverview',id)
+        
+        else:
+            # ----------------STAFF-------------------
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
+            if request.method=='POST':
+                stck_adj=Stock_Adjustment.objects.get(id=id)
+                stck_adj.mode_of_adjustment= request.POST['mode']
+                stck_adj.reference_no=request.POST['refno']
+                stck_adj.adjusting_date=request.POST['date']
+                stck_adj.account=request.POST['account']
+                stck_adj.reason=request.POST['reason']
+                stck_adj.description = request.POST['desc']
+                if 'file' in request.FILES:
+                    stck_adj.attach_file = request.FILES['file']
+                else:
+                    stck_adj.attach_file = None
+                stck_adj.company=com
+                stck_adj.login_details=data
+                stck_adj.save()
+
+                if 'draft' in request.POST:
+                    stck_adj.status = "Draft"
+
+                elif 'save' in request.POST:
+                    stck_adj.status = "Save"
+
+                stck_adj.save()
+
+                stckItem_adj=Stock_Adjustment_Items.objects.filter(stock_adjustment=stck_adj.id)
+                stckItem_adj.delete()
+
+                if stck_adj.mode_of_adjustment == 'Quantity':
+                    item_names = request.POST.getlist('item1')
+                    qty_available = request.POST.getlist('qtyav[]')
+                    new_qty_on_hand = request.POST.getlist('newqty[]')
+                    qty_adjusted = request.POST.getlist('qtyadj[]')
+
+                    if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
+                        for i in range(len(item_names)):
+
+                            item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
+                            item_instance.current_stock += int(new_qty_on_hand[i])
+                            item_instance.save()
+
+                            items1 = Stock_Adjustment_Items.objects.create(
+                                item=item_instance,
+                                quantity_avail=qty_available[i],
+                                quantity_inhand=new_qty_on_hand[i],
+                                quantity_adj=qty_adjusted[i],
+                                stock_adjustment=stck_adj,
+                                company=com,
+                                type='Quantity',
+                                login_details=data,
+                                
+                            )
+                            items1.save()
+                            
+                            stock_adj_history = Stock_Adjustment_History.objects.create(
+                            company=com,
+                            login_details=data,
+                            item=item_instance,
+                            date=stck_adj.adjusting_date,
+                            action='Edited',
+                            stock_adjustment=stck_adj
+                        )
+                            stock_adj_history.save()
+
+
+                elif stck_adj.mode_of_adjustment == 'Value':
+                    items= request.POST.getlist('item2[]')
+                    current_value = request.POST.getlist('cuval[]')
+                    changed_value = request.POST.getlist('chval[]')
+                    value_adjusted = request.POST.getlist('adjval[]')
+
+                    if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
+                        for j in range(len(items)):
+
+                            item_inst = Fin_Items.objects.get(name=items[j])
+
+                            item_list= Stock_Adjustment_Items.objects.create(
+                                item=item_inst,
+                                current_val = current_value[j],
+                                changed_val = changed_value[j],
+                                adjusted_val = value_adjusted[j],
+                                company=com,
+                                login_details=data,
+                                stock_adjustment=stck_adj,
+                                type='Value'
+                            )
+                            item_list.save()
+
+                            stock_adj_history = Stock_Adjustment_History.objects.create(
+                                company=com,
+                                login_details=data,
+                                item=item_inst,
+                                date=stck_adj.adjusting_date,
+                                action = 'Edited',
+                                stock_adjustment=stck_adj
+                        )
+                        stock_adj_history.save()
+                return redirect('StockAdjustmentOverview',id)
+            return redirect('StockAdjustmentOverview',id)
+
+
+            
+
+        
+
+
+
+
+

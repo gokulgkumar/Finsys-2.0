@@ -1,5 +1,6 @@
 {% extends 'company/Fin_base.html' %}
 {% block body %}
+{% load social_share %}
 {% load static %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -414,7 +415,7 @@
                                         <li style="text-align: center;">
                                             <div class="whatsapp-this">
                                                 <!-- https://api.whatsapp.com/send?text=https%3A//infoxcore.com/Fin_view_item/36 -->
-                                                <a href="" class="" target="_blank">Whatsapp</a>
+                                                <a href="" class="" target="_blank">{% post_to_whatsapp object_or_url "WhatsApp" %}</a>
                                             </div>
                                         </li>
                                         <li style="text-align: center;cursor: pointer;" data-toggle="modal" data-target="#shareEmail">Email</li>
@@ -915,15 +916,16 @@
     }
 </script>
 
+
 <script>
     function printSpecificArea() {
         var printContents = document.getElementById("GFG").innerHTML;
-        
+        var originalContents = document.body.innerHTML;
         
         document.body.innerHTML = printContents;
         window.print();
-        // var originalContents = document.body.innerHTML;
-        // document.body.innerHTML = originalContents;
+        
+        document.body.innerHTML = originalContents;
     }
 </script>
 

@@ -1,7 +1,7 @@
 {% extends 'company/Fin_base.html' %}
 {% block body %}
     {% load static %}
-    
+ 
 
 <style>
 
@@ -106,9 +106,9 @@
     <br>
 
     <div class="d-flex justify-content-end mb-1">
-      <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
+      <a href="{% url 'StockAdjustmentOverview' stocks.id%}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'updatedStockAdj' stocks.id%}" method="POST" enctype="multipart/form-data">
     <div class="page-content" style="margin-top:-2rem ;">
       
         <div class="card radius-15">
@@ -153,8 +153,10 @@
               <div class="row mt-3">
                     <div class="col-md-3 mt-2">
                         <label for="">Date *</label>
-                        <input type="date" class="form-control" id="date" name="date" placeholder="" value="{{ stocks.adjusting_date }}">
+                        <input type="date" class="form-control" id="date" name="date" placeholder="" value="{{ stocks.adjusting_date}}">
                     </div>
+
+                    
 
                     <script>
                       // $('#date').val(new Date().toJSON().slice(0,10));
@@ -368,38 +370,62 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="item_table">
-        {% for j in st_items %}
- 
-        <tr id='row1'>
-          <td class="bg-transparent text-white rownum" id="" value=""></td>
-          <td>
-              <div class='form-group mt-3'>
-                <select class='  item_select  text-white itm select2 mt-1' name='item1' id='selectss1' onchange="selectonchange()" >
+      <tbody id="items-table-body">
+        {% for i in st_items %}
+        <tr id='addr0{{ i.id}}'>
+           <!-- {{ pro.id}} -->
+           <td id="forcounter" data-counter="{{ forloop.counter }}">{{ forloop.counter }}</td>
 
-                      <option id="selectitem"  value="{{j.item.name}}" selected >{{j.item.name}} </option>
-                      {% for i in items %}
-                      <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
-                      {% endfor %}
+            <td style="width: 20%;">
+                <div class="d-flex">
 
-                  </select>
-              </div>
-          </td>
-          <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='' name="qtyav[]" id="quant">
-          </td>
-          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value=''>
-          </td>
-          
-          <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value=''>
-          </td>
-          <td class='text-center'>
-              <button type='button' id='del_btn1' class='btn btn-outline-secondary  delete-row'>-</button> 
-          </td>
-      </tr>
-      {% endfor %}
-      </tbody>
+                    <select name='items[]' id="product{{i.id}}" class="form-control select2 selectss" onchange="selectchange(this,`{{pro.id}}`)" >
+                       
+                        {% for i in items %}
+                        {% if i.name == i.items.name %}
+                            <option value="{{ i.name }}" data-tokens="{{ i.name }}" selected>
+
+                                {{ i.name }} 
+                            </option>
+                        {% else %}
+                        <option value="{{ i.name }}" data-tokens="{{ i.name }}">
+        
+                            {{ i.name }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>  
+                </div>
+                <div id="errorLabel{{pro.id}}" style="color: red;"></div>
+            </td>
+            <td>
+                <input type="text" name='hsn[]' id="qtyavail{{i.id}}"  value="{{i.quantity_avail}}"
+                class="form-control hsn"/>
+            </td>
+            <td>
+                <input type="number" name='quantitys'   style='margin-top:21px'  value="{{pro.quantity}}" id="quantitys{{pro.id}}" class="form-control quty"  hidden >
+                <input type="number" name='anotherQuantityInput'   style='margin-top:21px'  id="anotherQuantityInput" value="0" class="form-control quty" hidden >
+                <input type="number" name='quantity[]' value="{{pro.quantity}}"  oninput="qtychange1(this)"  style='margin-top:21px'  id="qty1{{pro.id}}" class="form-control qty" step=0 min=0 >
+                        
+            </td> 
+            
+            <td>
+                
+                <input type="text" name='price[]' id="unit1{{pro.id}}"   value="{{pro.price}}"
+                class="form-control price" step="0.00" min="0" />
+            </td>
+
+
+            <td><button type="button" data-id="{{pro.id}}" class="btn btn-outline-secondary delete-btn" onclick="this">-</button></td>
+            
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tr>
+            <td style="border: none;"><a class="btn btn-outline-secondary ml-1" role="button" id="addrow" onclick="add_item_row()">+</a></td>
+        </tr>
     </table> 
-    <button type="button" class="btn btn-outline-secondary tab1" id="add-row" title="add row">+</button>
+    <!-- <button type="button" class="btn btn-outline-secondary tab1" id="add-row" title="add row">+</button> -->
 
   </div>
 </div>
@@ -408,7 +434,7 @@
 
 <script>
   // FIRST ROW
-  let rowNum = 1;
+  // let rowNum = 1;
   const rownumber = document.querySelector('.rownum');
   rownumber.innerHTML = rowNum;
   
@@ -563,41 +589,12 @@ function selectonchange2(no){
   }
   
 
-
   </script> 
      
   
 
 
 
-
-
-
-<!-- <script>
-  $(document).ready(function() {
-   $('#selectss1').select2();
-$(document).on('change', '#selectss1', function () {
-                                   
-    console.log('Select changed');
-    var selectedValue = $(this).val();
-    $.ajax({
-        type: "GET",
-        url: "{% url 'getitemdata1' %}",
-        data: {
-            id: selectedValue,
-            
-        },
-        success: function (response) {
-          var stck = response.stock;
-          document.getElementById('qtyavail1').value=stck;
-                                      
-                              },
-                                
-                        });
-                  });
-
-              });
-</script> -->
 
 <script type="text/javascript">
   $(document).on('input', '#qty_hand1', function() {
@@ -608,80 +605,6 @@ $(document).on('change', '#selectss1', function () {
   });
 </script>
 
-
-<!-- <script>
-
-    
-
-
-
-
- function addRow1() {
-
-
-
-    var tableBody = document.getElementById("items-table-body1");
-    var rowCount = tableBody.getElementsByTagName("tr").length;
-
-    var newRow = document.createElement("tr");
-    newRow.setAttribute("class", "row" + rowCount);
-    newRow.setAttribute("id", "row" + (rowCount + 1));
-
-
-    newRow.innerHTML = `
-      <td>${rowCount + 1}</td>
-      <td>
-        <div>
-          <select name='item1' class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
-            <option value=" " selected disabled>Select Product</option>
-            {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </td>
-      <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
-      <td><input type="number" name="newqty1" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
-      <td><input type="number" name="qtyadj1" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
-      <td style="border: none; " class="text-center">
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
-      </td>
-    `;
-
-    tableBody.appendChild(newRow);
-
-    $("#selectss2" + (rowCount + 1)).select2({
-      
-    });
-
-    $(document).on('change', `#selectss2${rowCount + 1}`, function () {
-        console.log('Select changed',`${rowCount + 1}`);
-        var selectedValue = $(this).val();
-        $.ajax({
-            type: "GET",
-            url: "{% url 'getitemdata1' %}",
-            data: {
-                id: selectedValue,
-            },
-            success: function (response) {
-                var stck = response.stock;
-                document.getElementById(`qtyavail2${rowCount + 1}`).value = stck;
-            },
-        });
-    });
-
-    $(document).on('input', `#qty_hand2${rowCount + 1}`, function() {
-        var qtyhnd = parseFloat(document.getElementById(`qty_hand2${rowCount + 1}`).value);
-        var qtyavail = parseFloat(document.getElementById(`qtyavail2${rowCount + 1}`).value);
-        var difference = qtyhnd - qtyavail;
-        document.getElementById(`new_qty2${rowCount + 1}`).value = difference;
-    });
-}
-
-
-
-
-</script> -->
 
 
 
@@ -791,7 +714,7 @@ $(document).on('change', '#selectss1', function () {
           const selectedItem = qtyInput.value;
           const rateValue = parseFloat(changval.value) || 0;
           const qtyValue = parseFloat(selectedItem) || 0;
-          const difference = qtyValue - rateValue;
+          const difference = rateValue- qtyValue  ;
           console.log(rateValue, 'rateValue');
           console.log(qtyValue, 'qtyValue');
   
@@ -1187,7 +1110,7 @@ $.ajax({
     <div class="col-md-3">
 
       {% if stocks.attach_file %}
-        <input class="form-control" type="file" id="file" name="file">
+        <input class="form-control" type="file" id="file" name="file" src="{{ stocks.attach_file.url }}">
 
       {% else %}
       <input class="form-control" type="file" id="file" name="file">

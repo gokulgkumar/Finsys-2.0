@@ -1,7 +1,7 @@
 {% extends 'company/Fin_base.html' %}
 {% block body %}
     {% load static %}
- 
+    
 
 <style>
 
@@ -91,7 +91,7 @@
             <div class="card-body">
                 <div class="card-title">
                     <center>
-                        <h2 class="mb-0" style="">EDIT STOCK ADJUSTMENT</h2>
+                        <h2 class="mb-0" style="">EDIT ADJUSTMENT</h2>
 
                         
                  
@@ -106,9 +106,9 @@
     <br>
 
     <div class="d-flex justify-content-end mb-1">
-      <a href="{% url 'StockAdjustmentOverview' stocks.id%}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
+      <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
-    <form action="{% url 'updatedStockAdj' stocks.id%}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data">
     <div class="page-content" style="margin-top:-2rem ;">
       
         <div class="card radius-15">
@@ -124,18 +124,16 @@
                       {% csrf_token %}
                     <label for="" style="color: white;">Mode of Adjustment</label>
 
-                    <select name="mode" id="adjust" class="form-control" onchange="toggleDiv()" required >
+                    <select name="mode" id="adjust" class="form-control" onchange="toggleDiv(this.value)" required>
                       {% if stocks.mode_of_adjustment == 'Value' %}
-                       <option value="{{ stocks.mode_of_adjustment }}"selected checked>{{ stocks.mode_of_adjustment }} Adjustment</option>
-                       <option value="Quantity">Quantity Adjustment</option>
+                          <option value="{{ stocks.mode_of_adjustment }}" selected >{{ stocks.mode_of_adjustment }} Adjustment</option>
+                          <option value="Quantity">Quantity Adjustment</option>
+                      {% else %}
+                          <option value="{{ stocks.mode_of_adjustment }}" >{{ stocks.mode_of_adjustment }} Adjustment</option>
+                          <option value="Value">Value Adjustment</option>
+                      {% endif %}
+                  </select>
 
-                       {% else %}
-
-                       <option value="{{ stocks.mode_of_adjustment }}" checked>{{ stocks.mode_of_adjustment }} Adjustment</option>
-                       <option value="Value">Value Adjustment</option>
-                       {% endif %}
-                
-                </select>
 
                 </div>
                 </div>
@@ -146,29 +144,28 @@
                    
                       <label class="col-form-label">Reference Number</label>
                  
-                      <input class="form-control" type="text" id="bname" name="refno" value="{{ stocks.reference_no }}" required>
+                      <input class="form-control" type="text" id="bname" name="refno" value="{{ stocks.reference_no }}" >
                   </div>
               </div>
 
               <div class="row mt-3">
                     <div class="col-md-3 mt-2">
                         <label for="">Date *</label>
-                        <input type="date" class="form-control" id="date" name="date" placeholder="" value="{{ stocks.adjusting_date}}">
+                        <input type="date" class="form-control" id="date" name="date" placeholder="">
                     </div>
 
-                    
-
                     <script>
-                      // $('#date').val(new Date().toJSON().slice(0,10));
+                      $('#date').val(new Date().toJSON().slice(0,10));
                     </script>
                     
                     <div class="col-md-3">
                         <label class="col-form-label " for="validationCustom02">Account *</label>
                         <select name="account" class="form-control text-white" required>
-                           <option selected  value="{{ stocks.account }}">{{ stocks.account }}</option>
+                          <option selected  value="{{ stocks.account }}">{{ stocks.account }}</option>
+                          
                           
 
-                           <optgroup label="Expense" class="text-dark">  
+                           <optgroup label="Expense" class="text-dark">
                          <option value="Advertising and Marketing" class="text-white">Advertising and Marketing</option>
                          <option value="Automobile Expense" class="text-white">Automobile Expense</option>
                          <option value=">Bad Debt" class="text-white">Bad Debt</option>
@@ -292,17 +289,16 @@
               <label class="col-form-label" for="validationCustom03">Reason * </label>
               
               <div class="d-flex">
-                <select name="reason" class="form-control" id="rsns" required>
-                  <option selected disabled value="{{ stocks.reason }}">{{ stocks.reason }}</option>
-                  {% for i in reason %}
+              <select name="reason" class="form-control" id="rsns" required>
+                <option selected  value="{{ stocks.reason }}">{{ stocks.reason }}</option>
+              {% for i in reason %}
                     {% if stocks.reason == i.reason %}
                       <option value="{{ i.reason }}" hidden>{{ i.reason }}</option>
                     {% else %}
                       <option value="{{ i.reason }}">{{ i.reason }}</option>
                     {% endif %}
                   {% endfor %}
-                </select>
-                
+             </select>
 
        <a href="#">
           <button type="button" class="btn btn-outline-secondary ml-1" 
@@ -317,7 +313,7 @@
         <div class="row">
           <div class="col-md-3 mt-3">
             <label class="col-form-label">Description</label>
-           <textarea name="desc" rows="5" class="form-control" value="{{ stocks.description }}">{{ stocks.description }}</textarea>
+           <textarea name="desc" rows="5" class="form-control">{{ stocks.description }}</textarea>
           </div>
           <div class="col-md-3 mt-3"></div>
           <div class="col-md-3 mt-3"></div>
@@ -370,71 +366,63 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="items-table-body">
-        {% for i in st_items %}
-        <tr id='addr0{{ i.id}}'>
-           <!-- {{ pro.id}} -->
-           <td id="forcounter" data-counter="{{ forloop.counter }}">{{ forloop.counter }}</td>
+      <tbody id="item_table">
+        {% for m in st_items %}
+        <tr id='row1'>
+          <td class="bg-transparent text-white rownum" id="" value="">{{forloop.counter}}</td>
+          <td>
+              <div class='form-group mt-3'>
+                <select class=' item_select  text-white itm select2 mt-1 selectssss' name='item1' id='selectss1{{m.id}}' onchange="selectonchange(this,`{{m.id}}`)" >
+                  {% for i in items %}
+                  {% if i.name == m.item.name %}
+                      <option value="{{ i.name }}" data-tokens="{{ i.name }}" selected>{{ i.name }}</option>
+                  {% else %}
+                      <option value="{{ i.name }}" data-tokens="{{ i.name }}">{{ i.name }}</option>
+                  {% endif %}
+                  {% endfor %}
 
-            <td style="width: 20%;">
-                <div class="d-flex">
-
-                    <select name='items[]' id="product{{i.id}}" class="form-control select2 selectss" onchange="selectchange(this,`{{pro.id}}`)" >
-                       
-                        {% for i in items %}
-                        {% if i.name == i.items.name %}
-                            <option value="{{ i.name }}" data-tokens="{{ i.name }}" selected>
-
-                                {{ i.name }} 
-                            </option>
-                        {% else %}
-                        <option value="{{ i.name }}" data-tokens="{{ i.name }}">
-        
-                            {{ i.name }}
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>  
-                </div>
-                <div id="errorLabel{{pro.id}}" style="color: red;"></div>
-            </td>
-            <td>
-                <input type="text" name='hsn[]' id="qtyavail{{i.id}}"  value="{{i.quantity_avail}}"
-                class="form-control hsn"/>
-            </td>
-            <td>
-                <input type="number" name='quantitys'   style='margin-top:21px'  value="{{pro.quantity}}" id="quantitys{{pro.id}}" class="form-control quty"  hidden >
-                <input type="number" name='anotherQuantityInput'   style='margin-top:21px'  id="anotherQuantityInput" value="0" class="form-control quty" hidden >
-                <input type="number" name='quantity[]' value="{{pro.quantity}}"  oninput="qtychange1(this)"  style='margin-top:21px'  id="qty1{{pro.id}}" class="form-control qty" step=0 min=0 >
-                        
-            </td> 
-            
-            <td>
-                
-                <input type="text" name='price[]' id="unit1{{pro.id}}"   value="{{pro.price}}"
-                class="form-control price" step="0.00" min="0" />
-            </td>
-
-
-            <td><button type="button" data-id="{{pro.id}}" class="btn btn-outline-secondary delete-btn" onclick="this">-</button></td>
-            
-        </tr>
-        {% endfor %}
-        </tbody>
-        <tr>
-            <td style="border: none;"><a class="btn btn-outline-secondary ml-1" role="button" id="addrow" onclick="add_item_row()">+</a></td>
-        </tr>
+                  </select>
+              </div>
+          </td>
+          <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='{{m.quantity_avail}}' name="qtyav[]" id="qtyavail{{m.id}}">
+          </td>
+          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value='{{m.quantity_inhand}}'>
+          </td>
+          
+          <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value='{{m.quantity_adj}}'>
+          </td>
+          <td class='text-center'>
+              <button type='button' id='del_btn1' class='btn btn-outline-secondary  delete-row'>-</button> 
+          </td>
+      </tr>
+      {% endfor %}
+      </tbody>
     </table> 
-    <!-- <button type="button" class="btn btn-outline-secondary tab1" id="add-row" title="add row">+</button> -->
+    <button type="button" class="btn btn-outline-secondary tab1" id="add-row" title="add row">+</button>
 
   </div>
 </div>
 
+<script>
+  $(document).ready(function () {
+    // Initialize select2 for the select element with ID 'selectss1'
+    $('#selectss1').select2();
+    
+    // Iterate through each select element with class 'selectssss'
+    $('.selectssss').each(function () {
+        // Extract the unique ID from the element's ID attribute
+        var id = $(this).attr('id');
+        
+        // Initialize select2 for the current select element based on its ID
+        $('#' + id).select2();
+    });
+  });
+</script>
 
 
 <script>
   // FIRST ROW
-  // let rowNum = 1;
+  let rowNum = 1;
   const rownumber = document.querySelector('.rownum');
   rownumber.innerHTML = rowNum;
   
@@ -465,34 +453,31 @@
       }
   });
 
+
+
   
 // quantity
-function selectonchange() {
-  const itemSelect = document.querySelector('.item_select');
-  const qtyInput = document.querySelector('.qty');
-  const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-  const selectedValue = selectedOption.value;
-
-  console.log('selectedValue', selectedValue);
-
-  $.ajax({
-    type: "GET",
-    url: "{% url 'getitemdata1' %}",
-    data: {
-      id: selectedValue,
-
-  
-    },
-    success: function (response) {
-      var stck = response.stock;
-      document.getElementById('quant').value = stck;
-    },
-    error: function (error) {
-      console.error('Ajax request failed:', error);
-    }
-  });
-}
-
+function selectonchange(m,j) {
+  var select = m.value;
+    $.ajax({
+        type: "GET",
+        url: "{% url 'getitemdata1' %}",
+        data: {
+            id: select,
+    
+        },
+        success: function (response) {
+        
+          
+        var stck = response.stock;
+        document.getElementById(`qtyavail${j}`).value = stck;   
+        },
+        error: function (error) {
+          console.error('Ajax request failed:', error);
+        }
+        
+    });
+};
   
   // NEW ROW
   document.addEventListener('DOMContentLoaded', function() {
@@ -589,12 +574,42 @@ function selectonchange2(no){
   }
   
 
+
   </script> 
      
-  
+   
 
 
 
+<!-- <script>
+  $(document).ready(function() {
+
+     $(`.selectssss${}`).select2();
+
+
+   $('#selectss1').select2();
+$(document).on('change', '#selectss1', function () {
+                                   
+    console.log('Select changed');
+    var selectedValue = $(this).val();
+    $.ajax({
+        type: "GET",
+        url: "{% url 'getitemdata1' %}",
+        data: {
+            id: selectedValue,
+            
+        },
+        success: function (response) {
+          var stck = response.stock;
+          document.getElementById('qtyavail1').value=stck;
+                                      
+                              },
+                                
+                        });
+                  });
+
+              });
+</script> -->
 
 <script type="text/javascript">
   $(document).on('input', '#qty_hand1', function() {
@@ -634,38 +649,40 @@ function selectonchange2(no){
                 </tr>
             </thead>
             <tbody>
-              {% for j in st_items %}
-
-           
+              {% for m in st_items %}
                 <tr id='row2' class="">
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left' name='item2[]' id='item_selectss2' onchange="valuechange()">
-                                <option class='text-light text-left' value="{{ j.item.name }}"  selected>{{ j.item.name }}</option>
-
+                          <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left selectsssss' name='item2[]' id='item_selectss2{{m.id}}' onchange="valuechange(this,`{{ m.id }}`)">
+                                
                                 {% for i in items %}
-                                    {% if j.item.name == i.name %}
-
-                                <option class="text-dark " value="{{i.name}}" data-stock="{{i.stock}}" data-rate="{{i.rate}}"   hidden>{{i.name}}</option>
-                                    {% else %}
-                                <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" data-rate="{{i.rate}}" >{{i.name}}</option>
-                                    {% endif %}
-                                {% endfor %}
+                                {% if i.name == m.item.name %}
+                                  <option value="{{ i.name }}" data-tokens="{{ i.name }}" selected>
+      
+                                      {{ i.name }} 
+                                  </option>
+                                {% else %}
+                              <option value="{{ i.name }}" data-tokens="{{ i.name }}">
+              
+                              {{ i.name }}
+                              </option>
+                              {% endif %}
+                              {% endfor %}
                             </select>
                         </div>
                     </td>
                     <!-- id='rate1' -->
-                    <td class=''><input type='number'  class='form-control bg-transparent border-1  text-light  text-right  value' id="currentval" name='cuval[]'
-                            value='{{ j.current_val }}' style="background-color: rgb(255 255 255 / 14%)!important;">
+                    <td class=''><input type='number'  class='form-control bg-transparent border-1  text-light  text-right  value' id="currentval{{ m.id }}" name='cuval[]'
+                            value='{{m.current_val}}' style="background-color: rgb(255 255 255 / 14%)!important;">
                     </td>
                     <!-- id='rate2' -->
                     <td class=''><input type='number'  class='form-control bg-transparent border-1  text-light  text-right  changval' name='chval[]'
-                            value='{{ j.changed_val }}' style="background-color: rgb(255 255 255 / 14%)!important;" id="changval">
+                            value='{{m.changed_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="changval">
                     </td>
                     <!-- id='discount1' -->
                     <td class=''><input type='text'  class='form-control bg-transparent border-1  text-light  text-right  adjval' name='adjval[]'
-                            value='{{ j.adjusted_val }}' style="background-color: rgb(255 255 255 / 14%)!important;" id="diff2">
+                            value='{{m.adjusted_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="diff2">
                     </td>
                     
 
@@ -688,6 +705,32 @@ function selectonchange2(no){
 </div>
 
 </div>
+
+
+<script>
+  $(document).ready(function () {
+    // Initialize select2 for the select element with ID 'selectss1'
+    $('#item_selectss2').select2();
+    
+    // Iterate through each select element with class 'selectssss'
+    $('.selectsssss').each(function () {
+        // Extract the unique ID from the element's ID attribute
+        var id = $(this).attr('id');
+        
+        // Initialize select2 for the current select element based on its ID
+        $('#' + id).select2();
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
       const row = document.getElementById('row2');
@@ -714,7 +757,7 @@ function selectonchange2(no){
           const selectedItem = qtyInput.value;
           const rateValue = parseFloat(changval.value) || 0;
           const qtyValue = parseFloat(selectedItem) || 0;
-          const difference = rateValue- qtyValue  ;
+          const difference = qtyValue - rateValue;
           console.log(rateValue, 'rateValue');
           console.log(qtyValue, 'qtyValue');
   
@@ -731,31 +774,31 @@ function selectonchange2(no){
   
   
 // quantity
-function selectonchange() {
-  const itemSelect = document.querySelector('.item_select');
-  const qtyInput = document.querySelector('.qty');
-  const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-  const selectedValue = selectedOption.value;
+// function selectonchange() {
+//   const itemSelect = document.querySelector('.item_select');
+//   const qtyInput = document.querySelector('.qty');
+//   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+//   const selectedValue = selectedOption.value;
 
-  console.log('selectedValue', selectedValue);
+//   console.log('selectedValue', selectedValue);
 
-  $.ajax({
-    type: "GET",
-    url: "{% url 'getitemdata1' %}",
-    data: {
-      id: selectedValue,
+//   $.ajax({
+//     type: "GET",
+//     url: "{% url 'getitemdata1' %}",
+//     data: {
+//       id: selectedValue,
 
   
-    },
-    success: function (response) {
-      var stck = response.stock;
-      document.getElementById('quant').value = stck;
-    },
-    error: function (error) {
-      console.error('Ajax request failed:', error);
-    }
-  });
-}
+//     },
+//     success: function (response) {
+//       var stck = response.stock;
+//       document.getElementById('quant').value = stck;
+//     },
+//     error: function (error) {
+//       console.error('Ajax request failed:', error);
+//     }
+//   });
+// }
 
 </script>
 
@@ -885,22 +928,18 @@ function selectonchange() {
 
 
 // value for row 1
-function valuechange(){
- const select =document.getElementById('item_selectss2')
-const selectedOption = select.options[select.selectedIndex];
-const selectedItem = selectedOption.value
-console.log('selectedItem sasda',selectedItem)
-
+function valuechange(m,j){
+  var select = m.value;
 $.ajax({
           type: "GET",
           url: "{% url 'getitemdata2' %}",
           data: {
-              id: selectedItem,
+              id: select,
               
           },
           success: function (response) {
             var val = response.value;
-            document.getElementById('currentval').value=val;
+            document.getElementById(`currentval${j}`).value=val;
                                         
                                 },
                                   
@@ -1108,13 +1147,7 @@ $.ajax({
 
   <div class="row mt-3">
     <div class="col-md-3">
-
-      {% if stocks.attach_file %}
-        <input class="form-control" type="file" id="file" name="file" src="{{ stocks.attach_file.url }}">
-
-      {% else %}
-      <input class="form-control" type="file" id="file" name="file">
-      {% endif %}
+        <input class="form-control" type="file" id="file" name="file">
     </div>
 </div>
 
@@ -1271,29 +1304,46 @@ function reloadReason() {
 
 
    
-        function toggleDiv() {
-            var selectedValue = document.getElementById("adjust").value;
-            var quantityDiv = document.getElementById("quantityDiv");
-            var valueDiv = document.getElementById("valueDiv");
+        // function toggleDiv() {
+        //     var selectedValue = document.getElementById("adjust").value;
+        //     var quantityDiv = document.getElementById("quantityDiv");
+        //     var valueDiv = document.getElementById("valueDiv");
 
-            if (selectedValue === "Quantity") {
-                quantityDiv.style.display = "block";
-                valueDiv.style.display = "none";
-            } else {
+        //     if (selectedValue === "Quantity") {
+        //         quantityDiv.style.display = "block";
+        //         valueDiv.style.display = "none";
+        //     } else {
                 
-                valueDiv.style.display = "block";
-                quantityDiv.style.display = "none";
-                console.log("hi")
+        //         valueDiv.style.display = "block";
+        //         quantityDiv.style.display = "none";
+        //         console.log("hi")
 
-            }
-        }
+        //     }
+        // }
 
 
 
 
     </script>
 
+<script>
+  function toggleDiv() {
+      var selectedValue = document.getElementById("adjust").value;
+      var quantityDiv = document.getElementById("quantityDiv");
+      var valueDiv = document.getElementById("valueDiv");
 
+      if (selectedValue === "Quantity") {
+          quantityDiv.style.display = "block";
+          valueDiv.style.display = "none";
+      } else {
+          valueDiv.style.display = "block";
+          quantityDiv.style.display = "none";
+      }
+  }
+
+  // Call toggleDiv function when the page loads
+  window.onload = toggleDiv;
+</script>
 
 
   

@@ -92,6 +92,8 @@ urlpatterns = [
     path('add_reason',views.add_reason,name='add_reason'),
     path('newreasonslist',views.newreasonslist,name='newreasonslist'),
     path('Stk_adjHistory/<int:id>',views.Stk_adjHistory,name='Stk_adjHistory'),
+    path('filterbySave',views.filterbySave,name='filterbySave'),
+    path('filterbyDraft',views.filterbyDraft,name='filterbyDraft'),
 
 
 
@@ -105,6 +107,10 @@ urlpatterns = [
     path('convert_stockadj/<int:id>',views.convert_stockadj,name='convert_stockadj'),
     path('edit_stockadj/<int:id>',views.edit_stockadj,name='edit_stockadj'),
     path('updatedStockAdj/<int:id>',views.updatedStockAdj,name='updatedStockAdj'),
+    path('deleteitem/<int:id>',views.deleteitem,name='deleteitem'),
+    path('stock_attachFile<int:id>',views.stock_attachFile,name='stock_attachFile'),
+    path('stockadjToEmail?<int:id>',views.stockadjToEmail,name='stockadjToEmail'),
+
 
 
     

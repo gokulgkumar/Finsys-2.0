@@ -13,10 +13,11 @@
     .tooltip-container .tooltip-text {
     display: none;  /* Hide the text initially */
     position: absolute;
-    background-color:#2f516f;
-    border: 1px solid #ddd;
+    background-color:#000000;
+
     border-radius: 4px;
-    margin-left: 15px;
+    margin-top: -35px!important;
+    margin-left: -25px!important;
     padding: 5px;
     z-index: 1;
 }
@@ -56,34 +57,35 @@
                 </div>
                 <div class="col-md-2" style="width: 40%; margin-top: 8px;">
                     <div class="dropdown">
-                        <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
+                        <button type="button" class="btn btn-outline-secondary  dropdown-toggle text-light"
                                 data-toggle="dropdown"><i class="fa fa-sort">  </i> Sort by
                         </button>
                         <div class="dropdown-menu" style="background-color: black;">
-                            <a class="dropdown-item" href="" style="height: 40px; font-size: 15px; color: white;" >All</a>
-                            <a class="dropdown-item" style="height: 40px; font-size: 15px; color: white;" onclick="sortTable(2)">Date</a>
-                            <a class="dropdown-item" style="height: 40px; font-size: 15px; color: white;" onclick="sortTable(5)">Reference Number</a>
+                            <a class="dropdown-item dropdown-item1" href="#" style="font-size: 15px; color: white; cursor: pointer;" >All</a>
+                            <a class="dropdown-item dropdown-item1" href="#" style="font-size: 15px; color: white; cursor: pointer;" >Date</a>
+                            <a class="dropdown-item dropdown-item1" href="#" style="font-size: 15px; color: white; cursor: pointer;" >Reference Number</a>
+                            
                             
                         </div>
                     </div> 
                 </div>
                 <div class="col-md-2 "></div>
                 <div class="col-md-2 d-flex justify-content-end" style="width: 40%; margin-top: 8px;">
-                  <button type="button" class="btn btn-outline-info  text-grey" onclick="ExportToExcel()"> <i class="fa fa-table"></i>  Export To Excel</button>
+                  <button type="button" class="btn btn-outline-secondary  text-light" onclick="ExportToExcel()"> <i class="fa fa-table"></i>  Export To Excel</button>
                 </div>
                 <div class="col-md-1 d-flex justify-content-center" style="width: 40%; margin-top: 8px;">
                   <div class="dropdown">
-                      <button type="button" class="btn btn-outline-info dropdown-toggle text-grey " data-toggle="dropdown"> <i class="fa fa-filter"></i> Filter by</button>
+                      <button type="button" class="btn btn-outline-secondary dropdown-toggle text-light " data-toggle="dropdown"> <i class="fa fa-filter"></i> Filter by</button>
                       <div class="dropdown-menu" style="background-color: black;">
-                          <a class="dropdown-item" href="#" onclick="filterTable('All')" style="height: 40px; font-size: 15px; color: white;">All</a>
-                          <a class="dropdown-item" href="#" onclick="filterTable('Save')" style="height: 40px; font-size: 15px; color: white;">Save</a>
-                          <a class="dropdown-item" href="#" onclick="filterTable('Draft')" style="height: 40px; font-size: 15px; color: white;">Draft</a>
+                        <a class="dropdown-item" href="{% url 'StockAdjustment' %}"  style="font-size: 15px; color: white; cursor: pointer;">All</a>
+                        <a class="dropdown-item" href="{% url 'filterbySave' %}"  style=" font-size: 15px; color: white; cursor: pointer;">Save</a>
+                        <a class="dropdown-item" href="{% url 'filterbyDraft' %}" style="font-size: 15px; color: white; cursor: pointer;">Draft</a>
                       </div>
                   </div>
               </div>
                
                 <div class="btn-group col-md-2 ">
-                  <a href="{% url 'AddStockAdjustment' %}"  class="btn btn-outline-info text-grey " style="width: 20%; margin-top: 8px;" role="button"> <i class="fa fa-plus"></i> Add Adjustment</a>
+                  <a href="{% url 'AddStockAdjustment' %}"  class="btn btn-outline-secondary text-light " style="width: 20%; margin-top: 8px;" role="button"> <i class="fa fa-plus"></i> Add Adjustment</a>
               </div>
 
             </div>
@@ -93,14 +95,15 @@
                     <thead>
                       <tr class="text-center">
                         <th scope="col">SL.No</th>
-                        <th scope="col">Date</th>
+                        <th scope="col" >Date</th>
                         <th scope="col">Reason</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Reference Number</th>
+                        <th scope="col" >Reference Number</th>
                         <th scope="col">Type</th>
                         <th scope="col">Status</th>
                       </tr>
                     </thead>
+      
                     <tbody class="text-center">
                         {% for i in stock_adj %}
                         <tr onclick="window.location='{% url 'StockAdjustmentOverview' i.id %}';" style="cursor: pointer;">
@@ -108,7 +111,7 @@
                         <td>{{ i.adjusting_date }}</td>
                         <td>{{ i.reason }}</td>
                         <td class="tooltip-container">
-                            <span class="tooltip-trigger"><i class="fa fa-edit"></i></span>
+                            <span class="tooltip-trigger"><i class="fa fa-commenting"></i></span>
                           <span class="tooltip-text">{{ i.description }}</a> </span>
                         </td>
                         <td>{{ i.reference_no }}</td>
@@ -123,26 +126,51 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+<script>
+    $(document).ready(function () {
+        // Function to handle sorting
+        function sortTable(columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("myTable"); // Replace with your table ID
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < rows.length - 1; i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        // Event listener for dropdown items
+        $(".dropdown-item1").click(function (e) {
+            e.preventDefault();
+            var columnIndex = $(this).index() + 1; // Index starts from 0, so add 1
+            sortTable(columnIndex);
+        });
+    });
+</script>
+   
+      
 
 
-    <script>
-      function filterTable(filterValue) {
-          var table, rows, i;
-          table = document.getElementById("myTable");
-          rows = table.getElementsByTagName("tr");
+   
+
+      
+
   
-          for (i = 1; i < rows.length; i++) {
-              var typeColumn = rows[i].getElementsByTagName("td")[7]; // Assuming 'Type' is at index 6
-  
-              if (filterValue === "All" || typeColumn.innerHTML.toLowerCase() === filterValue.toLowerCase()) {
-                  rows[i].style.display = "";
-              } else {
-                  rows[i].style.display = "none";
-              }
-          }
-      }
-  </script>
-
   
 <script>
 $(document).ready(function() {

@@ -106,9 +106,9 @@
     <br>
 
     <div class="d-flex justify-content-end mb-1">
-      <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
+      <a href="{% url 'StockAdjustmentOverview' stocks.id %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
-    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'updatedStockAdj' stocks.id%}" method="POST" enctype="multipart/form-data">
     <div class="page-content" style="margin-top:-2rem ;">
       
         <div class="card radius-15">
@@ -323,34 +323,7 @@
         <br>
 
 
-              <!--  <tr class="row0" id="row1">
-          <td>1</td>
-          <td style="width: 20%;">
-            
-              <select name='item1' class="form-control select2 selectt" id="selectss1" style="color: black;">
-                <option value="" selected disabled >Select Product</option>
-                {% for i in items %}
-                <option value="{{ i.name }}" class="text-dark" style="color: black !important;">{{ i.name }}</option>
-                {% endfor  %}
-              </select>
-            
-          </td>
-          <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail1"></td>
-          <td><input type="number" name='newqty1' class="form-control" style="text-align:right;" id="qty_hand1" ></td>
-          <td><input type="number" name='qtyadj1' class="form-control qty" id="new_qty1"></td>
-          <td style="border: none; " class="text-center">
-            <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow1(this)">-</a>
-          </td>
-        </tr>-->
-
-           <!-- <a role="button" class="btn btn-outline-secondary ml-1" onclick="addRow1()">+</a> -->
-
-
-
-
-
-
-
+        <input type="text" name="" id="count" value="{{cnt_item}}" hidden>
 
 <!----------------------------------------------------------- Quantity Adjustment ------------------------------------------------------------->
 <div class="row" id="quantityDiv">
@@ -386,13 +359,13 @@
           </td>
           <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='{{m.quantity_avail}}' name="qtyav[]" id="qtyavail{{m.id}}">
           </td>
-          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value='{{m.quantity_inhand}}'>
+          <td class='text-right'><input type='number' id='onhandqty{{m.id}}' class='form-control border-1  text-light text-right rate' name='newqty[]' value='{{m.quantity_inhand}}' oninput="qtyInhand(this,`{{m.id}}`)">
           </td>
           
-          <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value='{{m.quantity_adj}}'>
+          <td class='text-right'><input type='text' id='adjustedQty{{m.id}}' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value='{{m.quantity_adj}}'>
           </td>
           <td class='text-center'>
-              <button type='button' id='del_btn1' class='btn btn-outline-secondary  delete-row'>-</button> 
+              <button type='button' id='del_btn1'  data-id="{{m.id}}" class='btn btn-outline-secondary delete-row1'>-</button> 
           </td>
       </tr>
       {% endfor %}
@@ -419,42 +392,24 @@
   });
 </script>
 
+<script>
+function qtyInhand(j,m){
+  const currentQty = parseInt(document.getElementById(`qtyavail${m}`).value)
+  const changeQty = parseInt(document.getElementById(`onhandqty${m}`).value)
+  const difference = changeQty - currentQty
+  document.getElementById(`adjustedQty${m}`).value=difference
+}
+
+
+</script>
+
 
 <script>
   // FIRST ROW
-  let rowNum = 1;
+  let rowNum = document.getElementById('count').value;
   const rownumber = document.querySelector('.rownum');
-  rownumber.innerHTML = rowNum;
+ 
   
-  document.addEventListener('DOMContentLoaded', function() {
-      const itemSelect = document.querySelector('.item_select');
-      const qtyInput = document.querySelector('.qty');
-      const onhandqtyInp = document.getElementById('onhandqty');
-      const diffInput = document.getElementById('diff');
-
-      console.log(itemSelect,'itemSelect')
-  
-      itemSelect.addEventListener('change', function() {
-          const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-          const stock = selectedOption.getAttribute('data-stock');
-          qtyInput.value = stock;
-          updateDifference();
-      });
-  
-      onhandqtyInp.addEventListener('input', function() {
-        updateDifference();
-      });
-  
-      function updateDifference() {
-          const rateValue = parseFloat(onhandqtyInp.value) || 0;
-          const qtyValue = parseFloat(qtyInput.value) || 0;
-          const difference = rateValue - qtyValue;
-          diffInput.value = difference.toFixed(2);
-      }
-  });
-
-
-
   
 // quantity
 function selectonchange(m,j) {
@@ -581,35 +536,6 @@ function selectonchange2(no){
 
 
 
-<!-- <script>
-  $(document).ready(function() {
-
-     $(`.selectssss${}`).select2();
-
-
-   $('#selectss1').select2();
-$(document).on('change', '#selectss1', function () {
-                                   
-    console.log('Select changed');
-    var selectedValue = $(this).val();
-    $.ajax({
-        type: "GET",
-        url: "{% url 'getitemdata1' %}",
-        data: {
-            id: selectedValue,
-            
-        },
-        success: function (response) {
-          var stck = response.stock;
-          document.getElementById('qtyavail1').value=stck;
-                                      
-                              },
-                                
-                        });
-                  });
-
-              });
-</script> -->
 
 <script type="text/javascript">
   $(document).on('input', '#qty_hand1', function() {
@@ -637,8 +563,8 @@ $(document).on('change', '#selectss1', function () {
   <div class="row" id="valueDiv">
     <div class="col-sm-12 col-lg-12 col-md-12 ">
         <label for="" id="label_tab2" class="tab2"></label><br>
-        <div style="width: 100%;">
-            <table class="table  text-black table-bordered tab2" id="item_table2" style="width: 100%;">
+        <div style="width: 100%;" class="table-responsive"> 
+            <table class="table  text-black  table-bordered tab2" id="item_table2" style="width: 100%;">
             <thead>
                 <tr class="text-center">
                   <th class="" style="font-weight: bold;;">Sl No.</th>
@@ -651,7 +577,7 @@ $(document).on('change', '#selectss1', function () {
             <tbody>
               {% for m in st_items %}
                 <tr id='row2' class="">
-                    <td class="bg-transparent text-light rownum2 "  ></td>
+                    <td class="bg-transparent text-light rownum2 " data-set="{{forloop.counter}}">{{forloop.counter}}</td>
                     <td>
                         <div class='form-group mt-3'>
                           <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left selectsssss' name='item2[]' id='item_selectss2{{m.id}}' onchange="valuechange(this,`{{ m.id }}`)">
@@ -672,24 +598,20 @@ $(document).on('change', '#selectss1', function () {
                             </select>
                         </div>
                     </td>
-                    <!-- id='rate1' -->
+                 
                     <td class=''><input type='number'  class='form-control bg-transparent border-1  text-light  text-right  value' id="currentval{{ m.id }}" name='cuval[]'
                             value='{{m.current_val}}' style="background-color: rgb(255 255 255 / 14%)!important;">
                     </td>
-                    <!-- id='rate2' -->
+                    
                     <td class=''><input type='number'  class='form-control bg-transparent border-1  text-light  text-right  changval' name='chval[]'
-                            value='{{m.changed_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="changval">
-                    </td>
-                    <!-- id='discount1' -->
-                    <td class=''><input type='text'  class='form-control bg-transparent border-1  text-light  text-right  adjval' name='adjval[]'
-                            value='{{m.adjusted_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="diff2">
+                            value='{{m.changed_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="changval{{ m.id }}"  oninput="changeval(this,`{{m.id}}`)">
                     </td>
                     
+                    <td class=''><input type='text'  class='form-control bg-transparent border-1  text-light  text-right  adjval' name='adjval[]'
+                            value='{{m.adjusted_val}}' style="background-color: rgb(255 255 255 / 14%)!important;" id="adjustedVal{{m.id}}">
+                    </td>
 
-                   
-                    <td class='text-center'><button type='button' id='del_btn2'
-                            class='btn btn-outline-secondary delete-row'
-                            style='width:30px'>-</button>
+                    <td class='text-center'><a type='button' id='del_btn2' data-id="{{m.id}}" class='text-light btn btn-outline-secondary delete-row1' style='width:30px' onclick="this">-</a>
                                 
                               </td>
                 </tr>
@@ -705,6 +627,43 @@ $(document).on('change', '#selectss1', function () {
 </div>
 
 </div>
+
+<script>
+
+  
+
+$(document).ready(function () {
+    $('.delete-row1').on('click', function () {
+        
+        var itemId = $(this).data('id');
+        var deleteUrl = "{% url 'deleteitem' 0 %}".replace('0', itemId);
+        console.log('deleteUrl',deleteUrl)
+        if (confirm('Are you sure you want to delete this item?')) {
+            
+            $.ajax({
+                url: deleteUrl,
+                method: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+
+                    location.reload();  
+                },
+                error: function (error) {
+                    
+                    console.log(error);
+                },
+            });
+        } else {
+            alert("Deletion cancelled")
+        }
+    });
+});
+
+
+
+</script>
 
 
 <script>
@@ -724,90 +683,15 @@ $(document).on('change', '#selectss1', function () {
 </script>
 
 
-
-
-
-
-
-
-
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const row = document.getElementById('row2');
-      const qtyInput = document.getElementById('currentval');
-      const changval = row.querySelector('.changval');
-      const diffInput = row.querySelector('.adjval');
-      const select = row.querySelector('.item_selectss2');
+function changeval(j,m){
+  const currentVal =parseFloat(document.getElementById(`currentval${m}`).value)
+  const changval = parseFloat(document.getElementById(`changval${m}`).value)
+  const difference = changval - currentVal
+  document.getElementById(`adjustedVal${m}`).value=difference
   
-      // Initial calculation
-      updateDifference();
-  
-      // Event listener for item selection change
-      select.addEventListener('change', function () {
-          updateDifference();
-      });
-  
-      // Event listener for changed value input
-      changval.addEventListener('input', function () {
-          updateDifference();
-      });
-  
-      function updateDifference() {
-          const selectedOption = select.options[select.selectedIndex];
-          const selectedItem = qtyInput.value;
-          const rateValue = parseFloat(changval.value) || 0;
-          const qtyValue = parseFloat(selectedItem) || 0;
-          const difference = qtyValue - rateValue;
-          console.log(rateValue, 'rateValue');
-          console.log(qtyValue, 'qtyValue');
-  
-          // Only set the value if the difference is not zero
-          diffInput.value = difference !== 0 ? difference.toFixed(2) : '';
-      }
-  });
-  
-  </script>
-  
-
-
-<script>
-  
-  
-// quantity
-// function selectonchange() {
-//   const itemSelect = document.querySelector('.item_select');
-//   const qtyInput = document.querySelector('.qty');
-//   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-//   const selectedValue = selectedOption.value;
-
-//   console.log('selectedValue', selectedValue);
-
-//   $.ajax({
-//     type: "GET",
-//     url: "{% url 'getitemdata1' %}",
-//     data: {
-//       id: selectedValue,
-
-  
-//     },
-//     success: function (response) {
-//       var stck = response.stock;
-//       document.getElementById('quant').value = stck;
-//     },
-//     error: function (error) {
-//       console.error('Ajax request failed:', error);
-//     }
-//   });
-// }
-
+}
 </script>
-
-
-
-
-
-
-
 
 
 
@@ -815,12 +699,7 @@ $(document).on('change', '#selectss1', function () {
   <!-- Adding row for table 1 -->
   document.addEventListener('DOMContentLoaded', function() {
     const addRowButton2 = document.getElementById('add-row2');
-    let rowNum2 = 1; 
-
-    
-
-
-
+    let rowNum2 = document.getElementById('count').value; 
 
     addRowButton2.addEventListener('click', function() {
        
@@ -841,9 +720,9 @@ $(document).on('change', '#selectss1', function () {
                     </select>
                 </div>
             </td>
-            <td class='text-right'><input type='number' class='form-control bg-transparent border-1 border-light text-light text-right values' name='cuval[]' value='' id='currentval2${rowNum2}'  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
-            <td class='text-right'><input type='number' class='form-control bg-transparent border-1 border-light text-light text-right rate' name='chval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
-            <td class='text-right'><input type='text' class='form-control bg-transparent border-1 border-light text-light text-right discount' name='adjval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='number' class='form-control bg-transparent border-1  text-light text-right values' name='cuval[]' value='' id='currentval2${rowNum2}'  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='number' class='form-control bg-transparent border-1 text-light text-right rate' name='chval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='text' class='form-control bg-transparent border-1 text-light text-right discount' name='adjval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
             <td class='text-center'>
                 <button type='button' class='btn btn-transparent btn-sm btn-outline-secondary  delete-row' style='width:30px'>-</button>
             </td>
@@ -872,12 +751,6 @@ $(document).on('change', '#selectss1', function () {
       
         const target = e.target;
 
-
-
-      
-
-
-       
         if (target.classList.contains('item_select2')) {
             const selectedOption = target.options[target.selectedIndex];
             const stock = selectedOption.getAttribute('data-stock');
@@ -952,8 +825,6 @@ $.ajax({
 
 
   
-
-<!-- const itemSelect = document.querySelector(`.item_select${no}`); -->
 <script>
             // value-innerhtml
             function valuechange2(nos){
@@ -981,54 +852,6 @@ $.ajax({
        
 
 </script>
-
-
-
-
-
-
-  <!-- <div class="row " id="valueDiv" >
-    <div class="col-md-12 table-responsive-md mt-3">
-      <table class="table table-bordered table-hover mt-3" id="tab_logic">
-        <thead>
-          <tr id>
-            <th  class="text-center" >Sl No.</th>
-            <th class="text-center" >Item details</th>
-            <th class="text-center">Value Available</th>
-            <th class="text-center">New Value in Stock</th>
-            <th class="text-center">Adjusted Stock in Value</th>
-          <th></th>
-          </tr>
-        </thead>
-        <tbody id="items-table-body2">
-          <tr class="row0" id="row1">
-            <td>1</td>
-            <td style="width: 20%;">
-              
-                <select name='item2' id="selectss3"  class="form-control select2  " style="background-color: #243e54;" >
-                <option value=" " selected disabled >Select Product</option>
-                {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-                {% endfor  %}
-                </select>
-             
-            </td>
-            <td><input type="number"  id="valavail1" name='cuval2' class="form-control" style="text-align:right;"></td>
-            <td><input type="number" id="val_stck1" name='chval2' class="form-control" style="text-align:right;" ></td>
-            <td><input type="number"  id="adj_val1" name='adjval2' class="form-control qty"></td>
-            <td style="border: none; " class="text-center">
-              <a role="button" class="btn btn-outline-secondary ml-1" onclick = "deleteRow2(this)">-</a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick = "addRow2()">+</a>
-    </div>
-  </div>
-
-  <div>
-    
-  </div> -->
 
   <script>
     $(document).ready(function() {
@@ -1060,86 +883,6 @@ $.ajax({
 
 
 
-
-  
-<!-- <script>
-  function addRow2() {
-    var tableBody = document.getElementById("items-table-body2");
-    var rowCount = tableBody.getElementsByTagName("tr").length;
-
-    var newRow = document.createElement("tr");
-    newRow.setAttribute("class", "row" + rowCount);
-    newRow.setAttribute("id", "row" + (rowCount + 1));
-
-    newRow.innerHTML = `
-      <td>${rowCount + 1}</td>
-      <td>
-        <div>
-          <select name='item2' class="form-control select2 " id="selectss4${rowCount + 1}" required>
-            <option value=" " selected disabled>Select Product</option>
-            {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-                {% endfor  %}
-          </select>
-        </div>
-      </td>
-      <td><input type="number" id="valavail2${rowCount + 1}" name="cuval2" class="form-control " style="text-align:right;"></td>
-      <td><input type="number" id="val_stck2${rowCount + 1}" name="chval2" class="form-control valinp" style="text-align:right;" ></td>
-      <td><input type="number" name="adjval2" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
-      <td style="border: none; " class="text-center">
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
-      </td>
-    `;
-
-    tableBody.appendChild(newRow);
-
-   
-    $("#selectss4" + (rowCount + 1)).select2({
-      
-    });
-
-    $(document).on('change', `#selectss4${rowCount + 1}`, function () {
-        console.log('Select changed');
-        var selectedValue = $(this).val();
-        console.log('selectedValue ',selectedValue);
-        $.ajax({
-            type: "GET",
-            url: "{% url 'getitemdata2' %}",
-            data: {
-                id: selectedValue,
-            },
-            success: function (response) {
-              var valu = response.value;
-            document.getElementById(`valavail2${rowCount + 1}`).value=valu;
-            },
-        });
-    });
-
-    $(document).on('input', '.valinp', function() {
-      console.log('input')
-        var valuestock = parseFloat(document.getElementById(`val_stck2${rowCount + 1}`).value);
-        var valavail = parseFloat(document.getElementById(`valavail2${rowCount + 1}`).value);
-        var difference = valuestock - valavail;
-        document.getElementById(`adj_val2${rowCount + 1}`).value = difference;
-    });
-}
-
-  
-
-  function deleteRow(button) {
-  var row = button.parentNode.parentNode;
-  var tableBody = row.parentNode;
-  tableBody.removeChild(row);
-
-  
-  var rows = tableBody.getElementsByTagName("tr");
-  for (var i = 0; i < rows.length; i++) {
-    rows[i].getElementsByTagName("td")[0].innerText = i + 1;
-  }
-}
-
-</script> -->
-
 <!-----------------------------------------------------------------------End Value Adjustment----------------------------------------------------------------->
 
 
@@ -1147,15 +890,17 @@ $.ajax({
 
   <div class="row mt-3">
     <div class="col-md-3">
-        <input class="form-control" type="file" id="file" name="file">
+        <input class="form-control" type="file" id="file" name="file" >
+     
     </div>
 </div>
 
 <br><br>
 
 <div class="notices mt-3">
-  <div class="text-muted">NOTICE:</div>
-  <div class="text-muted">
+  <div class="text-muted text-light">NOTICE:</div>
+  <div class="text-muted text-light">
+    <input type="checkbox" required>
     Fin sYs Terms and Conditions Apply
   </div>
 </div>
@@ -1163,12 +908,8 @@ $.ajax({
 <br><br>
 
 <div class="text-center">
-  <button type="submit" class="btn btn-outline-info rounded-pill  text-grey mx-3" name="save">
-    Save
-  </button>
-  <button type="submit" class="btn btn-outline-info rounded-pill  text-grey mx-3" name="draft">
-    Draft
-  </button>
+  <button type="submit" class="btn btn-outline-secondary text-grey mx-3 w-25" name="save">Update</button>
+
   
 </div>
 

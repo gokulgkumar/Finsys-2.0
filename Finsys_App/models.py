@@ -706,8 +706,6 @@ class Stock_Adjustment_History(models.Model):
     action = models.CharField(max_length=255,null=True,blank=True)
     stock_adjustment=models.ForeignKey(Stock_Adjustment,on_delete=models.CASCADE,null=True,blank=True)
 
-    
-
 class Stock_Adjustment_Comment(models.Model):
     company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
     login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
@@ -720,6 +718,10 @@ class Stock_Reason(models.Model):
     login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
     reason = models.CharField(max_length=500,default='')
   
+class Stock_Adjustment_RefNo(models.Model):
+    company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True,blank=True)
+    login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True,blank=True)
+    reference_no = models.BigIntegerField(null = False, blank=False)
     
     
 

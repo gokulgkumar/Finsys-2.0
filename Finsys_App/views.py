@@ -1611,7 +1611,6 @@ def Fin_Edit_Staff_profile_Action(request):
 
     
 
-
 def StockAdjustment(request):
     if 's_id' in request.session:
         s_id = request.session['s_id']
@@ -1619,22 +1618,16 @@ def StockAdjustment(request):
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            # if stock_adj:
-            stock_adj= Stock_Adjustment.objects.filter(company=com)
-                # id=''
-                # for i in stock_adj:
-                #     id=i.id
+            
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
 
-            # stock_adjyType=Stock_Adjustment_Items.objects.filter(company=com,stock_adjustment=id)
-            # print(stock_adjyType,'stock_adjyType')
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data})  
+        terms = Fin_Payment_Terms.objects.all()
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        stock_adj= Stock_Adjustment.objects.filter(company=com)
+        return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})  
 
 def AddStockAdjustment(request):
     if 's_id' in request.session:
@@ -1643,26 +1636,28 @@ def AddStockAdjustment(request):
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            items=Fin_Items.objects.filter(Company = s_id)
-            accounts=Fin_Chart_Of_Account.objects.filter(Company=s_id)
-            date=datetime.now()
-            print('date',date)
-            reason=Stock_Reason.objects.filter(company=com)
-            return render(request,'company/Fin_AddStockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'items':items,'accounts':accounts,'date':date,'reason':reason})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            items=Fin_Items.objects.filter(Company = s_id)
-            accounts=Fin_Chart_Of_Account.objects.filter(Company=s_id)
-            date=datetime.now()
-            reason=Stock_Reason.objects.filter(company=com)
-            return render(request,'company/Fin_AddStockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'items':items,'accounts':accounts,'date':date,'reason':reason})  
+   
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        items=Fin_Items.objects.filter(Company = com)
+        accounts=Fin_Chart_Of_Account.objects.filter(Company=com)
+        date=datetime.now()
+        reason=Stock_Reason.objects.filter(company=com)
+
+        latest_inv = Stock_Adjustment.objects.filter(company = com).order_by('-id').first()
+        new_number = int(latest_inv.reference_no) + 1 if latest_inv else 1
+        if Stock_Adjustment_RefNo.objects.filter(company = com).exists():
+            deleted = Stock_Adjustment_RefNo.objects.get(company = com)
+            if deleted:
+                while int(deleted.reference_no) >= new_number:
+                    new_number+=1
+
+        return render(request,'company/Fin_AddStockAdjustment.html',{'allmodules':allmodules,'com':com,'n':n,'data':data,'items':items,'accounts':accounts,'date':date,'reason':reason,'ref_no':new_number})  
         
-
-
 
 
 def Fin_StockAdjustmentView(request):
@@ -1671,21 +1666,17 @@ def Fin_StockAdjustmentView(request):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})  
-        
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New') 
 
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        terms = Fin_Payment_Terms.objects.all()
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
+        
 
 def getitemdata1(request):
     if 's_id' in request.session:
@@ -1693,24 +1684,16 @@ def getitemdata1(request):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            item_name=request.GET.get('id')
-            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
-            stock=0
-            for i in items:
-                stock=i.current_stock
-            return JsonResponse({
-                 'stock':stock
-                })
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            item_name=request.GET.get('id')
-            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
-            stock=0
-            for i in items:
-                stock=i.current_stock
-            return JsonResponse({
-                 'stock':stock
-                })
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        item_name=request.GET.get('id')
+        items=Fin_Items.objects.filter(Company = com,name=item_name)
+        stock=0
+        for i in items:
+            stock=i.current_stock
+        return JsonResponse({'stock':stock})
         
 def getitemdata2(request):
     if 's_id' in request.session:
@@ -1718,35 +1701,23 @@ def getitemdata2(request):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            item_name=request.GET.get('id')
-            print(item_name,'item_name')
-            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
-            stock=0
-            purchase_price=0
-            value=0
-            
-            for i in items:
-                stock=i.current_stock
-                purchase_price=i.purchase_price
-                value=stock*purchase_price
-            print(value,'value')
-            return JsonResponse({
-                 'value':value
-                })
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            item_name=request.GET.get('id')
-            items=Fin_Items.objects.filter(Company = s_id,name=item_name)
-            stock=0
-            purchase_price=0
-            value=0
-            for i in items:
-                stock=i.current_stock
-                purchase_price=i.purchase_price
-                value=stock*purchase_price
-            return JsonResponse({
-                 'value':value
-                })
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        item_name=request.GET.get('id')
+        items=Fin_Items.objects.filter(Company = com,name=item_name)
+        stock=0
+        purchase_price=0
+        value=0
+        
+        for i in items:
+            stock=i.current_stock
+            purchase_price=i.purchase_price
+            value=stock*purchase_price
+        print(value,'value')
+        return JsonResponse({'value':value})
+    
         
 
 
@@ -1755,231 +1726,121 @@ def create_stockadjustment(request):
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
         if request.method == 'POST':
-            print(request.POST)
+            
             if data.User_Type == "Company":
                 com = Fin_Company_Details.objects.get(Login_Id = s_id)
-                mode_of_adj= request.POST['mode']
-                ref_no=request.POST['refno']
-                date=request.POST['date']
-                account=request.POST['account']
-                reason=request.POST['reason']
-                description = request.POST['desc']
-                if 'file' in request.FILES:
-                    attach_file = request.FILES['file']
-                else:
-                    attach_file = None
-                    
-                stock_adjustment=Stock_Adjustment.objects.create(
-                    company=com,
-                    login_details=data,
-                    mode_of_adjustment=mode_of_adj,
-                    reference_no=ref_no,
-                    adjusting_date=date,
-                    account=account,
-                    reason=reason,
-                    description=description,
-                    attach_file = attach_file,
+            elif data.User_Type == 'Staff':
+                com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
 
-                )
-                stock_adjustment.save()
-
-                if 'draft' in request.POST:
-                    stock_adjustment.status = "Draft"
-
-                elif 'save' in request.POST:
-                    stock_adjustment.status = "Save"
-
-                stock_adjustment.save()
-
-                if mode_of_adj == 'Quantity':
-                    item_names = request.POST.getlist('item1')
-                    print('item_names asdsadas',item_names)
-                    qty_available = request.POST.getlist('qtyav[]')
-                    new_qty_on_hand = request.POST.getlist('newqty[]')
-                    print(new_qty_on_hand,"new_qty_on_hand is")
-                    qty_adjusted = request.POST.getlist('qtyadj[]')
-
-                    if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
-                        for i in range(len(item_names)):
-
-                            item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
-                            item_instance.current_stock += int(new_qty_on_hand[i])
-                            item_instance.save()
-
-                            items1 = Stock_Adjustment_Items.objects.create(
-                                item=item_instance,
-                                quantity_avail=qty_available[i],
-                                quantity_inhand=new_qty_on_hand[i],
-                                quantity_adj=qty_adjusted[i],
-                                stock_adjustment=stock_adjustment,
-                                company=com,
-                                type='Quantity',
-                                login_details=data,
-                                
-                            )
-                            items1.save()
-                           
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
-                            company=com,
-                            login_details=data,
-                            item=item_instance,
-                            date=date,
-                            action='Created',
-                            stock_adjustment=stock_adjustment
-                        )
-                            stock_adj_history.save()
-
-
-                elif mode_of_adj == 'Value':
-                    items= request.POST.getlist('item2[]')
-                    current_value = request.POST.getlist('cuval[]')
-                    changed_value = request.POST.getlist('chval[]')
-                    value_adjusted = request.POST.getlist('adjval[]')
-
-                    if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
-                        for j in range(len(items)):
-
-                            item_inst = Fin_Items.objects.get(name=items[j])
-
-                            item_list= Stock_Adjustment_Items.objects.create(
-                                item=item_inst,
-                                current_val = current_value[j],
-                                changed_val = changed_value[j],
-                                adjusted_val = value_adjusted[j],
-                                company=com,
-                                login_details=data,
-                                stock_adjustment=stock_adjustment,
-                                type='Value'
-                            )
-                            item_list.save()
-
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
-                                company=com,
-                                login_details=data,
-                                item=item_inst,
-                                date=date,
-                                action = 'Created',
-                                stock_adjustment=stock_adjustment
-                        )
-                        stock_adj_history.save()
-
-                
-
-                return redirect('StockAdjustment')
-                
-
-                
+            mode_of_adj= request.POST['mode']
+            ref_no=request.POST['refno']
+            date=request.POST['date']
+            account=request.POST['account']
+            reason=request.POST['reason']
+            description = request.POST['desc']
+            if 'file' in request.FILES:
+                attach_file = request.FILES['file']
             else:
-                # ------------- Staff ----------------
-                 com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-                 if request.method == 'POST':
-                    mode_of_adj= request.POST['mode']
-                    ref_no=request.POST['refno']
-                    date=request.POST['date']
-                    account=request.POST['account']
-                    reason=request.POST['reason']
-                    description = request.POST['desc']
-                    if 'file' in request.FILES:
-                        attach_file = request.FILES['file']
-                    else:
-                        attach_file = None
+                attach_file = None
+                
+            stock_adjustment=Stock_Adjustment.objects.create(
+                company=com,
+                login_details=data,
+                mode_of_adjustment=mode_of_adj,
+                reference_no=ref_no,
+                adjusting_date=date,
+                account=account,
+                reason=reason,
+                description=description,
+                attach_file = attach_file,
+
+            )
+            stock_adjustment.save()
+
+            if 'draft' in request.POST:
+                stock_adjustment.status = "Draft"
+
+            elif 'save' in request.POST:
+                stock_adjustment.status = "Save"
+
+            stock_adjustment.save()
+
+            if mode_of_adj == 'Quantity':
+                item_names = request.POST.getlist('item1')
+                print('item_names asdsadas',item_names)
+                qty_available = request.POST.getlist('qtyav[]')
+                new_qty_on_hand = request.POST.getlist('newqty[]')
+                print(new_qty_on_hand,"new_qty_on_hand is")
+                qty_adjusted = request.POST.getlist('qtyadj[]')
+
+                if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
+                    for i in range(len(item_names)):
+
+                        item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
+                        item_instance.current_stock += int(new_qty_on_hand[i])
+                        item_instance.save()
+
+                        items1 = Stock_Adjustment_Items.objects.create(
+                            item=item_instance,
+                            quantity_avail=qty_available[i],
+                            quantity_inhand=new_qty_on_hand[i],
+                            quantity_adj=qty_adjusted[i],
+                            stock_adjustment=stock_adjustment,
+                            company=com,
+                            type='Quantity',
+                            login_details=data,
+                            
+                        )
+                        items1.save()
                         
-                    stock_adjustment=Stock_Adjustment.objects.create(
+                        stock_adj_history = Stock_Adjustment_History.objects.create(
                         company=com,
                         login_details=data,
-                        mode_of_adjustment=mode_of_adj,
-                        reference_no=ref_no,
-                        adjusting_date=date,
-                        account=account,
-                        reason=reason,
-                        description=description,
-                        attach_file = attach_file,
-
+                        item=item_instance,
+                        date=date,
+                        action='Created',
+                        stock_adjustment=stock_adjustment
                     )
-                    stock_adjustment.save()
-
-                    if 'draft' in request.POST:
-                        stock_adjustment.status = "Draft"
-
-                    elif 'save' in request.POST:
-                        stock_adjustment.status = "Save"
-
-                    stock_adjustment.save()
-
-                    if mode_of_adj == 'Quantity':
-                        item_names = request.POST.getlist('item1')
-                        print('item_names asdsadas',item_names)
-                        qty_available = request.POST.getlist('qtyav[]')
-                        new_qty_on_hand = request.POST.getlist('newqty[]')
-                        print(new_qty_on_hand,"new_qty_on_hand is")
-                        qty_adjusted = request.POST.getlist('qtyadj[]')
-
-                        if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
-                            for i in range(len(item_names)):
-
-                                item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
-                                item_instance.current_stock += int(new_qty_on_hand[i])
-                                item_instance.save()
-
-                                items1 = Stock_Adjustment_Items.objects.create(
-                                    item=item_instance,
-                                    quantity_avail=qty_available[i],
-                                    quantity_inhand=new_qty_on_hand[i],
-                                    quantity_adj=qty_adjusted[i],
-                                    type=mode_of_adj,
-                                    stock_adjustment=stock_adjustment,
-                                    company=com,
-                                    login_details=data,
-                                )
-                                items1.save()
-                            
-                                stock_adj_history = Stock_Adjustment_History.objects.create(
-                                company=com,
-                                login_details=data,
-                                item=item_instance,
-                                date=date,
-                                action='Created',
-                                stock_adjustment=stock_adjustment
-                            )
-                                stock_adj_history.save()
+                        stock_adj_history.save()
 
 
-                    elif mode_of_adj == 'Value':
-                        items= request.POST.getlist('item2[]')
-                        current_value = request.POST.getlist('cuval[]')
-                        changed_value = request.POST.getlist('chval[]')
-                        value_adjusted = request.POST.getlist('adjval[]')
+            elif mode_of_adj == 'Value':
+                items= request.POST.getlist('item2[]')
+                current_value = request.POST.getlist('cuval[]')
+                changed_value = request.POST.getlist('chval[]')
+                value_adjusted = request.POST.getlist('adjval[]')
 
-                        if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
-                            for j in range(len(items)):
-                                
-                                item_inst = Fin_Items.objects.get(name=items[j])
+                if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
+                    for j in range(len(items)):
 
-                                item_list= Stock_Adjustment_Items.objects.create(
-                                    item=item_inst,
-                                    current_val = current_value[j],
-                                    changed_val = changed_value[j],
-                                    adjusted_val = value_adjusted[j],
-                                    company=com,
-                                    login_details=data,
-                                    stock_adjustment=stock_adjustment,
-                                    type='Value'
-                                )
-                                item_list.save()
+                        item_inst = Fin_Items.objects.get(name=items[j])
 
-                                stock_adj_history = Stock_Adjustment_History.objects.create(
-                                    company=com,
-                                    login_details=data,
-                                    item=item_inst,
-                                    date=date,
-                                    action = 'Created',
-                                    stock_adjustment=stock_adjustment
-                            )
-                            stock_adj_history.save()
+                        item_list= Stock_Adjustment_Items.objects.create(
+                            item=item_inst,
+                            current_val = current_value[j],
+                            changed_val = changed_value[j],
+                            adjusted_val = value_adjusted[j],
+                            company=com,
+                            login_details=data,
+                            stock_adjustment=stock_adjustment,
+                            type='Value'
+                        )
+                        item_list.save()
 
-                    
+                        stock_adj_history = Stock_Adjustment_History.objects.create(
+                            company=com,
+                            login_details=data,
+                            item=item_inst,
+                            date=date,
+                            action = 'Created',
+                            stock_adjustment=stock_adjustment
+                    )
+                    stock_adj_history.save()
 
-                    return redirect('StockAdjustment')
+            return redirect('StockAdjustment')
+            
+
+             
             
 
 
@@ -1988,43 +1849,38 @@ def StockAdjustmentOverview(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            stocks=Stock_Adjustment.objects.get(id=id)
-            # print(stock,'stock')
-            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
-            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            
-            return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'comment':comment,'st_items':st_items})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            stocks=Stock_Adjustment.objects.get(id=id)
-            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
-            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            # print(stock,'stock')
-            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            return render(request,'company/Fin_StockAdjustmentView.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment,'st_items':st_items})  
-        
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        terms = Fin_Payment_Terms.objects.all()
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        stocks=Stock_Adjustment.objects.get(id=id,company=com)
+        st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
+        comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id,company=com)
+        return render(request,'company/Fin_StockAdjustmentOverview.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'comment':comment,'st_items':st_items})
+
 
 def del_stockadj(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            stock=Stock_Adjustment.objects.get(id=id)
-            stock.delete()         
-            return redirect('StockAdjustment')
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
-            stock.delete()
-            return redirect('StockAdjustment')  
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id,company=com)
+        stock.delete()
+        return redirect('StockAdjustment')  
 
         
 
@@ -2034,41 +1890,26 @@ def stockadj_comment(request,id):
      if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            if request.method == 'POST':
-                stock = Stock_Adjustment.objects.get(id=id)
-                print(stock,'stock')
-                comment = request.POST['comment']
-                add_comment=Stock_Adjustment_Comment.objects.create(
-                    company=com,
-                    login_details=data,
-                    stock_adjustment=stock,
-                    comment=comment
-                )
-                add_comment.save()
-                
-                return redirect('StockAdjustmentOverview',id)
-            return render('StockAdjustmentOverview',id)
-        else:
-             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-             if request.method == 'POST':
-                stock = Stock_Adjustment.objects.get(id=id)
-                print(stock,'stock')
-                stock_item=Stock_Adjustment_Items.objects.filter(stock_adjustment=id)
-                print(stock_item,'stock_item')
-                comment = request.POST['comment']
-                add_comment=Stock_Adjustment_Comment.objects.create(
-                    company=com,
-                    login_details=data,
-                    stock_adjustment=stock,
-                    stock_adjustmentitem=stock_item,
-                    comment=comment
-                )
-                add_comment.save()
-                return redirect('StockAdjustmentOverview',id)
-             return render('StockAdjustmentOverview',id)
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        if request.method == 'POST':
+            stock = Stock_Adjustment.objects.get(id=id,company=com)
+            comment = request.POST['comment']
+            add_comment=Stock_Adjustment_Comment.objects.create(
+                company=com,
+                login_details=data,
+                stock_adjustment=stock,
+                comment=comment
+            )
+            add_comment.save()
+            
+            return redirect('StockAdjustmentOverview',id)
+        return render('StockAdjustmentOverview',id)
         
 
 
@@ -2076,19 +1917,20 @@ def del_stockcmnt(request,id):
      if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            comment=Stock_Adjustment_Comment.objects.get(id=id)
-            comment.delete()
-            return redirect('StockAdjustmentOverview',id)
-        
-        else:
-             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-             comment=Stock_Adjustment_Comment.objects.get(id=id)
-             comment.delete()
-             return redirect('StockAdjustmentOverview',id)
+
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        comment=Stock_Adjustment_Comment.objects.get(id=id,company=com)
+        comment.delete()
+        return redirect('StockAdjustmentOverview',id)
      return render('StockAdjustmentOverview',id)
 
+
+# ---------------------------------------------------NEED TO CHANGE -------------------------------------
 
 def add_reason(request):
      if 's_id' in request.session:
@@ -2121,6 +1963,7 @@ def newreasonslist(request):
     for r in reasons:
         rson[r.id] = r.reason
     return JsonResponse(rson)
+# ---------------------------------------------------NEED TO CHANGE -------------------------------------
 
 def convert_stockadj(request,id):
      if 's_id' in request.session:
@@ -2128,19 +1971,14 @@ def convert_stockadj(request,id):
         data = Fin_Login_Details.objects.get(id = s_id)
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        if request.method == 'POST':   
             stockadj = Stock_Adjustment.objects.get(id=id,company=com)
             stockadj.status="Save"
             stockadj.save()
-            return redirect('StockAdjustmentOverview',id)
-        
-        else:
-             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-             if request.method == 'POST':
-                com = Fin_Company_Details.objects.get(Login_Id = s_id)
-                stockadj = Stock_Adjustment.objects.get(id=id,company=com)
-                stockadj.status="Save"
-                stockadj.save()
-                return redirect('StockAdjustmentOverview',id)
+        return redirect('StockAdjustmentOverview',id)
      return redirect('StockAdjustmentOverview',id)
 
 
@@ -2151,329 +1989,210 @@ def Stk_adjHistory(request,id):
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            stockadj = Stock_Adjustment.objects.get(id=id,company=com)
-            stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj)
-            return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
-        
-        else:
-             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-             allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-             if request.method == 'POST':
-                stockadj = Stock_Adjustment.objects.get(id=id,company=com)
-                stockadj_history=Stock_Adjustment_History.objects.filter(stockadj=stockadj)
-                return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
     return redirect('StockAdjustmentOverview',id)
 
 
 
 
+# def Fin_StockAdjustmentMail(request):
+#     if 's_id' in request.session:
+#         s_id = request.session['s_id']
+#         data = Fin_Login_Details.objects.get(id = s_id)
+#         if data.User_Type == "Company":
+#             com = Fin_Company_Details.objects.get(Login_Id = s_id)
+#             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+#             terms = Fin_Payment_Terms.objects.all()
+           
+#             return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
+#         else:
+#             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+#             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
 
-def Fin_StockAdjustmentMail(request):
-    if 's_id' in request.session:
-        s_id = request.session['s_id']
-        data = Fin_Login_Details.objects.get(id = s_id)
-        if data.User_Type == "Company":
-            com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            # stocks=Stock_Adjustment.objects.get(id=id)
-            # print(stock,'stock')
-            # st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
-            # comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            
-            return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            stocks=Stock_Adjustment.objects.get(id=id)
-
-            # print(stock,'stock')
-            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment})  
+#         noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+#         n = len(noti)
+       
+#         stocks=Stock_Adjustment.objects.get(id=id,company=com)
+#         comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
+#         return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment})  
         
 def edit_stockadj(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
             terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            stocks=Stock_Adjustment.objects.get(id=id)
-            # print(stock,'stock')
-            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
-            cnt_item=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com).count()
-            print(cnt_item,'cnt_item')
-            # comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            items=Fin_Items.objects.filter(Company = com)
-            reason=Stock_Reason.objects.filter(company=com)
-            return render(request,'company/Fin_EditStockAdjustment.html',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'st_items':st_items,'items':items,'cnt_item':cnt_item})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            stocks=Stock_Adjustment.objects.get(id=id)
+            
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
 
-            # print(stock,'stock')
-            comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-            st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
-            cnt_item=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com).count()
-            items=Fin_Items.objects.filter(Company = com)
-            reason=Stock_Reason.objects.filter(company=com)
-            return render(request,'company/Fin_EditStockAdjustment.htm',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment,'st_items':st_items,'items':items,'cnt_item':cnt_item})
-
-
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        stocks=Stock_Adjustment.objects.get(id=id,company=com)
+        st_items=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com)
+        cnt_item=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com).count()
+        items=Fin_Items.objects.filter(Company = com)
+        reason=Stock_Reason.objects.filter(company=com)
+        return render(request,'company/Fin_EditStockAdjustment.html',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'st_items':st_items,'items':items,'cnt_item':cnt_item})
+        
 
 def updatedStockAdj(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
 
-        # ---------------COMPANY-------------------
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            if request.method=='POST':
-                stck_adj=Stock_Adjustment.objects.get(id=id)
-                stck_adj.mode_of_adjustment= request.POST['mode']
-                stck_adj.reference_no=request.POST['refno']
-                stck_adj.adjusting_date=request.POST['date']
-                stck_adj.account=request.POST['account']
-                stck_adj.reason=request.POST['reason']
-                stck_adj.description = request.POST['desc']
-                if 'file' in request.FILES:
-                    stck_adj.attach_file = request.FILES['file']
-                else:
-                    stck_adj.attach_file = None
-                stck_adj.company=com
-                stck_adj.login_details=data
-                stck_adj.save()
 
-                if 'draft' in request.POST:
-                    stck_adj.status = "Draft"
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
 
-                elif 'save' in request.POST:
-                    stck_adj.status = "Save"
+        if request.method=='POST':
+            stck_adj=Stock_Adjustment.objects.get(id=id)
+            stck_adj.mode_of_adjustment= request.POST['mode']
+            stck_adj.reference_no=request.POST['refno']
+            stck_adj.adjusting_date=request.POST['date']
+            stck_adj.account=request.POST['account']
+            stck_adj.reason=request.POST['reason']
+            stck_adj.description = request.POST['desc']
+            if 'file' in request.FILES:
+                stck_adj.attach_file = request.FILES['file']
+            else:
+                stck_adj.attach_file = None
+            stck_adj.company=com
+            stck_adj.login_details=data
+            stck_adj.save()
 
-                stck_adj.save()
+            if 'draft' in request.POST:
+                stck_adj.status = "Draft"
 
-                stckItem_adj=Stock_Adjustment_Items.objects.filter(stock_adjustment=stck_adj.id)
-                stckItem_adj.delete()
+            elif 'save' in request.POST:
+                stck_adj.status = "Save"
 
-                if stck_adj.mode_of_adjustment == 'Quantity':
-                    item_names = request.POST.getlist('item1')
-                    qty_available = request.POST.getlist('qtyav[]')
-                    new_qty_on_hand = request.POST.getlist('newqty[]')
-                    qty_adjusted = request.POST.getlist('qtyadj[]')
+            stck_adj.save()
 
-                    if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
-                        for i in range(len(item_names)):
+            stckItem_adj=Stock_Adjustment_Items.objects.filter(stock_adjustment=stck_adj.id)
+            stckItem_adj.delete()
 
-                            item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
-                            item_instance.current_stock += float(new_qty_on_hand[i])
-                            item_instance.save()
+            if stck_adj.mode_of_adjustment == 'Quantity':
+                item_names = request.POST.getlist('item1')
+                qty_available = request.POST.getlist('qtyav[]')
+                new_qty_on_hand = request.POST.getlist('newqty[]')
+                qty_adjusted = request.POST.getlist('qtyadj[]')
 
-                            items1 = Stock_Adjustment_Items.objects.create(
-                                item=item_instance,
-                                quantity_avail=qty_available[i],
-                                quantity_inhand=new_qty_on_hand[i],
-                                quantity_adj=qty_adjusted[i],
-                                stock_adjustment=stck_adj,
-                                company=com,
-                                type='Quantity',
-                                login_details=data,
-                                
-                            )
-                            items1.save()
+                if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
+                    for i in range(len(item_names)):
+
+                        item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
+                        item_instance.current_stock += float(new_qty_on_hand[i])
+                        item_instance.save()
+
+                        items1 = Stock_Adjustment_Items.objects.create(
+                            item=item_instance,
+                            quantity_avail=qty_available[i],
+                            quantity_inhand=new_qty_on_hand[i],
+                            quantity_adj=qty_adjusted[i],
+                            stock_adjustment=stck_adj,
+                            company=com,
+                            type='Quantity',
+                            login_details=data,
                             
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
+                        )
+                        items1.save()
+                        
+                        stock_adj_history = Stock_Adjustment_History.objects.create(
+                        company=com,
+                        login_details=data,
+                        item=item_instance,
+                        date=stck_adj.adjusting_date,
+                        action='Edited',
+                        stock_adjustment=stck_adj
+                    )
+                        stock_adj_history.save()
+
+
+            elif stck_adj.mode_of_adjustment == 'Value':
+                items= request.POST.getlist('item2[]')
+                current_value = request.POST.getlist('cuval[]')
+                changed_value = request.POST.getlist('chval[]')
+                value_adjusted = request.POST.getlist('adjval[]')
+
+                if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
+                    for j in range(len(items)):
+
+                        item_inst = Fin_Items.objects.get(name=items[j])
+
+                        item_list= Stock_Adjustment_Items.objects.create(
+                            item=item_inst,
+                            current_val = current_value[j],
+                            changed_val = changed_value[j],
+                            adjusted_val = value_adjusted[j],
                             company=com,
                             login_details=data,
-                            item=item_instance,
+                            stock_adjustment=stck_adj,
+                            type='Value'
+                        )
+                        item_list.save()
+
+                        stock_adj_history = Stock_Adjustment_History.objects.create(
+                            company=com,
+                            login_details=data,
+                            item=item_inst,
                             date=stck_adj.adjusting_date,
                             action='Edited',
                             stock_adjustment=stck_adj
-                        )
-                            stock_adj_history.save()
-
-
-                elif stck_adj.mode_of_adjustment == 'Value':
-                    items= request.POST.getlist('item2[]')
-                    current_value = request.POST.getlist('cuval[]')
-                    changed_value = request.POST.getlist('chval[]')
-                    value_adjusted = request.POST.getlist('adjval[]')
-
-                    if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
-                        for j in range(len(items)):
-
-                            item_inst = Fin_Items.objects.get(name=items[j])
-
-                            item_list= Stock_Adjustment_Items.objects.create(
-                                item=item_inst,
-                                current_val = current_value[j],
-                                changed_val = changed_value[j],
-                                adjusted_val = value_adjusted[j],
-                                company=com,
-                                login_details=data,
-                                stock_adjustment=stck_adj,
-                                type='Value'
-                            )
-                            item_list.save()
-
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
-                                company=com,
-                                login_details=data,
-                                item=item_inst,
-                                date=stck_adj.adjusting_date,
-                                action='Edited',
-                                stock_adjustment=stck_adj
-                        )
-                        stock_adj_history.save()
-                return redirect('StockAdjustmentOverview',id)
+                    )
+                    stock_adj_history.save()
             return redirect('StockAdjustmentOverview',id)
+        return redirect('StockAdjustmentOverview',id)
         
-        else:
-            # ----------------STAFF-------------------
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            if request.method=='POST':
-                stck_adj=Stock_Adjustment.objects.get(id=id)
-                stck_adj.mode_of_adjustment= request.POST['mode']
-                stck_adj.reference_no=request.POST['refno']
-                stck_adj.adjusting_date=request.POST['date']
-                stck_adj.account=request.POST['account']
-                stck_adj.reason=request.POST['reason']
-                stck_adj.description = request.POST['desc']
-                if 'file' in request.FILES:
-                    stck_adj.attach_file = request.FILES['file']
-                else:
-                    stck_adj.attach_file = None
-                stck_adj.company=com
-                stck_adj.login_details=data
-                stck_adj.save()
-
-                if 'draft' in request.POST:
-                    stck_adj.status = "Draft"
-
-                elif 'save' in request.POST:
-                    stck_adj.status = "Save"
-
-                stck_adj.save()
-
-                stckItem_adj=Stock_Adjustment_Items.objects.filter(stock_adjustment=stck_adj.id)
-                stckItem_adj.delete()
-
-                if stck_adj.mode_of_adjustment == 'Quantity':
-                    item_names = request.POST.getlist('item1')
-                    qty_available = request.POST.getlist('qtyav[]')
-                    new_qty_on_hand = request.POST.getlist('newqty[]')
-                    qty_adjusted = request.POST.getlist('qtyadj[]')
-
-                    if len(item_names) == len(qty_available) == len(new_qty_on_hand) == len(qty_adjusted):
-                        for i in range(len(item_names)):
-
-                            item_instance = Fin_Items.objects.get(name=item_names[i],Company=com)
-                            item_instance.current_stock += float(new_qty_on_hand[i])
-                            item_instance.save()
-
-                            items1 = Stock_Adjustment_Items.objects.create(
-                                item=item_instance,
-                                quantity_avail=qty_available[i],
-                                quantity_inhand=new_qty_on_hand[i],
-                                quantity_adj=qty_adjusted[i],
-                                stock_adjustment=stck_adj,
-                                company=com,
-                                type='Quantity',
-                                login_details=data,
-                                
-                            )
-                            items1.save()
-                            
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
-                            company=com,
-                            login_details=data,
-                            item=item_instance,
-                            date=stck_adj.adjusting_date,
-                            action='Edited',
-                            stock_adjustment=stck_adj
-                        )
-                            stock_adj_history.save()
-
-
-                elif stck_adj.mode_of_adjustment == 'Value':
-                    items= request.POST.getlist('item2[]')
-                    current_value = request.POST.getlist('cuval[]')
-                    changed_value = request.POST.getlist('chval[]')
-                    value_adjusted = request.POST.getlist('adjval[]')
-
-                    if len(items) == len(current_value) == len(changed_value) == len(value_adjusted):
-                        for j in range(len(items)):
-
-                            item_inst = Fin_Items.objects.get(name=items[j])
-
-                            item_list= Stock_Adjustment_Items.objects.create(
-                                item=item_inst,
-                                current_val = current_value[j],
-                                changed_val = changed_value[j],
-                                adjusted_val = value_adjusted[j],
-                                company=com,
-                                login_details=data,
-                                stock_adjustment=stck_adj,
-                                type='Value'
-                            )
-                            item_list.save()
-
-                            stock_adj_history = Stock_Adjustment_History.objects.create(
-                                company=com,
-                                login_details=data,
-                                item=item_inst,
-                                date=stck_adj.adjusting_date,
-                                action = 'Edited',
-                                stock_adjustment=stck_adj
-                        )
-                        stock_adj_history.save()
-                return redirect('StockAdjustmentOverview',id)
-            return redirect('StockAdjustmentOverview',id)
-        
+            
 
 
 def deleteitem(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            stckItem_adj=Stock_Adjustment_Items.objects.get(id=id)
-            stckItem_adj.delete()
-            return JsonResponse({'message': 'Item deleted successfully'})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            stckItem_adj=Stock_Adjustment_Items.objects.get(id=id)
-            stckItem_adj.delete()
-            return JsonResponse({'message': 'Item deleted successfully'}) 
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        stckItem_adj=Stock_Adjustment_Items.objects.get(id=id,company=com)
+        stckItem_adj.delete()
+        return JsonResponse({'message': 'Item deleted successfully'}) 
         
 
 def filterbySave(request):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            stock_adj= Stock_Adjustment.objects.filter(company=com,status="Save")
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            # terms = Fin_Payment_Terms.objects.all()
-            # noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            # n = len(noti)
-            stock_adj= Stock_Adjustment.objects.filter(company=com,status="Save")
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
+        
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        terms = Fin_Payment_Terms.objects.all()
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        stock_adj= Stock_Adjustment.objects.filter(company=com,status="Save")
+        return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
         
 
 
@@ -2484,19 +2203,15 @@ def filterbyDraft(request):
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
-            noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            n = len(noti)
-            stock_adj= Stock_Adjustment.objects.filter(company=com,status="Draft")
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            allmodules = Fin_Modules_List.objects.get(company_id = com.company_id,status = 'New')
-            # terms = Fin_Payment_Terms.objects.all()
-            # noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-            # n = len(noti)
-            stock_adj= Stock_Adjustment.objects.filter(company=com,status="Draft")
-            return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stock_adj':stock_adj})
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+            allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
+        n = len(noti)
+        stock_adj= Stock_Adjustment.objects.filter(company=com,status="Draft")
+        return render(request,'company/Fin_StockAdjustment.html',{'allmodules':allmodules,'com':com,'data':data,'noti':noti,'n':n,'stock_adj':stock_adj})
         
 
 
@@ -2504,97 +2219,73 @@ def stock_attachFile(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
-            if request.method == 'POST':
-                if len(request.FILES) != 0:
-                
-                    if stock_adj.attach_file != "":
-                        os.remove(stock_adj.attach_file.path)
-                        
-                    stock_adj.attach_file=request.FILES['file']
-                stock_adj.save()
-            return redirect('StockAdjustmentOverview',id)
-        else:
-            com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-            stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
-            if request.method == 'POST':
-                if len(request.FILES) != 0:
-                
-                    if stock_adj.attach_file != "":
-                        os.remove(stock_adj.attach_file.path)
-                        
-                    stock_adj.attach_file=request.FILES['file']
-                stock_adj.save()
-            return redirect('StockAdjustmentOverview',id)
+
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
+        if request.method == 'POST':
+            if len(request.FILES) != 0:
+            
+                if stock_adj.attach_file != "":
+                    os.remove(stock_adj.attach_file.path)
+                stock_adj.attach_file=request.FILES['file']
+            stock_adj.save()
+        return redirect('StockAdjustmentOverview',id)
         
-
-
-    
+           
 def stockadjToEmail(request,id):
     if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-            stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
+        elif data.User_Type == 'Staff':
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+
+        stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
+        stock_adjItems= Stock_Adjustment_Items.objects.filter(stock_adjustment=stock_adj,company=com)
+
+        try:
             if request.method == 'POST':
-                 fromdate = request.POST['FromD']
-                 todate = request.POST['ToD']
-                 emails_string = request.POST['email_ids']
-                 if fromdate == '' and todate == '' :
-                     datas = Fin_Login_Details.objects.get(id = s_id)
-
-                 emails_list = [email.strip() for email in emails_string.split(',')]
-                 email_message = request.POST['email_message']
-
-                 pdf_data = request.POST.get('pdf_data')
-                 pdf_binary = base64.b64decode(pdf_data)
-                 pdf_file = ContentFile(pdf_binary, name='StockAdjustment.pdf')
-
-                 filename = f'StockAdjustment-{com.Company_name}.pdf'
-                 subject = f"StockAdjustment_details - {com.Company_name}"
-                 email_message = request.POST.get('email_message', '')
-                 emails_list = request.POST.get('email_ids', '').split(',')
-
-                 email = EmailMessage(
-                    subject,
-                    f"Hi, \n{email_message} -of -{com.Company_name}. ",
-                    from_email=settings.EMAIL_HOST_USER,
-                    to=emails_list
-            )
-                 email.attach(filename, pdf_file.read(), "application/pdf")
-                 email.send(fail_silently=False)
-
-                 messages.success(request, 'Report has been shared via email successfully..!')
-                 print('jso')
-                 return JsonResponse({'message':''})
-            else:        
-                return JsonResponse({'message':''})
+                    emails_string = request.POST['email_ids']
+                    emails_list = [email.strip() for email in emails_string.split(',')]
+                    email_message = request.POST['email_message']
+                    context = {'com': com, 'stocks': stock_adj, 'email_message': email_message,'st_items':stock_adjItems}
+                    print('context working')
+                    template_path = 'company/Fin_StockAdjustment_Pdf.html'
+                    print('tpath working')
+                    template = get_template(template_path)
+                    print('template working')
+                    html = template.render(context)
+                    print('html working')
+                    result = BytesIO()
+                    print('bytes working')
+                    pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result)  # Change encoding to 'utf-8'
+                    print('pisa working')
+                    if pdf.err:
+                        raise Exception(f"PDF generation error: {pdf.err}")
+                    result.seek(0)  # Move the buffer's position to the start for reading
+                    filename = f'Stock_AdjusmentDetails_{stock_adj.reference_no}.pdf'
+                    subject = f"Stock_AdjusmentDetails_{stock_adj.reference_no}"
+                    email = EmailMessage(subject, f"Hi,\nPlease find the attached Stock Adjustment Details for Reference No: {stock_adj.reference_no}. \n{email_message}\n\n--\nRegards,\n{com.Company_name}\n{com.Address}\n{com.State} - {com.Country}\n{com.Contact}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
+                    email.attach(filename, result.read(), "application/pdf")  # Use result.read() directly
+                    email.send(fail_silently=False)
+                    messages.success(request, 'Stock Adjusment details has been shared via email successfully..!')
+                    return redirect('StockAdjustmentOverview', id=id)
+            return redirect('StockAdjustmentOverview', id=id)
+        except Exception as e:
+                print(e)
+                messages.error(request, f'{e}')
+                return redirect(StockAdjustmentOverview, id)
                         
                
             
-        # else:
-        #     com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-        #     stock_adj= Stock_Adjustment.objects.get(company=com,id=id)
-        #     if request.method == 'POST':
-        #         if len(request.FILES) != 0:
-                
-        #     return redirect('StockAdjustmentOverview',id)
-
-
-
-
-
-
-
-
-
-            
-
-        
-
+      
 
 
 

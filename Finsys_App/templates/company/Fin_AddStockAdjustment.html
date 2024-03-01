@@ -139,7 +139,7 @@
                    
                       <label class="col-form-label">Reference Number</label>
                  
-                      <input class="form-control" type="text" id="bname" name="refno" required>
+                      <input class="form-control" type="text" id="bname" name="refno" placeholder="{{ref_no}}" required>
                   </div>
               </div>
 
@@ -155,14 +155,14 @@
                     
                     <div class="col-md-3">
                         <label class="col-form-label " for="validationCustom02">Account *</label>
-                        <select name="account" class="form-control text-white" required>
+                        <select name="account" class="form-control text-white " required>
                            <option selected disabled value="">Choose...</option>
                           
 
                            <optgroup label="Expense" class="text-dark">
                          <option value="Advertising and Marketing" class="text-white">Advertising and Marketing</option>
                          <option value="Automobile Expense" class="text-white">Automobile Expense</option>
-                         <option value=">Bad Debt" class="text-white">Bad Debt</option>
+                         <option value="Bad Debt" class="text-white">Bad Debt</option>
                          <option value="Bank Fees and Charges" class="text-white">Bank Fees and Charges</option>
                          <option value="Consultant Expense" class="text-white">Consultant Expense</option>
                          <option value="Credit Card Charges" class="text-white">Credit Card Charges</option>
@@ -1170,8 +1170,9 @@ $.ajax({
 <br><br>
 
 <div class="notices mt-3">
-  <div class="text-muted">NOTICE:</div>
-  <div class="text-muted">
+  <div class="text-muted text-light">NOTICE:</div>
+  <div class="text-muted text-light">
+    <input type="checkbox" required>
     Fin sYs Terms and Conditions Apply
   </div>
 </div>

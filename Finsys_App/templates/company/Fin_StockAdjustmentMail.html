@@ -7,40 +7,46 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+
+
+
+
 <body>
+
+
+  
+
 
 
     <div class="page-content">
         
+        
 
-<!--################################################################   statement    ##################################################-->
+
+
 
         <div class="card radius-15 statement" >
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-lg-12 col-xl-12">
-                        <div class="card" style="background-color: #2a4964;">
-                         
-                        </div>
-                    </div>
-                </div>
+            <div class="card-body border" style="">
+                
                         
-                <div class="card radius-15 p-5 print-content" id="printarea" style="margin-bottom: 50px;">
-                    <div class="card-body">
+                <div class="card radius-15 p-5 print-content" id="printarea" style="margin-bottom: 30px;">
+                    <div class="card-body" id="GFG">
                         <div class="row">
                             <div class="col-md-12">        
-                                <div id="GFG" ><br>
+                                <div  ><br>
                                     <center>
-                                        <div class="rectangle" id="" style="color:black;  background-color: white;width: 850px;height:900px;border: 3px white;">
+                                        <div class="rectangle" id="pdfs" style="color:black;  background-color: white;border: 3px rgb(0, 0, 0);">
                                             <div class="pcs-template-body" style="text-align:left;">
 
-                                                <div class="col-sm-12" style="background-image: linear-gradient(#1b83e8, black); color: white;">
+                                                <div class="col-sm-12" style="margin: 0 !important; padding: 0!important;background-image: linear-gradient(#1b83e8, black); color: white;" id="colorgradient">
+                                                    <br>
                                                     <p style="font-size: 4vh; text-align: center;">STOCK ADJUSTMENT</p>
-                                                    <p style=" text-align: center;"> {{a.company.Company_name}} <br>
-                                                        {{ a.company.City }}, <br>
-                                                        {{ a.company.State }},
-                                                        {{ a.company.State }},<br>
-                                                        {{ a.company.Email }}
+                                                    <p style=" text-align: center;"> {{stocks.company.Company_name}} <br>
+                                                        {{ stocks.company.City }}, <br>
+                                                        {{ stocks.company.Pincode }},
+                                                        {{ stocks.company.State }},<br>
+                                                        {{ stocks.company.Email }}
+                                                        <br>
                                                         <br>
                                                     </p>
                                                 </div>
@@ -54,25 +60,20 @@
                                                     </div>
                                                 </div>
 
-                                                
-                                              
-                                                    
-                                                
-                                              
-
-                                                
-                                                <div class="d-flex mb-4 "  style="margin-left: -95px;">
-                                                    <div class="col-3  ">
-                                                        <h5 class=" text-dark ">Reference Number</h5>
+                                                <br>
+                                                <div class="mb-4 row" style="">
+                                                    <div class="col-md-5 d-flex align-items-center">
+                                                        <h5 class="text-right text-dark">Reference Number</h5>
                                                     </div>
-                                                    <div class="col-3 text-center text-dark">
+                                                    <div class="col-md-2 mx-auto  text-center text-dark" style="margin-top: 5px;">
                                                         :
                                                     </div>
-                                                    <div class="col-3">
-                                                        <h6 class=" mt-1 text-dark">{{ a.stock_adjustment.reference_no }}</h6>
+                                                    <div class="col-md-5">
+                                                        <h6 class="ml-auto mt-1 text-left">{{ stocks.reference_no }}</h6>
                                                     </div>
-                                                  </div> 
-                         
+                                                </div>
+                                                
+                            
                                                  
                             
                                                   <div class="d-flex mb-4 "  style="margin-left: -95px;">
@@ -83,7 +84,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.reason }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.reason }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -96,7 +97,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.adjusting_date }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.adjusting_date }}</h6>
                                                     </div>
                                                   </div>
                                                   
@@ -108,10 +109,10 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.type }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.mode_of_adjustment }}</h6>
                                                     </div>
                                                   </div>
-                            
+                                                
                                                   <div class="d-flex mb-4 "  style="margin-left: -95px;">
                                                     <div class="col-6 text-right">
                                                         <h5 class="mr-auto text-dark">Status</h5>
@@ -120,7 +121,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.status }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.status }}</h6>
                                                     </div>
                                                   </div>
                             
@@ -132,7 +133,7 @@
                                                         :
                                                     </div>
                                                     <div class="col-6">
-                                                        <h6 class="ml-auto mt-1 text-dark">{{ a.stock_adjustment.login_details.First_name }}</h6>
+                                                        <h6 class="ml-auto mt-1 text-dark">{{ stocks.login_details.First_name }}</h6>
                                                     </div>
                                                   </div>
                                                   
@@ -156,17 +157,20 @@
                                                     </div>
                                                   </div>
                                                 {% endif %}  
+                                               
 
                                                 <br><br>
                                                 <div class="row">
-                                                    <div class="col-md-11">
-                                                        <table style="width:100%;margin-top:20px;table-layout:fixed; margin-left:5vh;" cellspacing="0" cellpadding="0" class="pcs-itemtable">
+                                                    <div class="col-md-12 mx-auto">
+                                                        <table style="width:100%;margin-top:20px;table-layout:fixed;" cellspacing="0" cellpadding="0" class="pcs-itemtable border border-dark " id="print-Table">
                                                             <thead style="background-color:#22b8d1">
-                                                                <tr style="height:40px;">
+                                                                <tr style="height:40px;" class="border border-dark">
                                                                     <td style="padding:5px 10px 5px 10px;word-wrap: break-word; text-align: center;" w class="table-head">
                                                                             Item Details
                                                                     </td>
-                                                                    {% if st_items.type == "Quantity" %}
+                                                                    
+
+                                                                    {% if stocks.mode_of_adjustment == "Quantity" %}
                                                                         <td  style="padding:5px 10px 5px 5px;word-wrap: break-word; text-align: center;" class="table-head">
                                                                             Quantity Available
                                                                         </td>
@@ -191,9 +195,9 @@
                                                             </thead>
                                     
                                                             <tbody id="items-table-body">
-                                                                {% if st_items.type == "Quantity" %}
+                                                                {% if stocks.mode_of_adjustment == "Quantity" %}
                                                                 {% for j in st_items %}
-                                                                <tr class="row0" id="row1">
+                                                                <tr class="row0 border border-dark" id="row1">
                                                                   <td  style="padding: 10px 0px 10px 10px; font-size:16px; text-align: center;" class="pcs-item-row">{{ j.item.name }} </td>
                                                                   <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px; text-align: center;">{{ j.quantity_avail }}</td>
                                                                   <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px; text-align: center;">{{ j.quantity_inhand }}</td>
@@ -203,7 +207,7 @@
                                                                 {% endfor %}
                                                                 {% else %}
                                                                 {% for j in st_items %}
-                                                                <tr class="row1" id="row2">
+                                                                <tr class="row1 border border-dark" id="row2">
                                                                   <td style="padding: 10px 0px 10px 10px; font-size:16px; text-align: center;" class="pcs-item-row">{{ j.item.name }}</td>
                                                                   <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px; text-align: center;">{{ j.current_val }}</td>
                                                                   <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px; text-align: center;">{{ j.changed_val }}</td>
@@ -226,15 +230,15 @@
                                         </div><br>
                                     </center>
                                 </div>
-                             
-                            </div><br>
+                            
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
 
 
 

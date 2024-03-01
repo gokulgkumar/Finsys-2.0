@@ -108,13 +108,13 @@ urlpatterns = [
     path('edit_stockadj/<int:id>',views.edit_stockadj,name='edit_stockadj'),
     path('updatedStockAdj/<int:id>',views.updatedStockAdj,name='updatedStockAdj'),
     path('deleteitem/<int:id>',views.deleteitem,name='deleteitem'),
-    path('stock_attachFile<int:id>',views.stock_attachFile,name='stock_attachFile'),
-    path('stockadjToEmail?<int:id>',views.stockadjToEmail,name='stockadjToEmail'),
+    path('stock_attachFile/<int:id>',views.stock_attachFile,name='stock_attachFile'),
+    path('stockadjToEmail/<int:id>',views.stockadjToEmail,name='stockadjToEmail'),
 
 
 
     
-    path('Fin_StockAdjustmentMail',views.Fin_StockAdjustmentMail,name='Fin_StockAdjustmentMail'),
+    # path('Fin_StockAdjustmentMail/<int:id>',views.Fin_StockAdjustmentMail,name='Fin_StockAdjustmentMail'),
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]

@@ -1060,6 +1060,12 @@ def Fin_Add_Modules(request,id):
         data = Fin_Login_Details.objects.get(id=id)
         com = Fin_Company_Details.objects.get(Login_Id=data.id)
 
+
+        
+
+
+
+
         # -----ITEMS----
 
         Items = request.POST.get('c1')
@@ -1247,6 +1253,8 @@ def Fin_Add_Modules(request,id):
         Fin_Company_Payment_Terms.objects.create(Company=com, term_name='NET 30', days=30)
         Fin_Company_Payment_Terms.objects.create(Company=com, term_name='NET 60', days=60)
 
+    
+
 
         #sumayya-------- Adding default repeat every values for company
 
@@ -1254,6 +1262,11 @@ def Fin_Add_Modules(request,id):
         Fin_CompanyRepeatEvery.objects.create(company=com, repeat_every = '6 Month', repeat_type='Month',duration = 6, days=180)
         Fin_CompanyRepeatEvery.objects.create(company=com, repeat_every = '1 Year', repeat_type='Year',duration = 1, days=360)
 
+        
+        Stock_Reason.objects.create(company=com,login_details=data,reason='Stock on fire')
+        Stock_Reason.objects.create(company=com,login_details=data,reason='High demand of goods')
+        Stock_Reason.objects.create(company=com,login_details=data,reason='Stock written off')
+        Stock_Reason.objects.create(company=com,login_details=data,reason='Inventory Revaluation')
 
         print("add modules")
         return redirect('Fin_CompanyReg')
@@ -1878,8 +1891,12 @@ def del_stockadj(request,id):
         elif data.User_Type == 'Staff':
             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
 
+        stocks=Stock_Adjustment.objects.get(id=id,company=com)
         stock=Stock_Adjustment_Items.objects.filter(stock_adjustment=id,company=com)
+        comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id,company=com)
+        stocks.delete()
         stock.delete()
+        comment.delete()
         return redirect('StockAdjustment')  
 
         
@@ -1930,40 +1947,39 @@ def del_stockcmnt(request,id):
      return render('StockAdjustmentOverview',id)
 
 
-# ---------------------------------------------------NEED TO CHANGE -------------------------------------
+
 
 def add_reason(request):
      if 's_id' in request.session:
         s_id = request.session['s_id']
         data = Fin_Login_Details.objects.get(id = s_id)
+
         if data.User_Type == "Company":
-           if request.method == 'POST':
-                com = Fin_Company_Details.objects.get(Login_Id = s_id)
-                reason = request.POST.get('reason')
-                reasonsave = Stock_Reason(reason=reason,company=com,login_details=data)
-                reasonsave.save()
-                return JsonResponse({"message": "success"})
-        
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
         else:
-             com = Fin_Staff_Details.objects.get(Login_Id = s_id)
-             if request.method == 'POST':
-                com = Fin_Company_Details.objects.get(Login_Id = s_id)
-                reason = request.POST['reason']
-                
-                reasonsave = Stock_Reason(reason=reason,company=com,login_details=data)
-                reasonsave.save()
-                return JsonResponse({"message": "success"})
-     return redirect('AddStockAdjustment')
+            com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id 
+
+        reason = request.POST['reason']
+        
+        if not Stock_Reason.objects.filter(company = com, reason__iexact = reason).exists():
+            Stock_Reason.objects.create(company = com, reason = reason)
+
+            reasonlist = []
+            reasons = Stock_Reason.objects.filter(company = com)
+
+            for i in reasons:
+             keyPairReason={
+                 'name':i.reason,
+                 'id':i.id
+             }
+             reasonlist.append(keyPairReason)
+            
+            return JsonResponse({'status':True,'reasons':reasonlist},safe=False)
+        else:
+            return JsonResponse({'status':False, 'message':f'{reason} already exists, try another.!'})
 
 
 
-def newreasonslist(request):
-    rson = {}
-    reasons = Stock_Reason.objects.all()
-    for r in reasons:
-        rson[r.id] = r.reason
-    return JsonResponse(rson)
-# ---------------------------------------------------NEED TO CHANGE -------------------------------------
 
 def convert_stockadj(request,id):
      if 's_id' in request.session:
@@ -2000,27 +2016,6 @@ def Stk_adjHistory(request,id):
 
 
 
-
-# def Fin_StockAdjustmentMail(request):
-#     if 's_id' in request.session:
-#         s_id = request.session['s_id']
-#         data = Fin_Login_Details.objects.get(id = s_id)
-#         if data.User_Type == "Company":
-#             com = Fin_Company_Details.objects.get(Login_Id = s_id)
-#             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-#             terms = Fin_Payment_Terms.objects.all()
-           
-#             return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n})
-#         else:
-#             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
-#             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
-
-#         noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
-#         n = len(noti)
-       
-#         stocks=Stock_Adjustment.objects.get(id=id,company=com)
-#         comment=Stock_Adjustment_Comment.objects.filter(stock_adjustment=id)
-#         return render(request,'company/Fin_StockAdjustmentMail.html',{'allmodules':allmodules,'com':com,'data':data,'stocks':stocks,'comment':comment})  
         
 def edit_stockadj(request,id):
     if 's_id' in request.session:
@@ -2030,12 +2025,13 @@ def edit_stockadj(request,id):
         if data.User_Type == "Company":
             com = Fin_Company_Details.objects.get(Login_Id = s_id)
             allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
-            terms = Fin_Payment_Terms.objects.all()
+            
             
         elif data.User_Type == 'Staff':
             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
 
+        terms = Fin_Payment_Terms.objects.all()
         noti = Fin_CNotification.objects.filter(status = 'New',Company_id = com)
         n = len(noti)
         stocks=Stock_Adjustment.objects.get(id=id,company=com)
@@ -2043,7 +2039,7 @@ def edit_stockadj(request,id):
         cnt_item=Stock_Adjustment_Items.objects.filter(stock_adjustment =stocks,company = com).count()
         items=Fin_Items.objects.filter(Company = com)
         reason=Stock_Reason.objects.filter(company=com)
-        return render(request,'company/Fin_EditStockAdjustment.html',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'st_items':st_items,'items':items,'cnt_item':cnt_item})
+        return render(request,'company/Fin_EditStockAdjustment.html',{'reason':reason,'allmodules':allmodules,'com':com,'data':data,'terms':terms,'noti':noti,'n':n,'stocks':stocks,'st_items':st_items,'items':items})
         
 
 def updatedStockAdj(request,id):

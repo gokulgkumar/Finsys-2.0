@@ -283,17 +283,15 @@
               <label class="col-form-label" for="validationCustom03">Reason * </label>
               
               <div class="d-flex">
-              <select name="reason" class="form-control" id="rsns" required>
+                <select name="reason" class="form-control" id="reasons1" required>
               <option selected disabled value="">Choose...</option>
               {% for i in reason %}
               <option value="{{ i.reason }}">{{ i.reason }}</option>
+              
               {% endfor %}
              </select>
 
-       <a href="#">
-          <button type="button" class="btn btn-outline-secondary ml-1" 
-          data-target="#newreason" data-toggle="modal">+</button>
-      </a>
+       <a href="#newreason"class="btn btn-outline-secondary ml-1" data-toggle="modal">+</a>
 
   </div>
 </div>
@@ -313,29 +311,7 @@
         <br>
 
 
-              <!--  <tr class="row0" id="row1">
-          <td>1</td>
-          <td style="width: 20%;">
-            
-              <select name='item1' class="form-control select2 selectt" id="selectss1" style="color: black;">
-                <option value="" selected disabled >Select Product</option>
-                {% for i in items %}
-                <option value="{{ i.name }}" class="text-dark" style="color: black !important;">{{ i.name }}</option>
-                {% endfor  %}
-              </select>
-            
-          </td>
-          <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail1"></td>
-          <td><input type="number" name='newqty1' class="form-control" style="text-align:right;" id="qty_hand1" ></td>
-          <td><input type="number" name='qtyadj1' class="form-control qty" id="new_qty1"></td>
-          <td style="border: none; " class="text-center">
-            <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow1(this)">-</a>
-          </td>
-        </tr>-->
-
-           <!-- <a role="button" class="btn btn-outline-secondary ml-1" onclick="addRow1()">+</a> -->
-
-
+           
 
 
 
@@ -467,7 +443,7 @@ function selectonchange() {
           newRow.innerHTML = `
               <td class="bg-transparent text-light">${rowNum}</td>
               <td>
-                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
+                  <div class='form-group mt-3'><select class='text-light  item_select${rowNum} inneritm' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
                           <option class='text-white'hidden disabled selected>Select Items</option>
                           {% for i in items %}
                           <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
@@ -477,7 +453,7 @@ function selectonchange() {
               </td>
               <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qty2${rowNum}'  name="qtyav[]"></td>
               <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right rate'  name="newqty[]" value=''></td>
-              <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control  border-1  text-light text-right discount' name="qtyadj[]" value=''></td>
+              <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control    text-light text-right discount' name="qtyadj[]" value=''></td>
               <td class='text-center'>
                   <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
               </td>
@@ -595,82 +571,6 @@ $(document).on('change', '#selectss1', function () {
 </script>
 
 
-<!-- <script>
-
-    
-
-
-
-
- function addRow1() {
-
-
-
-    var tableBody = document.getElementById("items-table-body1");
-    var rowCount = tableBody.getElementsByTagName("tr").length;
-
-    var newRow = document.createElement("tr");
-    newRow.setAttribute("class", "row" + rowCount);
-    newRow.setAttribute("id", "row" + (rowCount + 1));
-
-
-    newRow.innerHTML = `
-      <td>${rowCount + 1}</td>
-      <td>
-        <div>
-          <select name='item1' class="form-control select2 selectt2" id="selectss2${rowCount + 1}" >
-            <option value=" " selected disabled>Select Product</option>
-            {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </td>
-      <td><input type="number" name="qtyav1" class="form-control" style="text-align:right;" id="qtyavail2${rowCount + 1}"></td>
-      <td><input type="number" name="newqty1" class="form-control qty_hand2" style="text-align:right;" id="qty_hand2${rowCount + 1}" required></td>
-      <td><input type="number" name="qtyadj1" class="form-control qty" id="new_qty2${rowCount + 1}"></td>
-      <td style="border: none; " class="text-center">
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
-      </td>
-    `;
-
-    tableBody.appendChild(newRow);
-
-    $("#selectss2" + (rowCount + 1)).select2({
-      
-    });
-
-    $(document).on('change', `#selectss2${rowCount + 1}`, function () {
-        console.log('Select changed',`${rowCount + 1}`);
-        var selectedValue = $(this).val();
-        $.ajax({
-            type: "GET",
-            url: "{% url 'getitemdata1' %}",
-            data: {
-                id: selectedValue,
-            },
-            success: function (response) {
-                var stck = response.stock;
-                document.getElementById(`qtyavail2${rowCount + 1}`).value = stck;
-            },
-        });
-    });
-
-    $(document).on('input', `#qty_hand2${rowCount + 1}`, function() {
-        var qtyhnd = parseFloat(document.getElementById(`qty_hand2${rowCount + 1}`).value);
-        var qtyavail = parseFloat(document.getElementById(`qtyavail2${rowCount + 1}`).value);
-        var difference = qtyhnd - qtyavail;
-        document.getElementById(`new_qty2${rowCount + 1}`).value = difference;
-    });
-}
-
-
-
-
-</script> -->
-
-
-
 
 
 <!--------------------------------------------------------------------------- End Quantity Adjustment----------------------------------------------------------------->
@@ -702,7 +602,7 @@ $(document).on('change', '#selectss1', function () {
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left' name='item2[]' id='item_selectss2' onchange="valuechange()">
+                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left' name='item2[]' id='item_selectss2' onchange="valuechange()">
                                 <option class='text-light text-left' disabled hidden selected>Select Items</option>
                                 {% for i in items %}
                               
@@ -844,7 +744,7 @@ function selectonchange() {
             <td class="bg-transparent text-white">${rowNum2}</td>
             <td>
                 <div class='form-group mt-3'>
-                  <select class='bg-transparent border-0 item_select2${rowNum2} inneritm2 text-light text-left select2' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
+                  <select class='bg-transparent item_select2${rowNum2} inneritm2 text-light text-left select2' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
                         <option class='text-light' disabled hidden selected>Select Items</option>
                         {% for i in items %}
                        
@@ -853,9 +753,9 @@ function selectonchange() {
                     </select>
                 </div>
             </td>
-            <td class='text-right'><input type='number' class='form-control bg-transparent border-1 border-light text-light text-right values' name='cuval[]' value='' id='currentval2${rowNum2}'  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
-            <td class='text-right'><input type='number' class='form-control bg-transparent border-1 border-light text-light text-right rate' name='chval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
-            <td class='text-right'><input type='text' class='form-control bg-transparent border-1 border-light text-light text-right discount' name='adjval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='number' class='form-control bg-transparent  text-light text-right values' name='cuval[]' value='' id='currentval2${rowNum2}'  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='number' class='form-control bg-transparent text-light text-right rate' name='chval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
+            <td class='text-right'><input type='text' class='form-control bg-transparent text-light text-right discount' name='adjval[]' value=''  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
             <td class='text-center'>
                 <button type='button' class='btn btn-transparent btn-sm btn-outline-secondary  delete-row' style='width:30px'>-</button>
             </td>
@@ -969,7 +869,6 @@ $.ajax({
 
   
 
-<!-- const itemSelect = document.querySelector(`.item_select${no}`); -->
 <script>
             // value-innerhtml
             function valuechange2(nos){
@@ -1000,52 +899,6 @@ $.ajax({
 
 
 
-
-
-
-  <!-- <div class="row " id="valueDiv" >
-    <div class="col-md-12 table-responsive-md mt-3">
-      <table class="table table-bordered table-hover mt-3" id="tab_logic">
-        <thead>
-          <tr id>
-            <th  class="text-center" >Sl No.</th>
-            <th class="text-center" >Item details</th>
-            <th class="text-center">Value Available</th>
-            <th class="text-center">New Value in Stock</th>
-            <th class="text-center">Adjusted Stock in Value</th>
-          <th></th>
-          </tr>
-        </thead>
-        <tbody id="items-table-body2">
-          <tr class="row0" id="row1">
-            <td>1</td>
-            <td style="width: 20%;">
-              
-                <select name='item2' id="selectss3"  class="form-control select2  " style="background-color: #243e54;" >
-                <option value=" " selected disabled >Select Product</option>
-                {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-                {% endfor  %}
-                </select>
-             
-            </td>
-            <td><input type="number"  id="valavail1" name='cuval2' class="form-control" style="text-align:right;"></td>
-            <td><input type="number" id="val_stck1" name='chval2' class="form-control" style="text-align:right;" ></td>
-            <td><input type="number"  id="adj_val1" name='adjval2' class="form-control qty"></td>
-            <td style="border: none; " class="text-center">
-              <a role="button" class="btn btn-outline-secondary ml-1" onclick = "deleteRow2(this)">-</a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick = "addRow2()">+</a>
-    </div>
-  </div>
-
-  <div>
-    
-  </div> -->
-
   <script>
     $(document).ready(function() {
      $('.select2').select2();
@@ -1075,87 +928,6 @@ $.ajax({
 
 
 
-
-
-  
-<!-- <script>
-  function addRow2() {
-    var tableBody = document.getElementById("items-table-body2");
-    var rowCount = tableBody.getElementsByTagName("tr").length;
-
-    var newRow = document.createElement("tr");
-    newRow.setAttribute("class", "row" + rowCount);
-    newRow.setAttribute("id", "row" + (rowCount + 1));
-
-    newRow.innerHTML = `
-      <td>${rowCount + 1}</td>
-      <td>
-        <div>
-          <select name='item2' class="form-control select2 " id="selectss4${rowCount + 1}" required>
-            <option value=" " selected disabled>Select Product</option>
-            {% for i in items %}
-                <option value="{{ i.name }}">{{ i.name }}</option>
-                {% endfor  %}
-          </select>
-        </div>
-      </td>
-      <td><input type="number" id="valavail2${rowCount + 1}" name="cuval2" class="form-control " style="text-align:right;"></td>
-      <td><input type="number" id="val_stck2${rowCount + 1}" name="chval2" class="form-control valinp" style="text-align:right;" ></td>
-      <td><input type="number" name="adjval2" id="adj_val2${rowCount + 1}"  class="form-control qty"></td>
-      <td style="border: none; " class="text-center">
-        <a role="button" class="btn btn-outline-secondary ml-1" onclick="deleteRow(this)">-</a>
-      </td>
-    `;
-
-    tableBody.appendChild(newRow);
-
-   
-    $("#selectss4" + (rowCount + 1)).select2({
-      
-    });
-
-    $(document).on('change', `#selectss4${rowCount + 1}`, function () {
-        console.log('Select changed');
-        var selectedValue = $(this).val();
-        console.log('selectedValue ',selectedValue);
-        $.ajax({
-            type: "GET",
-            url: "{% url 'getitemdata2' %}",
-            data: {
-                id: selectedValue,
-            },
-            success: function (response) {
-              var valu = response.value;
-            document.getElementById(`valavail2${rowCount + 1}`).value=valu;
-            },
-        });
-    });
-
-    $(document).on('input', '.valinp', function() {
-      console.log('input')
-        var valuestock = parseFloat(document.getElementById(`val_stck2${rowCount + 1}`).value);
-        var valavail = parseFloat(document.getElementById(`valavail2${rowCount + 1}`).value);
-        var difference = valuestock - valavail;
-        document.getElementById(`adj_val2${rowCount + 1}`).value = difference;
-    });
-}
-
-  
-
-  function deleteRow(button) {
-  var row = button.parentNode.parentNode;
-  var tableBody = row.parentNode;
-  tableBody.removeChild(row);
-
-  
-  var rows = tableBody.getElementsByTagName("tr");
-  for (var i = 0; i < rows.length; i++) {
-    rows[i].getElementsByTagName("td")[0].innerText = i + 1;
-  }
-}
-
-</script> -->
-
 <!-----------------------------------------------------------------------End Value Adjustment----------------------------------------------------------------->
 
 
@@ -1180,10 +952,10 @@ $.ajax({
 <br><br>
 
 <div class="text-center">
-  <button type="submit" class="btn btn-outline-info rounded-pill  text-grey mx-3" name="save">
+  <button type="submit" class="btn btn-outline-secondary w-25 text-light mx-3" name="save">
     Save
   </button>
-  <button type="submit" class="btn btn-outline-info rounded-pill  text-grey mx-3" name="draft">
+  <button type="submit" class="btn btn-outline-secondary w-25   text-light mx-3" name="draft">
     Draft
   </button>
   
@@ -1197,88 +969,83 @@ $.ajax({
 </form>
     <!-- ---------------------------------------------------- REASON MODAL ------------------------------------------------------------------- -->
 
-    
-<div class="modal fade" id="newreason">
-  <div class="modal-dialog">
- 
-      <div class="modal-content" style="background-color: #213b52;">
-          <form action="" method="post" class="needs-validation"   >
-              {% csrf_token %}
-          <div class="modal-header">
-              <h3 class="m-3">Add Reason</h3>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalReason">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            
-            
-              <div>
-                  <div class="form-check">
-                      <label class="form-check-label">Reason *</label> 
-                      <input type="text" class="form-control" name="reason" id="reasoninp">
-                     
-                  </div>
-
-  
+    <div class="modal fade" id="newreason">
+      <div class="modal-dialog">
+     
+          <div class="modal-content" style="background-color: #213b52;">
+              <form action="" method="post"  id="newReasonForm"   >
+                  {% csrf_token %}
+              <div class="modal-header">
+                  <h3 class="m-3">New Reason</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalReason">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
               </div>
-         
+              <div class="modal-body">
+                
+                
+                  <div>
+                      <div class="form-check">
+                          <label class="form-check-label">Reason *</label> 
+                          <input type="text" class="form-control" name="reason" id="reasoninp">
+                         
+                      </div>
+    
+      
+                  </div>
+             
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary text-light" id="saveReasonButton" >Save</button>
+                  <button type="button" class="btn btn-outline-secondary text-light" data-dismiss="modal" id="cancelBtn">Close</button>
+              </div>
+          </form>
           </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-outline-info" id="reasaveButton" >Save</button>
-              <button type="button" class="btn btn-outline-info" data-dismiss="modal" id="cancelBtn">Close</button>
-          </div>
-      </form>
       </div>
-  </div>
-</div>            
-
+    </div>       
+    
 
 
 <script>
 
 
 
-// reason modal
-$(document).on("click","#reasaveButton",function(){
+$(document).on("click","#saveReasonButton",function(){
+  var reasons = $('#reasoninp').val();
+        
             $.ajax({
-              
-              type : 'POST',
-              url:"{% url 'add_reason' %}",
-              data:{
-                  reason : $("#reasoninp").val(), 
-                      
+                type : 'POST',
+                url:"{% url 'add_reason' %}",
+                data:{
+                  'reason' : reasons,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
-                headers: {
-                            "X-CSRFToken": "{{ csrf_token }}"
-                      },
+                
                 success: function(response) {
-                  
-                  reloadReason();
-                },
-            });        
-          });
-                    
-function reloadReason() {
-  $.ajax({
-    url: "{% url 'newreasonslist' %}",
-  
-    success: function(data) {
-      console.log('hi')
-                var dropdown = $('#rsns');
-                
-                // dropdown.empty();
-                $.each(data, function(key, value) {
-                  dropdown.append($('<option></option>').attr('value', key).text(value).val(value));
-                  $("#newreason").modal("hide");
-                });
-                
-              },
-    error: function(xhr, status, error) {
-    console.error(xhr.responseText);
-    }
-  });
-}
+                    if(response.status){
+                        document.getElementById("newReasonForm").reset();
+                        
+                        var dropdown = $('#reasons1');
+                        dropdown.empty();
+                        dropdown.append(`<option value="" selected>Choose</option>`);
+                        $.each(response, function(key, value) {
+                            for(let i=0; i<value.length; i++){
+                                if(value[i].name == reasons){
+                                    dropdown.append($('<option selected></option>').text(value[i].name).val(value[i].id))
+                                }else{
+                                    dropdown.append($('<option></option>').text(value[i].name).val(value[i].id))
+                                }   
+                            }
+                        });
+
+                        $('#newreason').modal('hide');
+
+                    }else{
+                        alert("Something went wrong.!")
+                    }
+                },         
+            });
+    });
 
 
 

@@ -43,17 +43,17 @@
 
   .select2-container--default .select2-search--dropdown .select2-search__field {
       background-color: black !important;
-      color: white !important;
+      /* color: white !important; */
   }
 
   .select2-container--default .select2-results__option {
       background-color: black !important;
-      color: white !important;
+      /* color: white !important; */
   }
 
   .select2-container--default .select2-results__option:hover {
       background-color: #274a81 !important;
-      color: white !important;
+      /* color: white !important; */
   }
 
   .select2-container--default .select2-results__option[aria-disabled=true] {
@@ -62,7 +62,7 @@
 
   .select2-container--default .select2-results__option--highlighted[aria-selected] {
       background-color: black !important;
-      color: white;
+      /* color: white; */
   }
 
   #quantityDiv {
@@ -151,11 +151,11 @@
               <div class="row mt-3">
                     <div class="col-md-3 mt-2">
                         <label for="">Date *</label>
-                        <input type="date" class="form-control" id="date" name="date" placeholder="">
+                        <input type="date" class="form-control" id="date" name="date" value="{{ stocks.adjusting_date|date:'Y-m-d' }}" placeholder="">
                     </div>
 
                     <script>
-                      $('#date').val(new Date().toJSON().slice(0,10));
+                      // $('#date').val(new Date().toJSON().slice(0,10));
                     </script>
                     
                     <div class="col-md-3">
@@ -289,7 +289,7 @@
               <label class="col-form-label" for="validationCustom03">Reason * </label>
               
               <div class="d-flex">
-              <select name="reason" class="form-control" id="rsns" required>
+                <select name="reason" class="form-control" id="reasons1" required>
                 <option selected  value="{{ stocks.reason }}">{{ stocks.reason }}</option>
               {% for i in reason %}
                     {% if stocks.reason == i.reason %}
@@ -300,10 +300,7 @@
                   {% endfor %}
              </select>
 
-       <a href="#">
-          <button type="button" class="btn btn-outline-secondary ml-1" 
-          data-target="#newreason" data-toggle="modal">+</button>
-      </a>
+             <a href="#newreason"class="btn btn-outline-secondary ml-1" data-toggle="modal">+</a>
 
   </div>
 </div>
@@ -921,41 +918,42 @@ $.ajax({
 </form>
     <!-- ---------------------------------------------------- REASON MODAL ------------------------------------------------------------------- -->
 
-    
-<div class="modal fade" id="newreason">
-  <div class="modal-dialog">
- 
-      <div class="modal-content" style="background-color: #213b52;">
-          <form action="" method="post" class="needs-validation"   >
-              {% csrf_token %}
-          <div class="modal-header">
-              <h3 class="m-3">Add Reason</h3>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalReason">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            
-            
-              <div>
-                  <div class="form-check">
-                      <label class="form-check-label">Reason *</label> 
-                      <input type="text" class="form-control" name="reason" id="reasoninp">
-                     
-                  </div>
 
-  
+    <div class="modal fade" id="newreason">
+      <div class="modal-dialog">
+     
+          <div class="modal-content" style="background-color: #213b52;">
+              <form action="" method="post"  id="newReasonForm"   >
+                  {% csrf_token %}
+              <div class="modal-header">
+                  <h3 class="m-3">New Reason</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="modalReason">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
               </div>
-         
+              <div class="modal-body">
+                
+                
+                  <div>
+                      <div class="form-check">
+                          <label class="form-check-label">Reason *</label> 
+                          <input type="text" class="form-control" name="reason" id="reasoninp">
+                         
+                      </div>
+    
+      
+                  </div>
+             
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary text-light" id="saveReasonButton" >Save</button>
+                  <button type="button" class="btn btn-outline-secondary text-light" data-dismiss="modal" id="cancelBtn">Close</button>
+              </div>
+          </form>
           </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-outline-info" id="reasaveButton" >Save</button>
-              <button type="button" class="btn btn-outline-info" data-dismiss="modal" id="cancelBtn">Close</button>
-          </div>
-      </form>
       </div>
-  </div>
-</div>            
+    </div>       
+    
 
 
 
@@ -963,47 +961,42 @@ $.ajax({
 
 
 
-// reason modal
-$(document).on("click","#reasaveButton",function(){
+$(document).on("click","#saveReasonButton",function(){
+  var reasons = $('#reasoninp').val();
+        
             $.ajax({
-              
-              type : 'POST',
-              url:"{% url 'add_reason' %}",
-              data:{
-                  reason : $("#reasoninp").val(), 
-                      
+                type : 'POST',
+                url:"{% url 'add_reason' %}",
+                data:{
+                  'reason' : reasons,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
-                headers: {
-                            "X-CSRFToken": "{{ csrf_token }}"
-                      },
+                
                 success: function(response) {
-                  
-                  reloadReason();
-                },
-            });        
-          });
-                    
-function reloadReason() {
-  $.ajax({
-    url: "{% url 'newreasonslist' %}",
-  
-    success: function(data) {
-      console.log('hi')
-                var dropdown = $('#rsns');
-                
-                // dropdown.empty();
-                $.each(data, function(key, value) {
-                  dropdown.append($('<option></option>').attr('value', key).text(value).val(value));
-                  $("#newreason").modal("hide");
-                });
-                
-              },
-    error: function(xhr, status, error) {
-    console.error(xhr.responseText);
-    }
-  });
-}
+                    if(response.status){
+                        document.getElementById("newReasonForm").reset();
+                        
+                        var dropdown = $('#reasons1');
+                        dropdown.empty();
+                        dropdown.append(`<option value="" selected>Choose</option>`);
+                        $.each(response, function(key, value) {
+                            for(let i=0; i<value.length; i++){
+                                if(value[i].name == reasons){
+                                    dropdown.append($('<option selected></option>').text(value[i].name).val(value[i].id))
+                                }else{
+                                    dropdown.append($('<option></option>').text(value[i].name).val(value[i].id))
+                                }   
+                            }
+                        });
 
+                        $('#newreason').modal('hide');
+
+                    }else{
+                        alert("Something went wrong.!")
+                    }
+                },         
+            });
+    });
 
 
 

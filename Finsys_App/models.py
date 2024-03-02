@@ -681,7 +681,7 @@ class Stock_Adjustment(models.Model):
     description = models.CharField(max_length=255,null=True,blank=True)
     attach_file = models.FileField(upload_to='file/stock_adj/',blank=True)
     status=models.CharField(max_length=255,null=True,blank=True)
-    type=models.CharField(max_length=255,null=True,blank=True,default='None')
+    
     
     
 

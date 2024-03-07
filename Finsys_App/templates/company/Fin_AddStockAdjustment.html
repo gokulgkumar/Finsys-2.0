@@ -439,6 +439,9 @@ function selectonchange() {
       const tableBody = document.querySelector('#item_table_tbody1');
   
       addRowButton.addEventListener('click', function() {
+
+        const itemis = document.getElementById('selectss1').innerHTML
+
           const newRow = document.createElement('tr');
           rowNum++;
   
@@ -461,9 +464,27 @@ function selectonchange() {
                   <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
               </td>
           `;
+
+
   
           tableBody.appendChild(newRow);
 
+          const items= JSON.parse(localStorage.getItem('items')) 
+          var select=document.getElementById(`item${rowNum}`)
+
+          console.log()
+
+          for(let i=0; i<items.length; i++){
+                                        console.log(items[i].name,'items3')
+
+                                   
+                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                              
+                                   
+                                    
+      
+                                }
+                            
 
           $(`#item${rowNum}`).select2();
 
@@ -517,7 +538,7 @@ function selectonchange2(no){
     },
     success: function (response) {
       var stck = response.stock;
-      document.getElementById(`qty2${rowNum}`).value = stck;
+      document.getElementById(`qty2${no}`).value = stck;
     },
     error: function (error) {
       console.error('err', error);
@@ -615,7 +636,7 @@ $(document).on('change', '#selectss1', function () {
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left inneritem1' name='item2[]' id='item_selectss2' onchange="valuechange()">
+                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left inneritems1' name='item2[]' id='item_selectss2' onchange="valuechange()">
                                 <option class='text-light text-left' disabled hidden selected>Select Items</option>
                                 {% for i in items %}
                               
@@ -759,7 +780,7 @@ function selectonchange() {
             <td class="bg-transparent text-white">${rowNum2}</td>
             <td>
                 <div class='form-group mt-3'>
-                  <select class='bg-transparent item_select2${rowNum2} inneritm2 text-light text-left select2 inneritem${rowNum2}' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
+                  <select class='bg-transparent item_select2${rowNum2} inneritm2 text-light text-left select2 inneritems${rowNum2}' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
                         <option class='text-light' disabled hidden selected>Select Items</option>
                         {% for i in items %}
                        
@@ -1852,22 +1873,110 @@ $(document).on("click","#saveReasonButton",function(){
                         
                         var dropdown = $('.inneritem1');
                         dropdown.empty();
+
+
+
+
+
+                      console.log(response,'response')  
+
+                      localStorage.setItem('items',JSON.stringify(response.items))
+                     const items= JSON.parse(localStorage.getItem('items')) 
+
+
+
+                      var tableBody1 = document.querySelector("#item_table_tbody1");
+                                var rows1 = tableBody1.getElementsByTagName("tr");
+
+                                console.log('items2')
+
+                                for (var i = 1; i <= rows1.length; i++) {
+                                    var select = $(`.inneritem${i}`);
+
+                                  
+
+                                    for(let i=0; i<items.length; i++){
+                                        console.log(items[i].name,'items3')
+
+                                    if(items[i].name == name){
+                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                              
+                                    }else{
+                                        select.append($('<option></option>').text(items[i].name).val(items[i].id))
+                                    } 
+                                    
+      
+                                }
+                            }
+
+                            
+                      var tableBody1 = document.querySelector("#item_table_tbody2");
+                                var rows2 = tableBody1.getElementsByTagName("tr");
+
+                                console.log('items2')
+
+                                for (var i = 1; i <= rows2.length; i++) {
+                                    var select = $(`.inneritems${i}`);
+
+                                  
+
+                                    for(let i=0; i<items.length; i++){
+                                        console.log(items[i].name,'items3')
+
+                                    if(items[i].name == name){
+                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                              
+                                    }else{
+                                        select.append($('<option></option>').text(items[i].name).val(items[i].id))
+                                    } 
+                                    
+      
+                                }
+                            }
+
+
+
+
+
+                     
                         // var dropdown2 = $('.inneritem' + rowNum)
                         // dropdown2.empty();
 
                         // dropdown2.append(`<option value="" selected>Choose</option>`);
-                        dropdown.append(`<option value="" selected>Choose</option>`);
+                        // dropdown.append(`<option value="" selected>Choose</option>`);
 
-                        $.each(response, function(key, value) {
-                            for(let i=0; i<value.length; i++){
-                                if(value[i].name == name){
-                                    dropdown.append($('<option selected></option>').text(value[i].name).val(value[i].id))
-                                    // dropdown2.append($('<option selected></option>').text(value[i].name).val(value[i].id))
-                                }else{
-                                        dropdown.append($('<option></option>').text(value[i].name).val(value[i].id))
-                                }   
-                            }
-                        });
+                        // $.each(response, function(key, value) {
+
+                        //     var tableBody1 = document.querySelector("#item_table_tbody1");
+                        //         var rows1 = tableBody1.getElementsByTagName("tr");
+
+                        //         for (var i = 1; i <= rows1.length; i++) {
+                        //             var select = $(`.inneritem${i}`);
+
+
+                        //     for(let i=0; i<value.length; i++){
+
+                        //         if(value[i].name == name){
+                        //             select.append($('<option selected></option>').text(value[i].name).val(value[i].id))
+                        //             // dropdown2.append($('<option selected></option>').text(value[i].name).val(value[i].id))
+                        //         }else{
+                        //             select.append($('<option></option>').text(value[i].name).val(value[i].id))
+                        //         } 
+                                
+                              
+                                 
+                                   
+                             
+                                
+
+
+
+                                
+                                
+
+                        //     }
+                        // }
+                        // });
 
 
                     }else{

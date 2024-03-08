@@ -381,7 +381,7 @@
       const onhandqtyInp = document.getElementById('onhandqty');
       const diffInput = document.getElementById('diff');
 
-      console.log(itemSelect,'itemSelect')
+    //   console.log(itemSelect,'itemSelect')
   
       itemSelect.addEventListener('change', function() {
           const selectedOption = itemSelect.options[itemSelect.selectedIndex];
@@ -410,7 +410,7 @@ function selectonchange() {
   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
   const selectedValue = selectedOption.value;
 
-  console.log('selectedValue', selectedValue);
+//   console.log('selectedValue', selectedValue);
 
   $.ajax({
     type: "GET",
@@ -422,7 +422,7 @@ function selectonchange() {
     },
     success: function (response) {
       var stck = response.stock;
-      console.log(stck,'stck')
+    //   console.log(stck,'stck')
       document.getElementById('quant').value = stck;
     },
     error: function (error) {
@@ -438,7 +438,9 @@ function selectonchange() {
       const addRowButton = document.getElementById('add-row');
       const tableBody = document.querySelector('#item_table_tbody1');
   
-      addRowButton.addEventListener('click', function() {
+      addRowButton.addEventListener('click', addNewRow);
+
+      function  addNewRow(){
 
         const itemis = document.getElementById('selectss1').innerHTML
 
@@ -457,9 +459,9 @@ function selectonchange() {
                       <a><button type="button" class="btn btn-outline-secondary" data-target="#newitem" data-toggle="modal">+</button></a>
                   </div>
               </td>
-              <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qty2${rowNum}'  name="qtyav[]"></td>
-              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right rate'  name="newqty[]" value=''></td>
-              <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control    text-light text-right discount' name="qtyadj[]" value=''></td>
+              <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qtyinnerhand${rowNum} qty2${rowNum}'  name="qtyav[]"></td>
+              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right  qtyavailinner${rowNum} rate'  name="newqty[]" value=''></td>
+              <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control    text-light text-right  qtyadjinner${rowNum} discount' name="qtyadj[]" value=''></td>
               <td class='text-center'>
                   <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
               </td>
@@ -469,27 +471,42 @@ function selectonchange() {
   
           tableBody.appendChild(newRow);
 
-          const items= JSON.parse(localStorage.getItem('items')) 
-          var select=document.getElementById(`item${rowNum}`)
+        //   const items= JSON.parse(localStorage.getItem('items')) 
+        //   var select=document.getElementById(`item${rowNum}`)
 
-          console.log()
+        //   console.log()
 
-          for(let i=0; i<items.length; i++){
-                                        console.log(items[i].name,'items3')
+        //   for(let i=0; i<items.length; i++){
+        //                                 console.log(items[i].name,'items3')
 
                                    
-                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+        //                                 select.append($('<option ></option>').text(items[i].name).val(items[i].id))
                               
                                    
                                     
       
-                                }
+        //                         }
                             
 
-          $(`#item${rowNum}`).select2();
+        //   $(`#item${rowNum}`).select2();
+
+
+          const items = JSON.parse(localStorage.getItem('items'));
+            var select = document.getElementById(`item${rowNum}`);
+
+            // console.log(items);
+
+            for (let i = 0; i < items.length; i++) {
+                // console.log(items[i].name, 'items3');
+
+                const option = new Option(items[i].name, items[i].id);
+                select.add(option);
+            }
+
+            $(`#item${rowNum}`).select2();
 
           
-
+  
          
 
           const itemSelectNewRow = document.querySelector(`#item${rowNum}`);
@@ -517,9 +534,11 @@ function selectonchange() {
               newRow.remove();
               rowNum--;
           });
-      });
+      }
   });
-  
+
+
+ 
 
 function selectonchange2(no){
   const itemSelect = document.querySelector(`.item_select${no}`);
@@ -527,6 +546,7 @@ function selectonchange2(no){
     const qtyInput = document.querySelector(`.qty2${no}`); 
     const selectedOption = itemSelect.options[itemSelect.selectedIndex];
     const selectedValue = selectedOption.value;
+    console.log('selectedValue',selectedValue)
 
      $.ajax({
     type: "GET",
@@ -539,6 +559,8 @@ function selectonchange2(no){
     success: function (response) {
       var stck = response.stock;
       document.getElementById(`qty2${no}`).value = stck;
+    //    
+      
     },
     error: function (error) {
       console.error('err', error);
@@ -561,10 +583,27 @@ function selectonchange2(no){
 
 
   </script> 
+
+  
+<script type="text/javascript">
+    $(document).on('input', '.inpinner', function() {
+      var qtyhnd = parseFloat(document.getElementById('qty_hand1').value);
+      var qtyavail = parseFloat(document.getElementById('qtyavail1').value);
+      var difference = qtyhnd - qtyavail
+      document.getElementById('new_qty1').value=difference
+    });
+</script>
      
   
 
-
+     <script type="text/javascript">
+        $(document).on('input', '#qty_hand1', function() {
+          var qtyhnd = parseFloat(document.getElementById('qty_hand1').value);
+          var qtyavail = parseFloat(document.getElementById('qtyavail1').value);
+          var difference = qtyhnd - qtyavail
+          document.getElementById('new_qty1').value=difference
+        });
+  </script>      
 
 
 
@@ -706,8 +745,8 @@ $(document).on('change', '#selectss1', function () {
           const rateValue = parseFloat(changval.value) || 0;
           const qtyValue = parseFloat(selectedItem) || 0;
           const difference = qtyValue - rateValue;
-          console.log(rateValue, 'rateValue');
-          console.log(qtyValue, 'qtyValue');
+        //   console.log(rateValue, 'rateValue');
+        //   console.log(qtyValue, 'qtyValue');
   
           // Only set the value if the difference is not zero
           diffInput.value = difference !== 0 ? difference.toFixed(2) : '';
@@ -728,7 +767,7 @@ function selectonchange() {
   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
   const selectedValue = selectedOption.value;
 
-  console.log('selectedValue', selectedValue);
+//   console.log('selectedValue', selectedValue);
 
   $.ajax({
     type: "GET",
@@ -770,7 +809,9 @@ function selectonchange() {
 
 
 
-    addRowButton2.addEventListener('click', function() {
+    addRowButton2.addEventListener('click', newRows);
+
+        function newRows(){
        
         const newRow2 = document.createElement('tr');
 
@@ -801,10 +842,52 @@ function selectonchange() {
         const tableBody2 = document.querySelector('#item_table_tbody2');
         tableBody2.appendChild(newRow2);
 
-        $(`#item2${rowNum2}`).select2()
+        $(`#item2${rowNum2}`).select2();
+
+        const items = JSON.parse(localStorage.getItem('items'));
+        var select = document.getElementById(`item2${rowNum2}`);
+
+            // console.log(items);
+
+        for (let i = 0; i < items.length; i++) {
+            // console.log(items[i].name, 'items3');
+
+            const option = new Option(items[i].name, items[i].id);
+            select.add(option);
+        }
+
+
+        
+                        // var rows2 = tableBody2.getElementsByTagName("tr");
+
+                        //         console.log('items2')
+
+                        //         for (var i = 1; i <= rows2.length; i++) {
+                        //             var select = $(`.inneritems${i}`);
+
+                                  
+
+                        //             for(let i=0; i<items.length; i++){
+                                        
+
+                                  
+                        //                 const option = new Option(items[i].name, items[i].id);
+                        //                 select.add(option);
+                        //             }
+                               
+                              
+                                    
+
+
+
+
+
+
 
       
-    });
+
+      
+    };
 
 
 
@@ -833,7 +916,7 @@ function selectonchange() {
             const stockrate = selectedOption.getAttribute('data-rate');
             const row = target.closest('tr');
 
-            console.log('selectedOption 2',selectedOption)
+            // console.log('selectedOption 2',selectedOption)
 
             // Calculate and set the value
             const valuesInput = row.querySelector('.values');
@@ -881,7 +964,7 @@ function valuechange(){
  const select =document.getElementById('item_selectss2')
 const selectedOption = select.options[select.selectedIndex];
 const selectedItem = selectedOption.value
-console.log('selectedItem sasda',selectedItem)
+// console.log('selectedItem sasda',selectedItem)
 
 $.ajax({
           type: "GET",
@@ -910,7 +993,7 @@ $.ajax({
             // value-innerhtml
             function valuechange2(nos){
               const selects = document.getElementById(`item2${nos}`)
-              console.log(selects,'sssss')
+            //   console.log(selects,'sssss')
               const selectedOption = selects.options[selects.selectedIndex];
               const selectedItem = selectedOption.value
          
@@ -941,7 +1024,7 @@ $.ajax({
      $('.select2').select2();
   $(document).on('change', '#selectss3', function () {
                                      
-      console.log('Select changed');
+    //   console.log('Select changed');
       var selectedValue = $(this).val();
       $.ajax({
           type: "GET",
@@ -1429,7 +1512,7 @@ $(document).on("click","#saveReasonButton",function(){
                 
                 valueDiv.style.display = "block";
                 quantityDiv.style.display = "none";
-                console.log("hi")
+                // console.log("hi")
 
             }
         }
@@ -1871,14 +1954,10 @@ $(document).on("click","#saveReasonButton",function(){
             success: function(response) {
                     if(response.status){
                         
-                        var dropdown = $('.inneritem1');
-                        dropdown.empty();
+                        // var dropdown = $('.inneritem1');
+                        // dropdown.empty();
 
-
-
-
-
-                      console.log(response,'response')  
+                    //   console.log(response,'response')  
 
                       localStorage.setItem('items',JSON.stringify(response.items))
                      const items= JSON.parse(localStorage.getItem('items')) 
@@ -1887,96 +1966,32 @@ $(document).on("click","#saveReasonButton",function(){
 
                       var tableBody1 = document.querySelector("#item_table_tbody1");
                                 var rows1 = tableBody1.getElementsByTagName("tr");
-
-                                console.log('items2')
-
+                                // console.log('items2')
                                 for (var i = 1; i <= rows1.length; i++) {
                                     var select = $(`.inneritem${i}`);
 
-                                  
-
                                     for(let i=0; i<items.length; i++){
-                                        console.log(items[i].name,'items3')
-
-                                    if(items[i].name == name){
+                                        // console.log(items[i].name,'items3')
                                         select.append($('<option ></option>').text(items[i].name).val(items[i].id))
-                              
-                                    }else{
-                                        select.append($('<option></option>').text(items[i].name).val(items[i].id))
-                                    } 
-                                    
-      
+                             
                                 }
                             }
 
                             
-                      var tableBody1 = document.querySelector("#item_table_tbody2");
-                                var rows2 = tableBody1.getElementsByTagName("tr");
+                      var tableBody2 = document.querySelector("#item_table_tbody2");
+                        var rows2 = tableBody2.getElementsByTagName("tr");
 
-                                console.log('items2')
+                                // console.log('items2')
 
                                 for (var i = 1; i <= rows2.length; i++) {
                                     var select = $(`.inneritems${i}`);
 
-                                  
-
                                     for(let i=0; i<items.length; i++){
-                                        console.log(items[i].name,'items3')
-
-                                    if(items[i].name == name){
+                                        // console.log(items[i].name,'items3')
                                         select.append($('<option ></option>').text(items[i].name).val(items[i].id))
                               
-                                    }else{
-                                        select.append($('<option></option>').text(items[i].name).val(items[i].id))
-                                    } 
-                                    
-      
                                 }
                             }
-
-
-
-
-
-                     
-                        // var dropdown2 = $('.inneritem' + rowNum)
-                        // dropdown2.empty();
-
-                        // dropdown2.append(`<option value="" selected>Choose</option>`);
-                        // dropdown.append(`<option value="" selected>Choose</option>`);
-
-                        // $.each(response, function(key, value) {
-
-                        //     var tableBody1 = document.querySelector("#item_table_tbody1");
-                        //         var rows1 = tableBody1.getElementsByTagName("tr");
-
-                        //         for (var i = 1; i <= rows1.length; i++) {
-                        //             var select = $(`.inneritem${i}`);
-
-
-                        //     for(let i=0; i<value.length; i++){
-
-                        //         if(value[i].name == name){
-                        //             select.append($('<option selected></option>').text(value[i].name).val(value[i].id))
-                        //             // dropdown2.append($('<option selected></option>').text(value[i].name).val(value[i].id))
-                        //         }else{
-                        //             select.append($('<option></option>').text(value[i].name).val(value[i].id))
-                        //         } 
-                                
-                              
-                                 
-                                   
-                             
-                                
-
-
-
-                                
-                                
-
-                        //     }
-                        // }
-                        // });
 
 
                     }else{

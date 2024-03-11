@@ -336,7 +336,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody id="item_table">
+      <tbody id="item_table_tbody1">
         {% for m in st_items %}
         <tr id='row1'>
           <td class="bg-transparent text-white rownum" id="" value="">{{forloop.counter}}</td>
@@ -352,6 +352,7 @@
                   {% endfor %}
 
                   </select>
+                  <a><button type="button" class="btn btn-outline-secondary" data-target="#newitem" data-toggle="modal">+</button></a>
               </div>
           </td>
           <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='{{m.quantity_avail}}' name="qtyav[]" id="qtyavail{{m.id}}">
@@ -435,9 +436,10 @@ function selectonchange(m,j) {
   document.addEventListener('DOMContentLoaded', function() {
 
       const addRowButton = document.getElementById('add-row');
-      const tableBody = document.querySelector('#item_table tbody');
+      const tableBody = document.querySelector('#item_table_tbody1');
   
-      addRowButton.addEventListener('click', function() {
+      addRowButton.addEventListener('click', addNewRow)
+      function addNewRow() {
           const newRow = document.createElement('tr');
           rowNum++;
   
@@ -450,6 +452,7 @@ function selectonchange(m,j) {
                           <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
                           {% endfor %}
                       </select>
+                      <a><button type="button" class="btn btn-outline-secondary" data-target="#newitem" data-toggle="modal">+</button></a>
                   </div>
               </td>
               <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qty2${rowNum}'  name="qtyav[]"></td>
@@ -488,7 +491,7 @@ function selectonchange(m,j) {
               newRow.remove();
               rowNum--;
           });
-      });
+      }
   });
   
 
@@ -571,7 +574,7 @@ function selectonchange2(no){
                     <th class="" style="font-weight: bold;;">Adjusted Value</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="item_table_tbody2">
               {% for m in st_items %}
                 <tr id='row2' class="">
                     <td class="bg-transparent text-light rownum2 " data-set="{{forloop.counter}}">{{forloop.counter}}</td>
@@ -593,6 +596,7 @@ function selectonchange2(no){
                               {% endif %}
                               {% endfor %}
                             </select>
+                            <a><button type="button" class="btn btn-outline-secondary" data-target="#newitem" data-toggle="modal">+</button></a>
                         </div>
                     </td>
                  
@@ -715,6 +719,7 @@ function changeval(j,m){
                         <option  value="{{i.name}}" data-stock="{{i.stock}}" data-rate="{{i.rate}}" >{{i.name}}</option>
                         {% endfor %}
                     </select>
+                    <a><button type="button" class="btn btn-outline-secondary" data-target="#newitem" data-toggle="modal">+</button></a>
                 </div>
             </td>
             <td class='text-right'><input type='number' class='form-control bg-transparent border-1  text-light text-right values' name='cuval[]' value='' id='currentval2${rowNum2}'  style="background-color: rgb(255 255 255 / 14%)!important;"></td>
@@ -725,7 +730,7 @@ function changeval(j,m){
             </td>
         `;
 
-        const tableBody2 = document.querySelector('#item_table2 tbody');
+        const tableBody2 = document.querySelector('#item_table_tbody2');
         tableBody2.appendChild(newRow2);
 
         $(`#item2${rowNum2}`).select2()
@@ -946,8 +951,8 @@ $.ajax({
              
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary text-light" id="saveReasonButton" >Save</button>
-                  <button type="button" class="btn btn-outline-secondary text-light" data-dismiss="modal" id="cancelBtn">Close</button>
+                  <button type="button" class="btn btn-outline-info" id="saveReasonButton" >Save</button>
+                  <button type="button" class="btn btn-outline-info" data-dismiss="modal" id="cancelBtn">Close</button>
               </div>
           </form>
           </div>
@@ -1010,6 +1015,793 @@ $(document).on("click","#saveReasonButton",function(){
  <!-- ---------------------------------------------------- END REASON MODAL ------------------------------------------------------------------- -->
 
 
+
+<!-- --------------------------------------------------------------- ITEM MODAL --------------------------------------------------------------------------- -->
+
+<div class="modal fade" id="newitem">
+  <div class="modal-dialog modal-xl">
+      <div class="modal-content" style="background-color: #213b52;">
+          <div class="modal-header">
+              <h3 class="m-3" id="itm_modal_head">New Item</h3>
+              <button type="button" class="close" aria-label="Close" id="new_itm_close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <button type="button" class="close" aria-label="Close" id="new_acc_close" style="display: none;">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <button type="button" class="close" aria-label="Close" id="new_unit_close" style="display: none;">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="card p-3 m-3">
+                  <form class="needs-validation" method="post" autocomplete="off" id="item_form">
+                      {% csrf_token %}
+                      <div class="row">
+                          <div class="col-md-12 mx-0">
+                              <div class="row">
+                                  <div class="col-md-6 mt-3">
+                                      <input type="text" class="new_modal_type_itm" value="Item" hidden>
+                                      <label for="nitm_name" class="text-white">Name</label>
+                                      <input type="text" id="nitm_name" name="nitm_name" class="form-control" autocomplete="off">
+                                      <span class="font-medium text-danger" id="item-name-error"></span>
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_type" class="text-white">Type</label>
+                                      <select name="nitm_type" class="form-control" id="nitm_type">
+                                          <option selected value="" hidden>Choose...</option>
+                                          <option value="Goods">Goods</option>
+                                          <option value="Services">Services</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_unit" class="text-white">Unit</label>
+                                      <div class="d-flex">
+                                          <select class="custom-select" name="nitm_unit" id="nitm_unit">
+                                              <option selected value="" hidden>Choose...</option>
+                                              {% for a in units %}
+                                              <option class="text-uppercase" value="{{a.name}}">{{ a.name }}</option>
+                                              {% endfor %}
+                                          </select>
+                                          &nbsp;&nbsp;&nbsp;
+                                          <a class="btn btn-outline-secondary" id="new_unit_btn">+</a>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_hsn" class="text-white">HSN Code</label>
+                                      <input type="number" name="nitm_hsn" class="form-control" placeholder="Enter a valid HSN code" id="nitm_hsn">
+                                      <span class="font-medium text-danger" id="item-hsn-error"></span>
+                                  </div>
+                              </div>
+                              <div class="row mt-3">
+                                  <div class="col-md-3 mt-3 mb-3">
+                                      <label class="text-white">Tax Reference</label>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <div class="form-check mt-3 mb-3">
+                                          <input class="form-check-input" name="taxref" type="radio" id="inclusive" value="taxable">
+                                          <label class="text-white" for="inclusive">Taxable</label>
+                                      </div>
+                                  </div>
+                                  <div class="form-check mt-3 mb-3">
+                                      <input class="form-check-input" name="taxref" type="radio" value="non taxable" id="noninclusive">
+                                      <label class="text-white" for="noninclusive">Non Taxable</label>
+                                  </div>
+                              </div>
+                              <div class="row"  id="taxableDiv" style="display: none;">
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_intra_tax" class="text-white">Intra State Tax Rate</label>
+                                      <select name="nitm_intra_tax" class="form-control" id="nitm_intra_tax" >
+                                          <option value=0>GST 0 (0%)</option>
+                                          <option value=3>GST 3 (3%)</option>
+                                          <option value=5>GST 5 (5%)</option>
+                                          <option value=12>GST 12 (12%)</option>
+                                          <option value=18>GST 18 (18%)</option>
+                                          <option value=28>GST 28 (28%)</option>        
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_inter_tax" class="text-white">Inter State Tax Rate</label>
+                                      <select name="nitm_inter_tax" class="form-control" id="nitm_inter_tax" >
+                                          <option value=0>IGST 0 (0%)</option>
+                                          <option value=3>IGST 3 (3%)</option>
+                                          <option value=5>IGST 5 (5%)</option>
+                                          <option value=12>IGST 12 (12%)</option>
+                                          <option value=18>IGST 18 (18%)</option>
+                                          <option value=28>IGST 28 (28%)</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mt-3">
+                                      <label class="text-white">Purchase Price</label>
+                                      <div class="row">
+                                          <div class="col-md-12 d-flex">
+                                              <input type="text" class="form-control col-2 mr-1" value="INR">
+                                              <input type="number" name="nitm_pur_price" class="form-control" id="nitm_pur_price" value="0">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label class="text-white">Sales Price</label>
+                                      <div class="row">
+                                          <div class="col-md-12 d-flex">
+                                              <input type="text" class="form-control col-2 mr-1" value="INR">
+                                              <input type="text" name="nitm_sale_price" class="form-control" id="nitm_sale_price" value="0">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_pur_acc" class="text-white">Account</label>
+                                      <div class="d-flex">
+                                          <select name="nitm_pur_acc" class="form-control" id="nitm_pur_acc">
+                                              <option value="" selected hidden>Choose...</option>
+                                              {% for a in account %}
+                                              <option value="{{ a.account_name }}">{{ a.account_name }}</option>
+                                              {% endfor %}
+                                          </select>
+                                          &nbsp;&nbsp;&nbsp;
+                                          <a class="btn btn-outline-secondary" id="new_acc_btn">+</a>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_sale_acc" class="text-white">Account</label>
+                                      <select name="nitm_sale_acc" class="form-control" id="nitm_sale_acc">
+                                          <option value="" selected hidden>Choose..</option>
+                                          <option value="General Income">General Income</option>
+                                          <option value="Interest Income">Interest Income</option>
+                                          <option value="Late Fee Income">Late Fee Income</option>
+                                          <option value="Discount Income">Discount Income</option>
+                                          <option value="Shipping Charges">Shipping Charges</option>
+                                          <option value="Other Charges">Other Charges</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_pur_acc" class="text-white">Description</label>
+                                      <textarea class="form-control" name="nitm_pur_acc" id="nitm_pur_acc"></textarea>  
+                                  </div>
+                                  <div class="col-md-6 mt-3">
+                                      <label for="nitm_sale_acc" class="text-white">Description</label>
+                                      <textarea class="form-control" name="nitm_sale_acc" id="nitm_sale_acc"></textarea>
+                                  </div>
+                              </div>
+                              <div class="row mt-3" >
+                                  <div class="col-md-3">
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox"  id="track">
+                                          <label class="form-check-label" for="track">Track Inventory</label>
+                                      </div>  
+                                  </div>
+                              </div>
+                              <div class="row" id="inventorytrack" style="display: none">
+                                  <div class="col-md-6 mt-3">
+                                      <label class="text-white">Inventory Account</label>
+                                      <select name="invacc" class="form-control" id="invacc">
+                                          <option selected value="" hidden>Choose...</option>
+                                          <option value="Inventory Assets">Inventory Assets</option>    
+                                      </select>
+                                  </div>
+                                  <div class="col-md-3 mt-3">
+                                      <label class="text-white">Stock on hand</label>
+                                      <input type="number" name="nitm_stock" class="form-control" id="nitm_stock" value="0">
+                                  </div>
+                                  <div class="col-md-3 mt-3">
+                                      <label class="text-white">Stock Rate per Unit</label>
+                                      <input type="number" name="nitm_stock_rate" class="form-control" id="nitm_stock_rate" value="0">
+                                  </div>
+                              </div>
+                              <div class="row" >
+                                  <div class="col-md-3 mt-3">
+                                      <label class="text-white">Minimum Stock to maintain</label>
+                                      <input type="number" name="nitm_min_stock" class="form-control" id="nitm_min_stock" value="0">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-4"></div>
+                          <div class="col-md-4">
+                              <button class="btn btn-outline-secondary  text-light w-100 mt-3 mb-3" type="submit">
+                                  Submit
+                              </button>
+                          </div>
+                          <div class="col-md-4"></div>
+                      </div>
+                  </form>
+
+                  <form class="needs-validation" method="post" autocomplete="off" id="unit_form" style="display: none;">
+                      <div class="row mt-2">
+                          <div class="col-md-2"></div>
+                          <div class="col-md-3">
+                              <input type="text" class="new_modal_type_itm" hidden>
+                              <label class="float-right mt-2" for="name">Unit Name</label>
+                          </div>
+                          <div class="col-md-5">
+                              <input name="name" id="unit_name" class="form-control text-uppercase" >
+                              <span class="font-medium text-danger" id="unit-name-error"></span>
+                          </div>
+                      </div>
+                      <div class="row mt-4">
+                          <div class="col-12 d-flex justify-content-center">
+                              <button class="btn btn-outline-info text-grey" type="submit" id="saveItemUnit">Save</button>
+                          </div>
+                      </div>
+                  </form>
+
+                  <form class="needs-validation" method="post" autocomplete="off" id="account_form" style="display: none;">
+                      <div class="row mt-2 mb-2">
+                          <div class="col-md-6">
+                              <div class="row mt-2">
+                                  <div class="col-12">
+                                      <input type="text" class="new_modal_type_itm" hidden>
+                                      <label for="acctyp">Account Type</label>
+                                      <input type="text" value="Assets" id="acctype" name="acctype" hidden>
+                                      <select name="account_type" id="Account_type" class="custom-select-md form-control w-100" onchange="AccountTypeChange(this)" required>
+                                          <optgroup label="Expense" style="background-color: rgb(47 81 111);">
+                                              <option value="Expense"> Expense </option>
+                                              <option value="Cost Of Goods Sold"> Cost Of Goods Sold </option>
+                                              <option value="Other Expense"> Other Expense </option>
+                                          </optgroup>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row mt-2">
+                                  <div class="col-12">
+                                      <label for="name">*Name</label>
+                                      <input name="account_name" id="accountName" required class="custom-select-md form-control w-100">
+                                  </div>
+                              </div>
+                              <div class="row mt-1" id="subAccountCheck" style="display: none;">
+                                  <div class="col-12">
+                                      <div class="form-check">
+                                          <input type="checkbox" name="subAccountCheckBox" class="form-check-input" id="subAccountCheckBox">
+                                          <label class="form-check-label" for="subAccountCheckBox">Make this a sub-account</label>
+                                          <span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Select this option if you are creating a sub-account."></i></span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row mt-2" id="parentAccountValue" style="display: none;">
+                                  <div class="col-12">
+                                      <label for="parentAccount">Parent Account</label>
+                                      <select name="parent_account" id="parentAccount" class="custom-select-md form-control w-100">
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="row mt-2">
+                                  <div class="col-12">
+                                      <label for="acc_code">Account Code</label>
+                                      <input type="text" name="account_code" id="account_code" class="form-control">
+                                  </div>
+                              </div>
+                              <div class="row mt-2">
+                                  <div class="col-12">
+                                      <label>Description</label>
+                                      <textarea class="form-control" rows="3" id="description" name="description" placeholder="Max. 500 Characters"></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6 mt-4"> 
+                              <div id="acnt-desc" class="form-control" name="detype" style="font-size: small;  height: fit-content;">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-3">
+                          <div class="row">
+                              <div class="col-md-4"></div>
+                              <div class="col-md-4 d-flex justify-content-center">
+                                  <button class="btn btn-outline-info" type="submit" id="saveNewAccount">Save</button>
+                              </div>
+                              <div class="col-md-4"></div>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div> 
+</div>   
+
+
+
+
+
+<!-- New Unit or Account Inside Item -->
+<script>
+  function return_to_item_modal(){
+      $('#itm_modal_head').text('New Item')
+      $('.new_modal_type_itm').val('Item')
+      $('#new_unit_close').hide()
+      $('#new_acc_close').hide()
+      $('#new_itm_close').show()
+      $('#unit_form').hide()
+      $('#account_form').hide()
+      $('#item_form').show()
+      $('#newitem').find('.modal-dialog').removeClass('modal-md');
+      $('#newitem').find('.modal-dialog').addClass('modal-xl');
+
+      $('#unit_name').prop('required', false);
+
+      $('#Account_type').prop('required', false);
+      $('#accountName').prop('required', false);
+
+      $('#nitm_name').prop('required', true);
+      $('#nitm_type').prop('required', true);
+      $('#nitm_unit').prop('required', true);
+      $('#nitm_hsn').prop('required', true);
+      $('#inclusive').prop('required', true);
+
+      $('#unit_form')[0].reset();
+      $('#account_form')[0].reset();
+  }
+
+  // Add New Unit Button is Clicked
+  $('#new_unit_btn').click(function(){
+      $('#itm_modal_head').text('New Unit')
+      $('.new_modal_type_itm').val('Unit')
+      $('#new_unit_close').show()
+      $('#new_acc_close').hide()
+      $('#new_itm_close').hide()
+      $('#unit_form').show()
+      $('#account_form').hide()
+      $('#item_form').hide()
+      $('#newitem').find('.modal-dialog').removeClass('modal-xl');
+      $('#newitem').find('.modal-dialog').addClass('modal-md');
+
+      $('#unit_name').prop('required', true);
+
+      $('#Account_type').prop('required', false);
+      $('#accountName').prop('required', false);
+
+      $('#nitm_name').prop('required', false);
+      $('#nitm_type').prop('required', false);
+      $('#nitm_unit').prop('required', false);
+      $('#nitm_hsn').prop('required', false);
+      $('#inclusive').prop('required', false);
+  });
+  
+  // Close Add Unit 
+  $('#new_unit_close').click(function(){
+      return_to_item_modal()
+  });
+
+  // Add New Account Button is Clicked
+  $('#new_acc_btn').click(function(){
+      $('#itm_modal_head').text('New Account')
+      $('.new_modal_type_itm').val('Account')
+      $('#new_unit_close').hide()
+      $('#new_acc_close').show()
+      $('#new_itm_close').hide()
+      $('#unit_form').hide()
+      $('#account_form').show()
+      $('#item_form').hide()
+
+      $('#unit_name').prop('required', false);
+
+      $('#Account_type').prop('required', true);
+      $('#accountName').prop('required', true);
+
+      $('#nitm_name').prop('required', false);
+      $('#nitm_type').prop('required', false);
+      $('#nitm_unit').prop('required', false);
+      $('#nitm_hsn').prop('required', false);
+      $('#inclusive').prop('required', false);
+  });
+
+  // Close Add Account
+  $('#new_acc_close').click(function(){
+      return_to_item_modal()
+  });
+
+  // Close New Item 
+  $('#new_itm_close').click(function(){
+      $('#item_form')[0].reset();
+      $('#unit_form')[0].reset();
+      $('#account_form')[0].reset();
+      $('#newitem').modal('hide')
+  })
+</script>
+
+<!-- New Unit -->
+<script>
+  $('#unit_name').change(function(){
+      var unit_name = $('#unit_name').val();
+      if (unit_name != ""){
+          $.ajax({
+              type : 'GET',
+              url:"{% url 'Fin_Check_New_Unit' %}",
+              data:{
+                  'unit_name' : unit_name,
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              success: function(response) {
+                  if(response.is_exist){
+                      $('#unit_name').val('')
+                      $('#unit-name-error').text(response.message)
+                  }else{
+                      $('#unit-name-error').text('')
+                  }
+              },         
+          });
+      }
+  });
+
+  $('#newitem').submit(function(event){
+      event.preventDefault();
+      if($('.new_modal_type_itm').first().val() == 'Unit'){
+          var unit_name = $('#unit_name').val();
+          $.ajax({
+              url: "{% url 'Fin_New_Unit' %}",
+              type : 'GET',
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              data:{
+                  unit_name : unit_name,
+              },
+              success: function(response) {
+                  if(response.message == 'Success'){
+                      var new_option = $(`<option class="text-uppercase" value="${unit_name}">${unit_name}</option>`);
+                      $('#nitm_unit').append(new_option)
+                  }
+                  $('#unit_form')[0].reset();
+                  return_to_item_modal()
+              },
+          });
+      }
+  });
+</script>
+
+<!-- New Account -->
+<script>
+  $('#subAccountCheckBox').change(function(){
+      if($("#subAccountCheckBox").prop('checked')){
+          $('#parentAccount').prop('required', true);
+      }else{
+          $('#parentAccount').prop('required', false);
+      }
+  });
+
+  $(document).ready(function(){
+      var Acnt_desc = document.getElementById("acnt-desc");
+      Acnt_desc.innerHTML=`
+          <b>Expense</b> <br>Reflects expenses incurred for running normal business operations, such as :<br/>
+          <ul>
+              <li>1.Advertisements and Marketing</li>
+              <li>2.Business Travel Expenses</li>
+              <li>3.License Fees</li>
+              <li>4.Utility Expenses</li>
+          </ul>`;
+
+          var selectedValue = $('#Account_type').val();
+          $.ajax({
+              type : 'GET',
+              url:"/Fin_check_accounts",
+              data:{
+                  type : selectedValue,
+              },
+              
+              success: function(response) {
+                  if(response.status){
+                      $('#subAccountCheck').css('display','block');
+                      var dropdown = $('#parentAccount');
+                      dropdown.empty();
+                      dropdown.append(`<option selected hidden value="">--Choose--</option>`)
+                      $.each(response, function(key, value) {
+                          for(let i=0; i<value.length; i++){
+                              dropdown.append($('<option></option>').text(value[i].name).val(value[i].name))
+                          }
+                      });
+                  }else{
+                      
+                  }
+              },         
+          });
+  })
+
+  function AccountTypeChange(selectBox) {
+      var selectElement = document.getElementById("Account_type");
+      var selectedValue = selectElement.value;
+      var Acnt_desc = document.getElementById("acnt-desc");
+      var acctype = document.getElementById("acctype");
+
+      switch(selectedValue) {
+          case "Expense":
+              Acnt_desc.innerHTML=`
+                  <b>Expense</b> <br>Reflects expenses incurred for running normal business operations, such as :<br/>
+                  <ul>
+                      <li>1.Advertisements and Marketing</li>
+                      <li>2.Business Travel Expenses</li>
+                      <li>3.License Fees</li>
+                      <li>4.Utility Expenses</li>
+                  </ul>`;
+                  acctype.value="Expense"
+              break;
+          case "Cost Of Goods Sold":
+              Acnt_desc.innerHTML=`
+                  <b>Expense</b> <br>This indicates the direct costs attributable to the production of the goods sold by a company such as:<br/>
+                  <ul>
+                      <li>1.Material and Labor costs</li>
+                      <li>2.Cost of obtaining raw materials</li>
+                  </ul>`;
+                  acctype.value="Expense"
+              break;
+          case "Other Expense":
+              Acnt_desc.innerHTML=`
+                  <b>Expense</b> <br>Track miscellaneous expenses incurred for activities other than primary business operations or create additional accounts to track default expenses like insurance or contribution towards charity.<br/>`;
+                  acctype.value="Expense"
+              break;
+          default:
+          Acnt_desc.innerHTML=`<b>Account Type</b> <br>Select an account type..<br/>`;
+      }
+
+      if(selectedValue !=""){
+          $('#subAccountCheck').css('display','none')
+          $('#subAccountCheckBox').prop('checked', $('#subAccountCheckBox').prop('checked') ? false : false);
+          $('#parentAccountValue').css('display','none');
+
+          $.ajax({
+              type : 'GET',
+              url:"/Fin_check_accounts",
+              data:{
+                  type : selectedValue,
+              },
+              
+              success: function(response) {
+                  if(response.status){
+                      $('#subAccountCheck').css('display','block');
+                      var dropdown = $('#parentAccount');
+                      dropdown.empty();
+                      dropdown.append(`<option selected hidden value="">--Choose--</option>`)
+                      $.each(response, function(key, value) {
+                          for(let i=0; i<value.length; i++){
+                              dropdown.append($('<option></option>').text(value[i].name).val(value[i].name))
+                          }
+                      });
+                  }else{
+                      
+                  }
+              },         
+          });
+      }
+  }
+
+  $(document).ready(function() {
+      $('#subAccountCheckBox').change(function() {
+          if ($(this).is(':checked')) {
+              $('#parentAccountValue').css('display','block');
+              $('#parentAccount').prop('required',true);
+          } else {
+              $('#parentAccountValue').css('display','none');
+              $('#parentAccount').prop('required',false);
+          }
+      });
+  });
+
+  $('#newitem').submit(function(event){
+      event.preventDefault();
+      if($('.new_modal_type_itm').first().val() == 'Account'){
+          var name = $("#accountName").val();
+          var type = $("#Account_type").val();
+          var code = $("#account_code").val();
+          var desc = $("#description").val();
+          var subAcc = $("#subAccountCheckBox").prop('checked');
+          var parentAcc = $("#parentAccount").val();
+
+          if (name !="" && type !="" ){
+              $.ajax({
+                  url: "{% url 'Fin_New_Account' %}",
+                  type : 'GET',
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  data:{
+                      'account_name' : name,
+                      'account_type' : type,
+                      'account_code' : code,
+                      'subAccountCheckBox' : subAcc,
+                      'parent_account' : parentAcc,
+                      'description' : desc,
+                  },
+                  
+                  success: function(response) {
+                      if(response.status){
+                          var dropdown = $('#nitm_pur_acc');
+                          dropdown.append($('<option></option>').text(name).val(name))
+                          return_to_item_modal()
+                      }else{
+                          alert(response.message)
+                      }
+                  },         
+              });
+          }
+          else{
+              alert('Account name or Type cannot be blank.!')
+          }
+      }
+  });
+</script>
+
+<!-- New Item -->
+<script>
+  // Reset Form When Closed
+  $('#item_close').click(function(){
+      $('#item_form')[0].reset();
+      $('#unit_form')[0].reset();
+      $('#account_form')[0].reset();
+  })
+
+  // If Inclusive Button is Clicked
+  $('#inclusive').change(function(){
+      $('#taxableDiv').show()
+  });
+
+  // If NonInclusive Button is Clicked
+  $('#noninclusive').change(function(){
+      $('#nitm_intra_tax').val(0)
+      $('#nitm_inter_tax').val(0)
+      $('#taxableDiv').hide()
+  });
+
+  // If Track Inventory is Clicked
+  $('#track').change(function() {
+      if($(this).is(':checked')){
+          $("#inventorytrack").show();
+      }else{
+          $('#invacc').val('')
+          $('#nitm_stock').val(0)
+          $('#nitm_stock_rate').val(0)
+          $("#inventorytrack").hide();;
+      }
+  });
+
+  // Validate Item Name
+  $('#nitm_name').change(function(){
+      var itm_name = $('#nitm_name').val();
+      if (itm_name != ""){
+          $.ajax({
+              type : 'POST',
+              url:"{% url 'Fin_Check_New_Item_Name' %}",
+              data:{
+                  'itm_name' : itm_name,
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              success: function(response) {
+                  if(response.is_exist){
+                      $('#item-name-error').text(response.message)
+                  }else{
+                      $('#item-name-error').text('')
+                  }
+              },         
+          });
+      }
+  });
+
+  // Validate Item HSN
+  $('#nitm_hsn').change(function(){
+      var itm_hsn = $('#nitm_hsn').val();
+      if (itm_hsn != ""){
+          $.ajax({
+              type : 'POST',
+              url:"{% url 'Fin_Check_New_Item_HSN' %}",
+              data:{
+                  'itm_hsn' : itm_hsn,
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              success: function(response) {
+                  if(response.is_exist){
+                      $('#item-hsn-error').text(response.message)
+                  }else{
+                      $('#item-hsn-error').text('')
+                  }
+              },         
+          });
+      }
+  });
+
+  // New Item 
+  $('#newitem').submit(function(event){
+  
+      event.preventDefault();
+      if($('.new_modal_type_itm').first().val() == 'Item'){
+          if($('#inclusive').is(':checked')){
+              taxref = 'Taxable'
+          }else{
+              taxref = 'Non Taxable'
+          }
+          $.ajax({
+              url: "{% url 'Fin_New_Item2' %}",
+              type : 'GET',
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              data:{
+                  name : $('#nitm_name').val(),
+                  type : $('#nitm_type').val(),
+                  unit : $('#nitm_unit').val(),
+                  hsn : $('#nitm_hsn').val(),
+                  taxref : taxref,
+                  intra_st : $('#nitm_intra_tax').val(),
+                  inter_st : $('#nitm_inter_tax').val(),
+                  pcost : $('#nitm_pur_price').val(),
+                  pur_account : $('#nitm_pur_acc').val(),
+                  pur_desc : $('#nitm_pur_acc').val(),
+                  salesprice : $('#nitm_sale_price').val(),
+                  sale_account : $('#nitm_sale_acc').val(),
+                  sale_desc : $('#nitm_sale_acc').val(),
+                  invacc : $('#invacc').val(),
+                  stock : $('#nitm_stock').val(),
+                  stock_rate : $('#nitm_stock_rate').val(),
+                  min_stock : $('#nitm_min_stock').val(),
+              },
+        
+
+            success: function(response) {
+                    if(response.status){
+                        
+                        // var dropdown = $('.inneritem1');
+                        // dropdown.empty();
+
+                    //   console.log(response,'response')  
+
+                      localStorage.setItem('items',JSON.stringify(response.items))
+                     const items= JSON.parse(localStorage.getItem('items')) 
+
+
+
+                      var tableBody1 = document.querySelector("#item_table_tbody1");
+                                var rows1 = tableBody1.getElementsByTagName("tr");
+                                // console.log('items2')
+                                for (var i = 1; i <= rows1.length; i++) {
+                                    var select = $(`.inneritem${i}`);
+
+                                    for(let i=0; i<items.length; i++){
+                                        // console.log(items[i].name,'items3')
+                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                             
+                                }
+                            }
+
+                            
+                      var tableBody2 = document.querySelector("#item_table_tbody2");
+                        var rows2 = tableBody2.getElementsByTagName("tr");
+
+                                // console.log('items2')
+
+                                for (var i = 1; i <= rows2.length; i++) {
+                                    var select = $(`.inneritems${i}`);
+
+                                    for(let i=0; i<items.length; i++){
+                                        // console.log(items[i].name,'items3')
+                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                              
+                                }
+                            }
+
+
+                    }else{
+                        alert("Sorry this item already exists!")
+                    }
+                
+
+                  $('#item_form')[0].reset();
+                  $('#newitem').modal('hide');
+              },
+          });
+      }
+  });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- --------------------------------------------------------------- ITEM MODAL --------------------------------------------------------------------------- -->
 
 
 

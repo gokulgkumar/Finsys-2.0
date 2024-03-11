@@ -499,7 +499,7 @@ function selectonchange() {
             for (let i = 0; i < items.length; i++) {
                 // console.log(items[i].name, 'items3');
 
-                const option = new Option(items[i].name, items[i].id);
+                const option = new Option(items[i].name);
                 select.add(option);
             }
 
@@ -846,16 +846,19 @@ function selectonchange() {
 
         const items = JSON.parse(localStorage.getItem('items'));
         var select = document.getElementById(`item2${rowNum2}`);
-
+        // select.innerHTML = '';
             // console.log(items);
+        const selectItemsOption = new Option('Select Items', ''); // Assuming an empty value for the default option
+        selectItemsOption.disabled = true;
+        select.add(selectItemsOption);
 
         for (let i = 0; i < items.length; i++) {
             // console.log(items[i].name, 'items3');
 
-            const option = new Option(items[i].name, items[i].id);
+            const option = new Option(items[i].name);
             select.add(option);
         }
-
+        select.selectedIndex = 0;
 
         
                         // var rows2 = tableBody2.getElementsByTagName("tr");
@@ -1972,7 +1975,7 @@ $(document).on("click","#saveReasonButton",function(){
 
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                                        select.append($('<option ></option>').text(items[i].name))
                              
                                 }
                             }
@@ -1988,7 +1991,7 @@ $(document).on("click","#saveReasonButton",function(){
 
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                                        select.append($('<option ></option>').text(items[i].name))
                               
                                 }
                             }

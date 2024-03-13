@@ -342,7 +342,7 @@
           <td class="bg-transparent text-white rownum" id="" value="">{{forloop.counter}}</td>
           <td>
               <div class='form-group mt-3'>
-                <select class=' item_select  text-white itm select2 mt-1 selectssss' name='item1' id='selectss1{{m.id}}' onchange="selectonchange(this,`{{m.id}}`)" >
+                <select class=' item_select  text-white itm select2 mt-1 selectssss inneritem{{forloop.counter}}' name='item1' id='selectss1{{m.id}}' onchange="selectonchange(this,`{{m.id}}`)" >
                   {% for i in items %}
                   {% if i.name == m.item.name %}
                       <option value="{{ i.name }}" data-tokens="{{ i.name }}" selected>{{ i.name }}</option>
@@ -446,7 +446,7 @@ function selectonchange(m,j) {
           newRow.innerHTML = `
               <td class="bg-transparent text-light">${rowNum}</td>
               <td>
-                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
+                  <div class='form-group mt-3'><select class='text-light -0 item_select${rowNum} inneritm${rowNum} inneritem${rowNum}' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
                           <option class='text-white'hidden disabled selected>Select Items</option>
                           {% for i in items %}
                           <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
@@ -464,6 +464,28 @@ function selectonchange(m,j) {
           `;
   
           tableBody.appendChild(newRow);
+
+
+
+          
+          const items = JSON.parse(localStorage.getItem('items'));
+            var select = document.getElementById(`item${rowNum}`);
+            select.innerHTML = '';
+
+            // select.empty();
+
+            // console.log(items);
+
+            const selectItemsOption = new Option('Select Items', ''); 
+            selectItemsOption.hidden = true;
+            select.add(selectItemsOption);
+
+            for (let i = 0; i < items.length; i++) {
+                // console.log(items[i].name, 'items3');
+
+                const option = new Option(items[i].name);
+                select.add(option);
+            }
 
 
           $(`#item${rowNum}`).select2();
@@ -580,7 +602,7 @@ function selectonchange2(no){
                     <td class="bg-transparent text-light rownum2 " data-set="{{forloop.counter}}">{{forloop.counter}}</td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left selectsssss' name='item2[]' id='item_selectss2{{m.id}}' onchange="valuechange(this,`{{ m.id }}`)">
+                          <select class=' bg-transparent text-light border-0 item_selectss2 itm2 select2 text-left selectsssss inneritems{{forloop.counter}}' name='item2[]' id='item_selectss2{{m.id}}' onchange="valuechange(this,`{{ m.id }}`)">
                                 
                                 {% for i in items %}
                                 {% if i.name == m.item.name %}
@@ -712,7 +734,7 @@ function changeval(j,m){
             <td class="bg-transparent text-white">${rowNum2}</td>
             <td>
                 <div class='form-group mt-3'>
-                  <select class='bg-transparent border-0 item_select2${rowNum2} inneritm2 text-light text-left select2' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
+                  <select class='bg-transparent border-0 item_select2${rowNum2} inneritm2 text-light text-left select2 inneritems${rowNum2}' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
                         <option class='text-light' disabled hidden selected>Select Items</option>
                         {% for i in items %}
                        
@@ -733,7 +755,28 @@ function changeval(j,m){
         const tableBody2 = document.querySelector('#item_table_tbody2');
         tableBody2.appendChild(newRow2);
 
+
         $(`#item2${rowNum2}`).select2()
+
+
+
+
+        const items = JSON.parse(localStorage.getItem('items'));
+        var select = document.getElementById(`item2${rowNum2}`);
+        select.innerHTML = '';
+        
+            // console.log(items);
+        const selectItemsOption = new Option('Select Items', ''); 
+         selectItemsOption.hidden = true;
+        select.add(selectItemsOption);
+
+        for (let i = 0; i < items.length; i++) {
+            // console.log(items[i].name, 'items3');
+
+            const option = new Option(items[i].name);
+            select.add(option);
+        }
+        select.selectedIndex = 0;
 
       
     });
@@ -1751,15 +1794,20 @@ $(document).on("click","#saveReasonButton",function(){
                       var tableBody1 = document.querySelector("#item_table_tbody1");
                                 var rows1 = tableBody1.getElementsByTagName("tr");
                                 // console.log('items2')
+                                data=[]
                                 for (var i = 1; i <= rows1.length; i++) {
                                     var select = $(`.inneritem${i}`);
+                                 
+                              
+                                    // data.append(select.value)
 
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                                        select.append($('<option ></option>').text(items[i].name))
                              
                                 }
                             }
+                            console.log(data,'data')
 
                             
                       var tableBody2 = document.querySelector("#item_table_tbody2");
@@ -1772,7 +1820,7 @@ $(document).on("click","#saveReasonButton",function(){
 
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name).val(items[i].id))
+                                        select.append($('<option ></option>').text(items[i].name))
                               
                                 }
                             }

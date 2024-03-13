@@ -493,8 +493,15 @@ function selectonchange() {
 
           const items = JSON.parse(localStorage.getItem('items'));
             var select = document.getElementById(`item${rowNum}`);
+            select.innerHTML = '';
+
+            // select.empty();
 
             // console.log(items);
+
+            const selectItemsOption = new Option('Select Items', ''); 
+            selectItemsOption.hidden = true;
+            select.add(selectItemsOption);
 
             for (let i = 0; i < items.length; i++) {
                 // console.log(items[i].name, 'items3');
@@ -846,10 +853,11 @@ function selectonchange() {
 
         const items = JSON.parse(localStorage.getItem('items'));
         var select = document.getElementById(`item2${rowNum2}`);
-        // select.innerHTML = '';
+        select.innerHTML = '';
+        
             // console.log(items);
-        const selectItemsOption = new Option('Select Items', ''); // Assuming an empty value for the default option
-        selectItemsOption.disabled = true;
+        const selectItemsOption = new Option('Select Items', ''); 
+         selectItemsOption.hidden = true;
         select.add(selectItemsOption);
 
         for (let i = 0; i < items.length; i++) {
@@ -1972,9 +1980,13 @@ $(document).on("click","#saveReasonButton",function(){
                                 // console.log('items2')
                                 for (var i = 1; i <= rows1.length; i++) {
                                     var select = $(`.inneritem${i}`);
-
+                                    select.empty()
+                                    const selectItemsOption = new Option('Select Items', ''); 
+                                        selectItemsOption.hidden = true;
+                                        select.add(selectItemsOption);
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
+                                        
                                         select.append($('<option ></option>').text(items[i].name))
                              
                                 }
@@ -1988,7 +2000,8 @@ $(document).on("click","#saveReasonButton",function(){
 
                                 for (var i = 1; i <= rows2.length; i++) {
                                     var select = $(`.inneritems${i}`);
-
+                                    select.empty()
+                                    select.append($('<option ></option>').text('Select Item'))
                                     for(let i=0; i<items.length; i++){
                                         // console.log(items[i].name,'items3')
                                         select.append($('<option ></option>').text(items[i].name))

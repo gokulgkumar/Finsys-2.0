@@ -2610,3 +2610,151 @@ def Stk_adjHistory(request,id):
         return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
     return redirect('StockAdjustmentOverview',id)
 
+# ------------------------------
+
+
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+
+def Stk_adjHistory(request,id):
+    if 's_id' in request.session:
+        s_id = request.session['s_id']
+        data = Fin_Login_Details.objects.get(id = s_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id = s_id)
+            allmodules = Fin_Modules_List.objects.get(Login_Id = s_id,status = 'New')
+        elif data.User_Type == 'Staff':
+             com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+             allmodules = Fin_Modules_List.objects.get(company_id = com,status = 'New')
+
+        stockadj = Stock_Adjustment.objects.get(id=id,company=com)
+        stockadj_history=Stock_Adjustment_History.objects.filter(stock_adjustment=stockadj,company=com)
+        return render(request,'company/Fin_StockAdjustmentHistory.html',{'history':stockadj_history,'allmodules':allmodules})
+    return redirect('StockAdjustmentOverview',id)
+

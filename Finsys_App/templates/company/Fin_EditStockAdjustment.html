@@ -1801,9 +1801,14 @@ $(document).on("click","#saveReasonButton",function(){
                               
                                     // data.append(select.value)
 
-                                    for(let i=0; i<items.length; i++){
+                                    for(let j=0; j<items.length; j++){
+
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name))
+                                        select.append($('<option ></option>').text(items[j].name))
+
+                                        if (data[i] === items[j].name) { 
+                                                select.find('option:last').attr('selected', 'selected');
+                                            }
                              
                                 }
                             }
@@ -1814,13 +1819,16 @@ $(document).on("click","#saveReasonButton",function(){
                         var rows2 = tableBody2.getElementsByTagName("tr");
 
                                 // console.log('items2')
-
+                                data=[]
                                 for (var i = 1; i <= rows2.length; i++) {
                                     var select = $(`.inneritems${i}`);
 
-                                    for(let i=0; i<items.length; i++){
+                                    for(let j=0; j<items.length; j++){
                                         // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name))
+                                        select.append($('<option ></option>').text(items[j].name))
+                                        if (data[i] === items[j].name) { 
+                                                select.find('option:last').attr('selected', 'selected');
+                                            }
                               
                                 }
                             }

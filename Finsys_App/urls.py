@@ -84,6 +84,8 @@ urlpatterns = [
     path('DClient_req_overview/<id>',views.Fin_DClient_req_overview,name='Fin_DClient_req_overview'),
     path('DClients_overview/<id>',views.Fin_DClients_overview,name='Fin_DClients_overview'),
     path('DClient_remove/<id>',views.Fin_DClient_remove,name='Fin_DClient_remove'),
+    path('Purchase_Bill_Check_Unit_Name',views.Fin_Check_New_Unit,name='Fin_Check_New_Unit'),
+      path('Purchase_Bill_Check_Unit_Name',views.Fin_Check_New_Unit,name='Fin_Check_New_Unit'),
 
     path('StockAdjustment',views.StockAdjustment,name='StockAdjustment'),
     path('AddStockAdjustment',views.AddStockAdjustment,name='AddStockAdjustment'),

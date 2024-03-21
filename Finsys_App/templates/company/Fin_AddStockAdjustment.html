@@ -82,7 +82,7 @@
       height: 44px !important;
   }
      
-        
+
 </style>
 
 
@@ -338,7 +338,7 @@
           <td class="bg-transparent text-white rownum" id="" value=""></td>
           <td>
               <div class='form-group mt-3'>
-                <select class='  item_select  text-white itm select2 mt-1 inneritem1' name='item1' id='selectss1' onchange="selectonchange()" >
+                <select class='  item_select  text-white itm select2 mt-1 item-display sameval inneritem1' name='item1' id='selectss1' onchange="selectonchange()" >
 
                       <option id="selectitem" disabled hidden selected >Select Items </option>
                       {% for i in items %}
@@ -351,7 +351,7 @@
           </td>
           <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='' name="qtyav[]" id="quant">
           </td>
-          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value=''>
+          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value='' required>
           </td>
           
           <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value=''>
@@ -402,15 +402,21 @@
       }
   });
 
-  
+  let selectedItems = [];
 // quantity
 function selectonchange() {
+
+    console.log('selectedValueasas');
   const itemSelect = document.querySelector('.item_select');
   const qtyInput = document.querySelector('.qty');
   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
   const selectedValue = selectedOption.value;
 
-//   console.log('selectedValue', selectedValue);
+
+  console.log('itemSelect.value',itemSelect.value);
+// OptionAlert('selectss1',itemSelect.value);
+
+
 
   $.ajax({
     type: "GET",
@@ -431,6 +437,9 @@ function selectonchange() {
   });
 }
 
+
+
+
   
   // NEW ROW
   document.addEventListener('DOMContentLoaded', function() {
@@ -450,7 +459,8 @@ function selectonchange() {
           newRow.innerHTML = `
               <td class="bg-transparent text-light rowsNumbers" >${rowNum}</td>
               <td>
-                  <div class='form-group mt-3'><select class='text-light  item_select${rowNum} inneritm  inneritem${rowNum}' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
+                  <div class='form-group mt-3'>
+                    <select class='text-light  item_select${rowNum}  inneritm sameval  inneritem${rowNum}' name='item1' id='item${rowNum}' onchange='selectonchange2(${rowNum})'>
                           <option class='text-white'hidden disabled selected>Select Items</option>
                           {% for i in items %}
                           <option class="text-dark" value="{{i.name}}" data-stock="{{i.stock}}" >{{i.name}}</option>
@@ -460,7 +470,7 @@ function selectonchange() {
                   </div>
               </td>
               <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qtyinnerhand${rowNum} qty2${rowNum}'  name="qtyav[]"></td>
-              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right  qtyavailinner${rowNum} rate'  name="newqty[]" value=''></td>
+              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right  qtyavailinner${rowNum} rate'  name="newqty[]" value=''required></td>
               <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control    text-light text-right  qtyadjinner${rowNum} discount' name="qtyadj[]" value=''></td>
               <td class='text-center'>
                   <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
@@ -545,15 +555,120 @@ function selectonchange() {
   });
 
 
- 
+  const selectedval=[]
+  let selectedValues = [];
+  function OptionAlert(itemId,selectedValue) {
+    // Retrieve previously selected values from sessionStorage
+    const storedValues = sessionStorage.getItem('Options');
+    
+    if (storedValues) {
+        selectedValues = JSON.parse(storedValues);
+    }
+
+    const selects = document.querySelectorAll('.sameval');
+
+    for (let i = 0; i < selects.length; i++) {
+        const currentValue = selects[i].value;
+        if (selects[i].value === selectedValue) continue;
+        // Check if the current value is already in the selectedValues array
+        if (selectedValues.includes(currentValue)) {
+            alert('This option is already selected in another select element!');
+            // Reset the value of the current select element
+            selects[i].value = "";
+            return; // Exit the function early
+        }
+    }
+
+    // Update selectedValues with the new selected value
+    selectedValues.push(selectedValue);
+    // Update sessionStorage with the updated selectedValues array
+    sessionStorage.setItem('Options', JSON.stringify(selectedValues));
+
+    console.log('selectedValues', selectedValues);
+}
+
+    // if (selectedval.includes(selectedValue)) {
+    // // alert('Item already selected');
+
+    // const items = JSON.parse(localStorage.getItem('items'));
+    //         var select = document.getElementById(`${itemid}`);
+    //         select.innerHTML = '';
+
+
+    //         const selectItemsOption = new Option('Select Items', ''); 
+    //         selectItemsOption.hidden = true;
+    //         select.add(selectItemsOption);
+
+    //         for (let i = 0; i < items.length; i++) {
+    //             // console.log(items[i].name, 'items3');
+
+    //             const option = new Option(items[i].name,items[i].name);
+    //             select.add(option);
+    //         }
+      
+    //     //    itemSelect.selectedIndex = 0;
+    //     //    return;
+    //    }
+
+    //    else{
+    //     const valselect = selects[i].selectedIndex
+    // console.log(selects[i].value,'selected option')
+    // // selectedval.push(selects[i].value)
+    // selectedval.push(selects[i].value)
+
+    //    }
+    
+
+
+
+
+
+
+
 
 function selectonchange2(no){
+   
   const itemSelect = document.querySelector(`.item_select${no}`);
-
-    const qtyInput = document.querySelector(`.qty2${no}`); 
+  const qtyInput = document.querySelector(`.qty2${no}`); 
     const selectedOption = itemSelect.options[itemSelect.selectedIndex];
     const selectedValue = selectedOption.value;
     console.log('selectedValue',selectedValue)
+    console.log('selectedValue',selectedValue)
+    
+
+  console.log(itemSelect.value,'itemSelect')
+
+ 
+//   console.log(selects,'selects')
+ 
+ 
+
+//   if (selectedval.includes(selectedValue)) {
+//        alert('Item already selected');
+        
+      
+//     //    itemSelect.selectedIndex = 0;
+//     //    return;
+//    }  
+
+ 
+   
+//    else{
+//     selectedval.push(selects[i].value)
+//    }
+   
+//   console.log('sada',selectedval)
+
+   
+//    if (selectedItems.includes(selectedValue)) {
+//        alert('Item already selected');
+        
+      
+//        itemSelect.selectedIndex = 0;
+//        return;
+//    }
+//      selectedItems.push(selectedValue);
+OptionAlert(`item${no}`,itemSelect.value);
 
      $.ajax({
     type: "GET",
@@ -590,6 +705,11 @@ function selectonchange2(no){
 
 
   </script> 
+
+
+<script>
+
+</script>
 
   
 <script type="text/javascript">
@@ -682,7 +802,7 @@ $(document).on('change', '#selectss1', function () {
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left inneritems1' name='item2[]' id='item_selectss2' onchange="valuechange()">
+                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left  inneritems1' name='item2[]' id='item_selectss2' onchange="valuechange()">
                                 <option class='text-light text-left' disabled hidden selected>Select Items</option>
                                 {% for i in items %}
                               
@@ -768,31 +888,31 @@ $(document).on('change', '#selectss1', function () {
   
   
 // quantity
-function selectonchange() {
-  const itemSelect = document.querySelector('.item_select');
-  const qtyInput = document.querySelector('.qty');
-  const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-  const selectedValue = selectedOption.value;
+// function selectonchange() {
+//   const itemSelect = document.querySelector('.item_select');
+//   const qtyInput = document.querySelector('.qty');
+//   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+//   const selectedValue = selectedOption.value;
 
-//   console.log('selectedValue', selectedValue);
+// //   console.log('selectedValue', selectedValue);
 
-  $.ajax({
-    type: "GET",
-    url: "{% url 'getitemdata1' %}",
-    data: {
-      id: selectedValue,
+//   $.ajax({
+//     type: "GET",
+//     url: "{% url 'getitemdata1' %}",
+//     data: {
+//       id: selectedValue,
 
   
-    },
-    success: function (response) {
-      var stck = response.stock;
-      document.getElementById('quant').value = stck;
-    },
-    error: function (error) {
-      console.error('Ajax request failed:', error);
-    }
-  });
-}
+//     },
+//     success: function (response) {
+//       var stck = response.stock;
+//       document.getElementById('quant').value = stck;
+//     },
+//     error: function (error) {
+//       console.error('Ajax request failed:', error);
+//     }
+//   });
+// }
 
 </script>
 
@@ -1980,16 +2100,17 @@ $(document).on("click","#saveReasonButton",function(){
                                 // console.log('items2')
                                 for (var i = 1; i <= rows1.length; i++) {
                                     var select = $(`.inneritem${i}`);
-                                    select.empty()
-                                    const selectItemsOption = new Option('Select Items', ''); 
-                                        selectItemsOption.hidden = true;
-                                        select.add(selectItemsOption);
-                                    for(let i=0; i<items.length; i++){
-                                        // console.log(items[i].name,'items3')
+                                    // select.empty()
+                                    // select.append($('<option ></option>').text('Select Item'))
+                                    const lastvalue= items.length-1
+                                    select.append($('<option ></option>').text(items[lastvalue].name))
+
+                                //     for(let i=0; i<items.length; i++){
+                                //         // console.log(items[i].name,'items3')
                                         
-                                        select.append($('<option ></option>').text(items[i].name))
+                                //         select.append($('<option ></option>').text(items[i].name))
                              
-                                }
+                                // }
                             }
 
                             
@@ -2000,13 +2121,16 @@ $(document).on("click","#saveReasonButton",function(){
 
                                 for (var i = 1; i <= rows2.length; i++) {
                                     var select = $(`.inneritems${i}`);
-                                    select.empty()
-                                    select.append($('<option ></option>').text('Select Item'))
-                                    for(let i=0; i<items.length; i++){
-                                        // console.log(items[i].name,'items3')
-                                        select.append($('<option ></option>').text(items[i].name))
+                                    // select.empty()
+                                    // select.append($('<option ></option>').text('Select Item'))
+                                     // select.empty()
+                                    const lastvalue= items.length-1
+                                    select.append($('<option ></option>').text(items[lastvalue].name))
+                                //     for(let i=0; i<items.length; i++){
+                                //         // console.log(items[i].name,'items3')
+                                //         select.append($('<option ></option>').text(items[i].name))
                               
-                                }
+                                // }
                             }
 
 

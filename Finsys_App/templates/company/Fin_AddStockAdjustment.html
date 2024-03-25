@@ -84,6 +84,17 @@
      
 
 </style>
+<script>
+      function validateForm() {
+        var inputValue = document.getElementById('onhandqty').value;
+        if (inputValue.trim() === '') {
+            alert('Please enter the quantity');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+
+</script>
 
 
     <div class="page-content">
@@ -108,7 +119,7 @@
     <div class="d-flex justify-content-end mb-1">
       <a href="{% url 'StockAdjustment' %}"><i class="fa fa-times-circle text-white mx-4 p-1" style="font-size: 1.2rem;margin-left: -54px !important;"></i></a>
     </div>
-    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'create_stockadjustment' %}" method="POST" enctype="multipart/form-data"  onsubmit="return validateForm()">
     <div class="page-content" style="margin-top:-2rem ;">
       
         <div class="card radius-15">
@@ -351,7 +362,7 @@
           </td>
           <td class='text-right text-dark ' ><input type='number' step="0.01" class='form-control  border-1  text-light text-right qty ' value='' name="qtyav[]" id="quant">
           </td>
-          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value='' required>
+          <td class='text-right'><input type='number' id='onhandqty' class='form-control border-1  text-light text-right rate' name='newqty[]' value='' >
           </td>
           
           <td class='text-right'><input type='text' id='diff' class='form-control border-1  text-light text-right discount' name='qtyadj[]' value=''>
@@ -469,7 +480,7 @@ var selectedValues=[]
                   </div>
               </td>
               <td class='text-right'><input type='number' id='qty2${rowNum}' class='form-control    text-light text-right qtyinnerhand${rowNum} qty2${rowNum}'  name="qtyav[]"></td>
-              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right  qtyavailinner${rowNum} rate'  name="newqty[]" value=''required></td>
+              <td class='text-right'><input type='number' id='rates${rowNum}' class='form-control    text-light text-right  qtyavailinner${rowNum} rate'  name="newqty[]" value=''></td>
               <td class='text-right'><input type='text' id='diff${rowNum}' class='form-control    text-light text-right  qtyadjinner${rowNum} discount' name="qtyadj[]" value=''></td>
               <td class='text-center'>
                   <button type='button' class='btn btn-outline-secondary delete-row' style='width:30px'>-</button>
@@ -583,7 +594,7 @@ var selectedValues=[]
 
 
   if (selectedValues.includes(selectedValue)) {
-    alert('Duplicate selection found!');
+    alert('Item already exists in the STOCK ADJUSTMENT, choose another or change quantity.!');
 
     const items = JSON.parse(localStorage.getItem('items'));
             select.innerHTML = '';
@@ -614,40 +625,6 @@ var selectedValues=[]
 }
 
 
-    // if (selectedval.includes(selectedValue)) {
-    // // alert('Item already selected');
-
-    // const items = JSON.parse(localStorage.getItem('items'));
-    //         var select = document.getElementById(`${itemid}`);
-    //         select.innerHTML = '';
-
-
-    //         const selectItemsOption = new Option('Select Items', ''); 
-    //         selectItemsOption.hidden = true;
-    //         select.add(selectItemsOption);
-
-    //         for (let i = 0; i < items.length; i++) {
-    //             // console.log(items[i].name, 'items3');
-
-    //             const option = new Option(items[i].name,items[i].name);
-    //             select.add(option);
-    //         }
-      
-    //     //    itemSelect.selectedIndex = 0;
-    //     //    return;
-    //    }
-
-    //    else{
-    //     const valselect = selects[i].selectedIndex
-    // console.log(selects[i].value,'selected option')
-    // // selectedval.push(selects[i].value)
-    // selectedval.push(selects[i].value)
-
-    //    }
-    
-
-
-
 
 
 
@@ -665,36 +642,13 @@ function selectonchange2(no){
 
   console.log(itemSelect.value,'itemSelect')
 
- 
-//   console.log(selects,'selects')
- 
- 
 
-//   if (selectedval.includes(selectedValue)) {
-//        alert('Item already selected');
-        
-      
-//     //    itemSelect.selectedIndex = 0;
-//     //    return;
-//    }  
 
- 
-   
-//    else{
-//     selectedval.push(selects[i].value)
-//    }
-   
-//   console.log('sada',selectedval)
 
-   
-//    if (selectedItems.includes(selectedValue)) {
-//        alert('Item already selected');
-        
-      
-//        itemSelect.selectedIndex = 0;
-//        return;
-//    }
-//      selectedItems.push(selectedValue);
+
+
+
+
 if (OptionAlert(`item${no}`,itemSelect.value)){
 
 
@@ -718,6 +672,9 @@ if (OptionAlert(`item${no}`,itemSelect.value)){
     }
   });
 
+}
+else{
+    document.getElementById(`qty2${no}`).value = ''; 
 }
 }
   
@@ -763,33 +720,6 @@ if (OptionAlert(`item${no}`,itemSelect.value)){
 
 
 
-
-<!-- <script>
-  $(document).ready(function() {
-   $('#selectss1').select2();
-$(document).on('change', '#selectss1', function () {
-                                   
-    console.log('Select changed');
-    var selectedValue = $(this).val();
-    $.ajax({
-        type: "GET",
-        url: "{% url 'getitemdata1' %}",
-        data: {
-            id: selectedValue,
-            
-        },
-        success: function (response) {
-          var stck = response.stock;
-          document.getElementById('qtyavail1').value=stck;
-                                      
-                              },
-                                
-                        });
-                  });
-
-              });
-</script> -->
-
 <script type="text/javascript">
   $(document).on('input', '#qty_hand1', function() {
     var qtyhnd = parseFloat(document.getElementById('qty_hand1').value);
@@ -831,7 +761,7 @@ $(document).on('change', '#selectss1', function () {
                     <td class="bg-transparent text-light rownum2 "  ></td>
                     <td>
                         <div class='form-group mt-3'>
-                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left  inneritems1' name='item2[]' id='item_selectss2' onchange="valuechange()">
+                          <select class=' bg-transparent text-light  item_selectss2 itm2 select2 text-left sameval2  inneritems1' name='item2[]' id='item_selectss2' onchange="valuechange()">
                                 <option class='text-light text-left' disabled hidden selected>Select Items</option>
                                 {% for i in items %}
                               
@@ -913,49 +843,17 @@ $(document).on('change', '#selectss1', function () {
   
 
 
-<script>
-  
-  
-// quantity
-// function selectonchange() {
-//   const itemSelect = document.querySelector('.item_select');
-//   const qtyInput = document.querySelector('.qty');
-//   const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-//   const selectedValue = selectedOption.value;
-
-// //   console.log('selectedValue', selectedValue);
-
-//   $.ajax({
-//     type: "GET",
-//     url: "{% url 'getitemdata1' %}",
-//     data: {
-//       id: selectedValue,
-
-  
-//     },
-//     success: function (response) {
-//       var stck = response.stock;
-//       document.getElementById('quant').value = stck;
-//     },
-//     error: function (error) {
-//       console.error('Ajax request failed:', error);
-//     }
-//   });
-// }
-
-</script>
-
-
-
-
-
-
-
 
 
 
 <script>
   <!-- Adding row for table 1 -->
+
+  
+var selectedValues2=[]
+
+
+
   document.addEventListener('DOMContentLoaded', function() {
     const addRowButton2 = document.getElementById('add-row2');
     let rowNum2 = 1; 
@@ -977,7 +875,7 @@ $(document).on('change', '#selectss1', function () {
             <td class="bg-transparent text-white">${rowNum2}</td>
             <td>
                 <div class='form-group mt-3'>
-                  <select class='bg-transparent item_select2${rowNum2} inneritm2 text-light text-left select2 inneritems${rowNum2}' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
+                  <select class='bg-transparent item_select2${rowNum2} inneritm2 text-light text-left sameval2 select2 inneritems${rowNum2}' id='item2${rowNum2}' name='item2[]' onchange='valuechange2(${rowNum2})' style="text-align:left">
                         <option class='text-light' disabled hidden selected>Select Items</option>
                         {% for i in items %}
                        
@@ -1017,35 +915,7 @@ $(document).on('change', '#selectss1', function () {
         }
         select.selectedIndex = 0;
 
-        
-                        // var rows2 = tableBody2.getElementsByTagName("tr");
-
-                        //         console.log('items2')
-
-                        //         for (var i = 1; i <= rows2.length; i++) {
-                        //             var select = $(`.inneritems${i}`);
-
-                                  
-
-                        //             for(let i=0; i<items.length; i++){
-                                        
-
-                                  
-                        //                 const option = new Option(items[i].name, items[i].id);
-                        //                 select.add(option);
-                        //             }
-                               
-                              
-                                    
-
-
-
-
-
-
-
-      
-
+    
       
     };
 
@@ -1119,12 +989,90 @@ $(document).on('change', '#selectss1', function () {
 
 
 
+
+
+const selectedval2=[]
+
+function OptionAlert2(itemId,selectedValues1) {
+    console.log('hi')
+  // Retrieve previously selected values from sessionStorage
+  const storedValues = sessionStorage.getItem('Options');
+  var matches = itemId.match(/\d+/)
+  // if (storedValues) {
+  //     selectedValues = JSON.parse(storedValues);
+  // }
+
+  const selects = document.querySelectorAll('.sameval2');
+ var select = document.getElementById(`${itemId}`)
+  var duplicateFound = false;
+
+  var selectedValue = select.value;
+var selectedIndex = select.selectedIndex;
+var selectId = select.id;
+var selectsid=parseInt(matches[0])-1
+//   parseInt(itemId) 
+console.log(' parseInt(itemId) ', parseInt(matches[0]) )
+//   var selectedValues = JSON.parse(sessionStorage.getItem('selectedValues')) || [];
+
+
+
+
+if (selectedValues2.includes(selectedValue)) {
+  alert('Item already exists in the STOCK ADJUSTMENT, choose another or change quantity.!');
+
+  const items = JSON.parse(localStorage.getItem('items'));
+          select.innerHTML = '';
+  
+          const selectItemsOption = new Option('Select Items', ''); 
+          selectItemsOption.hidden = true;
+          select.add(selectItemsOption);
+
+          for (let i = 0; i < items.length; i++) {
+              // console.log(items[i].name, 'items3');
+
+              const option = new Option(items[i].name,items[i].name);
+              select.add(option);
+              
+          }
+          selectedValues2[selectsid] = null;
+          // sessionStorage.setItem('selectedValues', JSON.stringify(selectedValues));
+          return null
+  // select.selectedIndex = selectedValues[selectId].index; // Reset the select to correct index
+} else {
+  selectedValue2s[selectsid] = selectedValue; // Save value and index
+  console.log('selectedValues123123123',selectedValues2)
+  // sessionStorage.setItem('selectedValues', JSON.stringify(selectedValues));
+ return true
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // value for row 1
 function valuechange(){
  const select =document.getElementById('item_selectss2')
 const selectedOption = select.options[select.selectedIndex];
 const selectedItem = selectedOption.value
 // console.log('selectedItem sasda',selectedItem)
+
+
+
+
+        
+if (OptionAlert('item_selectss2',selectedItem)){
+
+$
 
 $.ajax({
           type: "GET",
@@ -1140,7 +1088,16 @@ $.ajax({
                                 },
                                   
                           });
-                    };
+
+}
+else{
+document.getElementById('currentval').value = ''; 
+}
+}
+
+
+
+                  
                   
 
 </script>
@@ -1156,22 +1113,37 @@ $.ajax({
             //   console.log(selects,'sssss')
               const selectedOption = selects.options[selects.selectedIndex];
               const selectedItem = selectedOption.value
-         
-              $.ajax({
-                        type: "GET",
-                        url: "{% url 'getitemdata2' %}",
-                        data: {
-                            id: selectedItem,
-                            
-                        },
-                        success: function (response) {
-                          var val = response.value;
-                          document.getElementById(`currentval2${nos}`).value=val;
-                                                      
-                                              },
-                                                
-                                        });
-                                  };
+
+
+
+
+
+              
+if (OptionAlert(`item2${nos}`,selectedItem)){
+
+$.ajax({
+        type: "GET",
+        url: "{% url 'getitemdata2' %}",
+        data: {
+            id: selectedItem,
+            
+        },
+        success: function (response) {
+            var val = response.value;
+            document.getElementById(`currentval2${nos}`).value=val;
+                                        
+                                },
+                                
+                        });
+
+}
+else{
+document.getElementById(`currentval2${nos}`).value = ''; 
+}
+}
+
+        
+                                  
 
        
 
@@ -1253,7 +1225,7 @@ $.ajax({
       <div class="modal-dialog">
      
           <div class="modal-content" style="background-color: #213b52;">
-              <form action="" method="post"  id="newReasonForm"   >
+              <form action="" method="post"  id="newReasonForm"  >
                   {% csrf_token %}
               <div class="modal-header">
                   <h3 class="m-3">New Reason</h3>
@@ -2174,6 +2146,9 @@ $(document).on("click","#saveReasonButton",function(){
           });
       }
   });
+
+
+
 
 </script>
 

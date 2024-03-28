@@ -3617,3 +3617,171 @@ def Fin_New_Unit(request):
         return JsonResponse({'message': 'Error'})
     Fin_Units.objects.create(Company = com, name = name)
     return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ata.User_Type == "Company":
+        com = Fin_Company
+def Fin_New_Unit(request):
+    s_id = request.session['s_id']
+    data = Fin_Login_Details.objects.get(id = s_id)
+    if data.User_Type == "Company":
+        com = Fin_Company_Details.objects.get(Login_Id = s_id)
+    else:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})

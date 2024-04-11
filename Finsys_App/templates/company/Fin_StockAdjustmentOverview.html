@@ -71,6 +71,11 @@
         }
     }
 
+    .vl {
+        border-left: 6px solid gray;
+    }
+
+
 </style>
 
 
@@ -80,15 +85,15 @@
         <i class="fa fa-times-circle text-white" style="font-size: 1.2rem;"></i>
         </span>
 
-        <div class="card radius-15 overview">
-            <div class="card-body">
+        <div class="card radius-15 overview  shadow-none">
+            <div class="card-body shadow-none " style="background-color: #2F516F;">
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
                         <div class="card" style="background-color: #2a4964;">
-                            <div class="row no-gutters">
+                            <div class="row no-gutters" style="background-color:#243E55!important;border-radius: 15px;" >
                                 &nbsp;&nbsp;
                                 <div class="col-md-1 text-center w-100" style="margin-top: 2vh; ; margin-bottom: 2vh;  border-radius: 1vh;">
-                                    <h6><a class="btn text-center" style="background-color: #213b52;" onclick="overviewfun()">Overview</a></h6>
+                                    <h6><a class="btn text-center" style="background-color: #162532;" onclick="overviewfun()">Overview</a></h6>
                                 </div>
                                 <div class="col-md-1 text-center  w-100" style="margin-top: 2vh; margin-bottom: 2vh; border-radius: 1vh;" >
                                     <h6><a class="btn text-center" onclick="statementfun()">Statement</a></h6>
@@ -175,7 +180,7 @@
                                 {% endif %}
 
 
-                                <div class="col-md-12 mt-4 mb-4">
+                                <div class="col-md-12 mt-4 mb-4" style="background-color: ;">
 
                                     <center>
                                         <h5 class="card-title"><h3 style="text-transform:Uppercase;">STOCK ADJUSTMENT VIEW</h3></h5>
@@ -188,6 +193,406 @@
                     </div>
                 </div>
 
+
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0">
+                        <div id="overview">
+                            <div class="row g-0" style="margin-left: 1px; margin-right: 1px;">
+                                <div class="col-lg-8"style="background-color:#243E55!important;" >
+                                    <div class="history_highlight px-4 pt-4 d-flex" >
+                                        <div class="col-8 d-flex justify-content-start" >
+                                            {% if history.action == 'Created' %}<p class="text-success" style="font-size: 1.07rem; font-weight: 500;">Created by :</p>{% else %}<p class="text-warning" style="font-size: 1.07rem; font-weight: 500;">Last Edited by :</p>{% endif %}
+                                            <span class="ml-2" style="font-size: 1.15rem; font-weight: 500;">{{history.login_details.First_name}} {{history.login_details.Last_name}}</span>
+                                        </div>
+                                        <div class="col-4 d-flex justify-content-end">
+                                            <span>{{history.date}}</span>
+                                        </div>
+                                    </div>
+                                      <!-- <div class="p-5 pt-2">
+                                      <center><h4>STOCK ADJUSTMENT DETAILS </h4></center>
+                                        <hr>
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Reference No  </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;"> {{stocks.reference_no}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Reason </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;"> {{stocks.reason}} </p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Mode of Adjustment </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;"> {{stocks.mode_of_adjustment}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Description </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;"> {{stocks.description}}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Status </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{stocks.status}} </p>
+                                            </div>
+                                        </div> -->
+            
+                                        <!-- <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Inter State Tax Rate </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">IGST {{item.inter_state_tax}}% </p>
+                                            </div>
+                                        </div>
+      
+                                        {% if item.inventory_account != "" %}
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Inventory Account </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{item.inventory_account}} </p>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Current Stock </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{item.current_stock}} </p>
+                                            </div>
+                                        </div>
+             
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Stock Rate per Unit </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{item.stock_unit_rate}} </p>
+                                            </div>
+                                        </div> -->
+            
+                                        <!-- <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Min Stock to maintain </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{item.min_stock}} </p>
+                                            </div>
+                                        </div> 
+                                    </div>-->
+
+
+                                    <div class="row mb-4 d-flex justify-content-between align-items-center" style="background-color: #243E55;">
+                                        <div class="col-md-12 mt-3">
+                                            <center><h4> ITEMS DETAILS </h4></center>
+                                            <hr style="width: 87%;">
+                                            {% if stocks.mode_of_adjustment == "Quantity" %}
+                                            {% for j in st_items  %}
+                                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                    <div class="col-md-3 mt-3">
+                                                        <h6 class="mb-0">Name</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{j.item.name}}</p>
+                                                    </div>
+        
+                                                    <div class="col-md-3 mt-3 vl">
+                                                        <h6 class="mb-0">Quantity Available</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{ j.quantity_avail }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                    <div class="col-md-3 mt-3 ">
+                                                        <h6 class="mb-0">Quantity inhand</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{j.quantity_inhand}}</p>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3 vl">
+                                                        <h6 class="mb-0">Adjusted Quantity</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{ j.quantity_adj  }}</p>
+                                                    </div>                                            
+                                                </div>
+                                                <!-- <div class="row mb-4 d-flex justify-content-start align-items-center">
+                                                    <div class="col-md-3 mt-3 ">
+                                                        <h6 class="mb-0">Tax Rate</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{j.tax_rate}} %</p>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3 vl"> 
+                                                        <h6 class="mb-0">Discount</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{j.discount}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4 d-flex justify-content-start align-items-center" >
+                                                    <div class="col-md-3 mt-3 "> 
+                                                        <h6 class="mb-0">Total</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                        <p class="mb-0 text-right">{{j.total}}</p>
+                                                    </div><div class="col-md-3 mt-3 vl"> 
+                                                        <h6 class="mb-0">&nbsp;</h6>
+                                                    </div>
+                                                    <div class="col-md-3 mt-3">
+                                                         <p class="mb-0 text-right">{{j.total}}</p> -->
+                                                    <!-- </div>
+                                                </div>  -->
+                                                {% endfor %}
+                                                {% else %}
+                                            {% for j in st_items %}
+
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                <div class="col-md-3 mt-3">
+                                                    <h6 class="mb-0">Name</h6>
+                                                </div>
+                                                <div class="col-md-3 mt-3">
+                                                    <p class="mb-0 text-right">{{j.item.name}}</p>
+                                                </div>
+    
+                                                <div class="col-md-3 mt-3 vl">
+                                                    <h6 class="mb-0">Value Available</h6>
+                                                </div>
+                                                <div class="col-md-3 mt-3">
+                                                    <p class="mb-0 text-right">{{ j.current_val }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                <div class="col-md-3 mt-3 ">
+                                                    <h6 class="mb-0">New Stock in Value</h6>
+                                                </div>
+                                                <div class="col-md-3 mt-3">
+                                                    <p class="mb-0 text-right">{{ j.changed_val }}</p>
+                                                </div>
+                                                <div class="col-md-4 mt-3 vl">
+                                                    <h6 class="mb-0">Adjusted Stock in Value</h6>
+                                                </div>
+                                                <div class="col-md-2 mt-3">
+                                                    <p class="mb-0 text-right">{{ j.adjusted_val }}</p>
+                                                </div>                                            
+                                            </div>
+
+
+                                                <hr class="my-4" style="width: 50%;">
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+            
+            
+                              <div class="col-md-4" style="background-color: rgba(22,37,50,255); border-top-right-radius:2vh; border-bottom-right-radius: 2vh;">
+                                    <div class="px-5 py-4">
+                                        <center><h4>STOCK ADJUSTMENT DETAILS</h4></center>
+                                        <hr>
+            
+                                       <div class="row mb-3">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <label style="color: white;" >Reference No</label>
+                                            </div>
+                                            <div class="col-1 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-3 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">{{stocks.reference_no}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <label style="color: white;" >  Mode of Adjustment  </label>
+                                            </div>
+                                            <div class="col-1 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;">{{stocks.mode_of_adjustment}} </p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <label style="color: white;" >  Reason  </label>
+                                            </div>
+                                            <div class="col-1 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;"> {{stocks.reason}}</p>
+                                            </div>
+                                        </div>
+
+                                        
+                                        
+
+                                        <div class="row mb-3">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <label style="color: white;" >  Description  </label>
+                                            </div>
+                                            <div class="col-1 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-3 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;"> {{stocks.description}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <!-- <center><h4>SALES INFORMATION </h4></center>
+                                        <hr>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Selling Price </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;">INR : {{item.selling_price}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-3">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Sales Account </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;text-transform:Uppercase;"> {{item.sales_account}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row mb-5">
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <label style="color: white;" > Description </label>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-center">
+                                                <p>:</p>
+                                            </div>
+                                            <div class="col-4 d-flex justify-content-start">
+                                                <p style="color: white;font-size:15px;"> {{item.sales_description}}</p>
+                                            </div>
+                                        </div>     -->
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+            
+                        <div id="transaction" style="display: none;" >
+                            <div id="printContent">
+                                <center><h3 class="mt-3 text-uppercase">{{item.name}} - TRANSACTIONS</h3></center>
+                                <div class="row mt-5">
+                                    <div class="col d-flex justify-content-between px-5">
+                                        <div class="item_data">
+                                            <p>Selling Price: {{item.selling_price}}</p>
+                                            <p>Purchase Price: {{item.purchase_price}}</p>
+                                            <p>Min Stock to Maintain: {{item.min_stock}}</p>
+                                        </div>
+                                        <div class="item_data">
+                                            <p>Stock Quantity: {{item.current_stock}}</p>
+                                            <p>Stock Value: <span id="stockValue">0</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive px-2">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Sl No.</th>
+                                                <th class="text-center">Type</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th class="text-center">Price</th>
+                                                <th class="text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if item.current_stock != None and item.current_stock != 0 %}
+                                            <tr class="clickable-row" data-href="" >
+                                                <td style="text-align: center;">1</td>
+                                                <td style="text-align: center;">Opening Stock</td>
+                                                <td style="text-align: center;"> - </td>
+                                                <td style="text-align: center;">{{ item.item_created | date:'d-m-Y'  }}</td>
+                                                <td style="text-align: center;"> {{ item.opening_stock  }} </td>
+                                                <td style="text-align: center;"> {{item.stock_unit_rate}} </td>
+                                                <td style="text-align: center;"> - </td>
+                                            </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+            
+                            
+                        </div>
+                    </div>
+                </div>
+
                 
 
               
@@ -196,7 +601,7 @@
 
 
 
-              <form action="#" method="post" class="needs-validation" novalidate>
+              <!-- <form action="#" method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
                         <div class="card" style="background-color: #2d4458;"><br>
                           <div class="card" style="background-color:#162532; width: 75%; margin: auto;"><br>
@@ -389,19 +794,19 @@
                                 </div>
                             </div><br>
                         </div>
-                </form> 
+                </form>  -->
             </div>
         </div>
 
 
 <!--################################################################   statement    ##################################################-->
 
-        <div class="card radius-15 statement" style="display: none;">
+        <div class="card radius-15 statement shadow-none" style="display: none;background-color: #2F516F;">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-lg-12 col-xl-12">
-                        <div class="card" style="background-color: #2a4964;">
-                            <div class="row no-gutters">
+                        <div class="card" style="background-color: #243E55;">
+                            <div class="row no-gutters" >
 
                                 &nbsp; &nbsp;
 
@@ -409,7 +814,7 @@
                                     <h6><a class="btn w-100" onclick="overviewfun()">Overview</a></h6>
                                 </div>
                                 <div class="col-md-1 text-center" id ="state" style="margin-top: 2vh; margin-bottom: 2vh; border-radius: 1vh; " >
-                                    <h6><a class="btn w-100" style="background-color: #213b52;" onclick="statementfun()">Statement</a></h6>
+                                    <h6><a class="btn w-100" style="background-color: #162532;" onclick="statementfun()">Statement</a></h6>
 
                                 </div>
 

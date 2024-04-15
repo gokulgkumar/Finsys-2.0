@@ -343,31 +343,31 @@
                                             {% for j in st_items  %}
                                                 <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                     <div class="col-md-3 mt-3">
-                                                        <h6 class="mb-0">Name</h6>
+                                                        <h6 class="mb-0 ml-5">Name</h6>
                                                     </div>
                                                     <div class="col-md-3 mt-3">
                                                         <p class="mb-0 text-right">{{j.item.name}}</p>
                                                     </div>
         
                                                     <div class="col-md-3 mt-3 vl">
-                                                        <h6 class="mb-0">Quantity Available</h6>
+                                                        <h6 class="mb-0  ">Quantity Available</h6>
                                                     </div>
                                                     <div class="col-md-3 mt-3">
-                                                        <p class="mb-0 text-right">{{ j.quantity_avail }}</p>
+                                                        <p class="mb-0 text-right mr-5">{{ j.quantity_avail }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                     <div class="col-md-3 mt-3 ">
-                                                        <h6 class="mb-0">Quantity inhand</h6>
+                                                        <h6 class="mb-0  ml-5">Quantity inhand</h6>
                                                     </div>
                                                     <div class="col-md-3 mt-3">
-                                                        <p class="mb-0 text-right">{{j.quantity_inhand}}</p>
+                                                        <p class="mb-0 text-right ">{{j.quantity_inhand}}</p>
                                                     </div>
                                                     <div class="col-md-3 mt-3 vl">
                                                         <h6 class="mb-0">Adjusted Quantity</h6>
                                                     </div>
                                                     <div class="col-md-3 mt-3">
-                                                        <p class="mb-0 text-right">{{ j.quantity_adj  }}</p>
+                                                        <p class="mb-0 text-right mr-5">{{ j.quantity_adj  }}</p>
                                                     </div>                                            
                                                 </div>
                                                 <!-- <div class="row mb-4 d-flex justify-content-start align-items-center">
@@ -402,8 +402,9 @@
                                             {% for j in st_items %}
 
                                             <div class="row mb-4 d-flex justify-content-between align-items-center">
+                        
                                                 <div class="col-md-3 mt-3">
-                                                    <h6 class="mb-0">Name</h6>
+                                                    <h6 class="mb-0 ml-5" >Name</h6>
                                                 </div>
                                                 <div class="col-md-3 mt-3">
                                                     <p class="mb-0 text-right">{{j.item.name}}</p>
@@ -413,21 +414,21 @@
                                                     <h6 class="mb-0">Value Available</h6>
                                                 </div>
                                                 <div class="col-md-3 mt-3">
-                                                    <p class="mb-0 text-right">{{ j.current_val }}</p>
+                                                    <p class="mb-0 text-right mr-5">{{ j.current_val }}</p>
                                                 </div>
                                             </div>
                                             <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                                <div class="col-md-3 mt-3 ">
-                                                    <h6 class="mb-0">New Stock in Value</h6>
+                                                <div class="col-md-4 mt-3 ">
+                                                    <h6 class="mb-0 ml-5">New Stock in Value</h6>
                                                 </div>
-                                                <div class="col-md-3 mt-3">
+                                                <div class="col-md-2 mt-3">
                                                     <p class="mb-0 text-right">{{ j.changed_val }}</p>
                                                 </div>
                                                 <div class="col-md-4 mt-3 vl">
                                                     <h6 class="mb-0">Adjusted Stock in Value</h6>
                                                 </div>
                                                 <div class="col-md-2 mt-3">
-                                                    <p class="mb-0 text-right">{{ j.adjusted_val }}</p>
+                                                    <p class="mb-0 text-right mr-5">{{ j.adjusted_val }}</p>
                                                 </div>                                            
                                             </div>
 
@@ -837,7 +838,7 @@
                                         <li style="text-align: center;cursor: pointer;" class="text-light" data-toggle="modal" data-target="#shareEmail">Email</li>
                                     </ul>
                                    
-
+<!-- 
                                     <div class="dropdown" >
                                         <li  class=" dropdown-toggle btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-paperclip" data-toggle="dropdown">&nbsp;Attach file</li>
                                         <ul class="dropdown-menu" style="background-color: black;">
@@ -846,7 +847,7 @@
                                                 <a class="dropdown-item " style="cursor: pointer;" download  href="{{ stocks.attach_file.url }}" ><i class="fas fa-download"></i>&nbsp;Download file</a>
                                             {% endif %}
                                         </ul>
-                                    </div>
+                                    </div> -->
 
                                     <button type="submit" hre class="btn btn-outline-secondary text-grey mx-1 pull-right fa fa-file-pdf-o" style="font-size: 14px;" onclick="exportToPDF()">
                                     &nbsp;PDF
@@ -856,15 +857,15 @@
                                     <a type="button" class="btn btn-outline-secondary mx-1 text-grey pull-right fa fa-print" style="font-size: 14px;" onclick="printSpecificArea()" >
                                     &nbsp;Print
                                     </a>
-                            
+<!--                             
                                     <a type="submit" class="btn btn-outline-secondary text-center  mx-1 text-grey pull-right fa fa-trash" href="{% url 'del_stockadj' stocks.id%}" 
                                     onclick="return confirm('Are you sure you want to delete this item?')" style="font-size: 14px;">
                                     &nbsp;Delete
-                                    </a>
+                                    </a> -->
 
-                                    <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right fa fa-edit" style="font-size: 14px;" href="{% url 'edit_stockadj' stocks.id%}">
+                                    <!-- <a type="submit" class="btn btn-outline-secondary text-center mx-1 text-grey pull-right fa fa-edit" style="font-size: 14px;" href="{% url 'edit_stockadj' stocks.id%}">
                                     &nbsp;Edit
-                                    </a>
+                                    </a> -->
 
                                    
                                     

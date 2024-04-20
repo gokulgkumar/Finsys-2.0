@@ -6108,4 +6108,388 @@ lse:
  com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
     name = str(request.GET.get('unit_name')).upper()
     if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+lse:
+        com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
+        return JsonResponse({'message': 'Error'})
+    Fin_Units.objects.create(Company = com, name = name)
+    return JsonResponse({'message': 'Success'})
+ com = Fin_Staff_Details.objects.get(Login_Id = s_id).company_id
+    name = str(request.GET.get('unit_name')).upper()
+    if Fin_Units.objects.filter(Company = com, name = name).exists():
         return JsonResponse({'message': 'Error'})
